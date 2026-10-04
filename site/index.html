@@ -719,8 +719,9 @@ let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;
 const SONG_IN=3.5,SONG_OUT=15,SONG_FADE=3;
 function songAudioPath(t){return "music/"+t.id.slice(0,8)+".mp3"}
 function loadSong(t){const k="song_"+t.id;if(!AUD.cache[k])AUD.cache[k]=fetch(songAudioPath(t)).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));return AUD.cache[k]}
+function pruneSongs(){const keep=new Set();[curSong,QUEUE[songI],QUEUE[songI+1]].forEach(t=>{if(t)keep.add("song_"+t.id)});for(const k of Object.keys(AUD.cache))if(k.startsWith("song_")&&!keep.has(k))delete AUD.cache[k]}
 function stopSong(){clearTimeout(songTimer);songTimer=null;lyrStop();if(AUD.src&&AUD.gain){try{AUD.src.stop()}catch(e){}}if(songPaused){songPaused=false;try{ctx().resume()}catch(e){}}if(AUD.gain){try{AUD.gain.disconnect()}catch(e){}AUD.gain=null}}
-function pickSong(){ensureQ(songI+2);curSong=QUEUE[songI];songI++;const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});return curSong}
+function pickSong(){ensureQ(songI+3);curSong=QUEUE[songI];songI++;const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});pruneSongs();return curSong}
 function playSong(){
   stopSong();hush();
   const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
@@ -736,7 +737,7 @@ function playSong(){
     /* fade rule: skip the first 3.5s and fade in over 2s; fade out over 3s starting 15s before the song ends, then next song */
     const off=buf.duration>60?SONG_IN:0,cut=buf.duration>60?SONG_OUT-SONG_FADE:0,len=Math.min(buf.duration-off-cut,SONG_MAX),fo=SONG_FADE,now=a.currentTime;
     g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(1,now+2);g.gain.setValueAtTime(1,now+len-fo);g.gain.linearRampToValueAtTime(0,now+len);
-    s.onended=null;s.start(0,off);songEnd=now+len;songT0=now;songOff=off;lyrKey="";lyrStart(t);songTimer=setTimeout(done,len*1000+200)}).catch(fallback);
+    s.onended=null;s.start(0,off);songEnd=now+len;songT0=now;songOff=off;lyrKey="";lyrStart(t);songTimer=setTimeout(done,Math.max(0,len*1000-40))}).catch(fallback);
 }
 function songSkip(dir){ /* dir 1 = next, -1 = back */
   if(!prog||!prog.song)return;
@@ -747,7 +748,7 @@ function songPlayPause(){
   if(!prog||!prog.song)return;
   const a=ctx();
   if(!songPaused){songPaused=true;songLeft=AUD.gain&&songEnd?Math.max(0,songEnd-a.currentTime):14;clearTimeout(songTimer);songTimer=null;a.suspend().catch(()=>{})}
-  else{songPaused=false;a.resume().catch(()=>{});if(songDone)songTimer=setTimeout(songDone,songLeft*1000+200)}
+  else{songPaused=false;a.resume().catch(()=>{});if(songDone)songTimer=setTimeout(songDone,songLeft*1000)}
   const b=document.querySelector('[data-sc="pp"]');if(b){b.innerHTML=songPaused?'▶<span class="l"> Play</span>':'❚❚<span class="l"> Pause</span>';b.setAttribute("aria-label",songPaused?"Play":"Pause")}
 }
 document.getElementById("sched").addEventListener("click",e=>{const li=e.target.closest("li[data-qs]");if(!li||li.classList.contains("now"))return;const k=+li.dataset.qs;songI=songI+k-1;stopSong();hush();curSong=null;showProg(byId("song"))});
@@ -804,6 +805,15 @@ function renderClock(){
 let TICK=["ARCHIVED: 4 OCTOBER 2026","FA KING CONSTRUCTION: DEMOLITION STARTS AT 12","JUHU CHAIWALA: CHAI RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE","ROAD CROSS: HELPING PEOPLE CROSS SINCE 2008","SINDHI CRAWFORD'S MOLE: STILL ON HER FACE","BABA BLACK SHEEP: OMNI-PRESENT","FAME METER: TALWAAR KAMEEZ LEADS, BHENJI JUMPING CLOSING IN","FA CORP DENIES ANY PROJECT CALLED 'UNEARTH'","TCHU TCHU: METER STILL RUNNING"];
 document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("");
 
+/* Warm the cache so nothing waits on the network: this programme's voice clips, the next two programmes' clips, and the next song */
+function warmAhead(){
+  if(!soundOn)return;
+  try{
+    ensureQ(songI+3);if(QUEUE[songI])loadSong(QUEUE[songI]).catch(()=>{});
+    const ps=[prog];if(CHANNELS[chIdx]==="live"){for(let k=1,n=0;n<2&&k<=LIVE_ORDER.length;k++){const q=byId(LIVE_ORDER[(liveIdx+k)%LIVE_ORDER.length]);if(q&&!q.song){ps.push(q);n++}}}
+    ps.forEach(q=>{if(q&&!q.music&&!q.song)q.lines.forEach((l,i)=>loadClip(clipFor(q,i)).catch(()=>{}))});
+  }catch(e){}
+}
 /* ============ LIVE REFRESH ============ */
 /* A cloud run rewrites live/live.json (news bulletin, taxi report, ticker, and rotating story programmes) and the
    voiced clips every hour. The receiver polls it and swaps content in between programmes, with no reload. */
@@ -876,7 +886,7 @@ function showProg(p){
   stopSong();
   if(p.song){pickSong();stopTabla();stopAlbum()}
   else{if(p.music)startTabla();else stopTabla();if(p.album)startAlbum();else stopAlbum()}
-  playLine();
+  playLine();setTimeout(warmAhead,0);
 }
 function setTalker(who){
   const idx=prog.cast.indexOf(who);
@@ -897,7 +907,7 @@ function playLine(){
   $("sub2wrap").hidden=!(ccOn&&en);
   if(!(prog.music&&soundOn))talkT=setInterval(()=>el&&el.classList.toggle("talk"),130+Math.random()*60);
   const dur=Math.max(2600,text.length*62);
-  const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},450)};
+  const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},120)};
   const clipName=clipFor(prog,line);
   if(soundOn&&!prog.music&&useClips()){
     let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
@@ -967,7 +977,7 @@ $("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)
 $("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
 let wantSound=true,unlocked=false;
 function setSoundUI(){const b=$("sound");b.setAttribute("aria-pressed",String(wantSound));b.textContent=wantSound?"Sound on":"Sound off"}
-function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
+function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;setTimeout(warmAhead,0);if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
 $("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSound;setSoundUI();if(soundOn){ctx();unlockAudio()}else hush();playLine()};
 $("power").onclick=()=>{powerOn();switchTo(prog)};
 document.addEventListener("pointerdown",powerOn,{capture:true});
