@@ -1,0 +1,977 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIMTV Receiver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Hind:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Tiro+Devanagari+Hindi&display=swap" media="print" onload="this.media='all'">
+<style>
+/* Layout: a 2041 receiver cabinet. The screen is the hero; a brass rail holds Now/Next and the Fame Meter; programme guides sit below as tabs. Single committed dark look (a television is dark). */
+:root{
+  --cabinet:#16110c;      /* warm wood-black cabinet */
+  --panel:#211913;        /* inset panels */
+  --line:#3a2c20;         /* hairlines */
+  --brass:#c8962e;        /* chai brass, primary accent */
+  --padmini:#f2c230;      /* taxi yellow, highlight */
+  --dusk:#3b2450;         /* comic dusk violet */
+  --saffron:#e8622c;      /* on-air signal */
+  --crt:#7fd6a0;          /* spy-room monitor green */
+  --paper:#f3e9d2;        /* archive paper, main text */
+  --dim:#a89a80;          /* secondary text */
+  --proposed:#d9a7ff;     /* PROPOSED label */
+  --question:#ff9b7a;     /* CANON QUESTION label */
+  --f-display:"Big Shoulders Display","Oswald","Arial Narrow",sans-serif;
+  --f-body:"Hind","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --f-deva:"Tiro Devanagari Hindi","Noto Sans Devanagari",serif;
+  color-scheme:dark;
+}
+html,body{height:auto}
+body{background:var(--cabinet);color:var(--paper);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  background-image:radial-gradient(ellipse at 50% -10%, #2a1d14 0%, var(--cabinet) 60%)}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:20px;padding-block:14px 48px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--padmini);outline-offset:2px}
+
+.screen .host{pointer-events:none}
+.albumcard{position:absolute;left:5%;right:5%;top:30%;bottom:17%;display:grid;grid-template-columns:minmax(0,30%) minmax(0,1fr);gap:4%;align-items:center;z-index:3}
+.albumcard .cov{width:100%;max-height:100%;aspect-ratio:1;justify-self:start;border-radius:6%;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.6);animation:covin .6s cubic-bezier(.3,.7,.3,1)}
+.albumcard .cov svg{width:100%;height:100%;display:block}
+.albumcard .meta{min-width:0;display:flex;flex-direction:column;gap:clamp(3px,.8vw,10px)}
+.albumcard .k{font-family:var(--f-mono);font-size:clamp(8px,1.05vw,12px);letter-spacing:.14em;text-transform:uppercase;color:var(--padmini)}
+.albumcard h5{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(18px,3.6vw,46px);line-height:.95;color:var(--paper);text-wrap:balance}
+.albumcard .s{font-size:clamp(10px,1.3vw,15px);color:#e6d9bd}
+.albumcard a.play{align-self:flex-start;margin-top:2%;font-family:var(--f-mono);font-size:clamp(9px,1.1vw,13px);letter-spacing:.1em;text-transform:uppercase;background:var(--padmini);color:#1a0d05;text-decoration:none;padding:.55em 1em;border-radius:999px;font-weight:600}
+.albumcard a.play:hover{background:var(--paper)}
+.albumcard .dots{display:flex;gap:5px}.albumcard .dots i{width:6px;height:6px;border-radius:50%;background:rgba(243,233,210,.3)}.albumcard .dots i.on{background:var(--padmini)}
+@keyframes covin{from{transform:translateX(-14%) rotate(-6deg);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.albumcard .cov{animation:none}}
+.mh{margin:0 0 8px;font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+.music-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px}
+@media (max-width:820px){.music-wrap{grid-template-columns:1fr}}
+.tracks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tracks li{display:grid;grid-template-columns:28px 44px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.tracks .n{font-family:var(--f-mono);font-size:12px;color:var(--dim);text-align:right}
+.tracks .c svg{width:44px;height:44px;border-radius:5px;display:block}
+.tracks .ti{min-width:0}.tracks .ti b{display:block;font-weight:600;overflow-wrap:anywhere}.tracks .ti small{color:var(--dim);font-size:12.5px}
+.tracks .pl,.tracks a{background:none;border:0;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--padmini);text-decoration:none;white-space:nowrap}
+.tracks a:hover{text-decoration:underline}
+.beta{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--dim);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:14px}
+.adslot{display:block;position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:linear-gradient(135deg,#2a1640,#4a1e14 60%,#6b3a10);text-decoration:none;color:var(--paper);padding:14px 16px 14px 92px;min-height:96px;margin-bottom:16px}
+.adslot:hover{border-color:var(--padmini)}
+.adslot .art{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:68px;height:68px}
+.adslot .art svg{width:100%;height:100%}
+.adslot .sp{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.adslot .ti{display:block;font-family:var(--f-display);font-weight:900;font-size:24px;line-height:1;margin:4px 0 3px;letter-spacing:.01em}
+.adslot .ln{display:block;font-size:13px;color:#e6d9bd;line-height:1.35}
+.adslot .cta{display:inline-block;margin-top:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1a0d05;background:var(--padmini);border-radius:999px;padding:4px 10px;font-weight:600}
+.adslot .art .sw{transform-origin:34px 34px;animation:adspin 14s linear infinite}
+@keyframes adspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.adslot .art .sw{animation:none}}
+@media (max-width:600px){.albumcard{top:42%;bottom:12%}.music-hide-sm,.albumcard .s,.albumcard .dots,.albumcard .k{display:none}}
+/* Header */
+.top{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:12px}
+.logo{font-family:var(--f-display);font-weight:900;font-size:40px;letter-spacing:.02em;line-height:1;color:var(--paper)}
+.logo .mark{display:block;height:44px;width:auto}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.deva{font-family:var(--f-deva);color:var(--brass);font-size:15px}
+.top .spacer{flex:1}
+.clock{font-family:var(--f-mono);font-size:13px;color:var(--paper);font-variant-numeric:tabular-nums;text-align:right}
+.clock small{display:block;color:var(--dim);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.onair{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:.14em;
+  border:1.5px solid var(--saffron);color:var(--saffron);padding:3px 12px 2px;border-radius:3px}
+.onair i{width:9px;height:9px;border-radius:50%;background:var(--saffron);box-shadow:0 0 10px var(--saffron);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+
+/* Main grid */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;margin-top:18px}
+@media (max-width:980px){.main{grid-template-columns:minmax(0,1fr)}}
+
+/* Television */
+.set{background:linear-gradient(180deg,#2b2017,#1b140e);border:1px solid #4a3828;border-radius:18px;padding:14px;
+  box-shadow:inset 0 1px 0 #5a4430, 0 18px 40px rgba(0,0,0,.45)}
+.screen{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:#000;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.8)}
+.screen .scene,.screen .host,.screen canvas{position:absolute;inset:0;width:100%;height:100%}
+.screen .scene svg{width:100%;height:100%;display:block}
+.screen .host{display:flex;align-items:flex-end;justify-content:center;gap:4%;padding:0 6%}
+.screen .host svg{position:relative;height:78%;width:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5));transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,.7,.3,1),filter .45s}
+.screen .host svg.solo{height:82%}
+.screen .host svg.dim{z-index:1;transform:scale(.76) translateY(5%);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.screen .host svg.lead{z-index:2;transform:scale(1.06);filter:drop-shadow(0 14px 22px rgba(0,0,0,.6))}
+@media (prefers-reduced-motion:reduce){.screen .host svg{transition:none}}
+.screen .glass{position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.10) 0 1px,transparent 1px 3px),
+  radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(0,0,0,.55) 100%)}
+@media (prefers-reduced-motion:reduce){.screen .glass{background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(0,0,0,.5) 100%)}}
+.bug{position:absolute;top:3.5%;right:3%;font-family:var(--f-display);font-weight:900;font-size:clamp(14px,2.2vw,24px);color:rgba(243,233,210,.85);letter-spacing:.04em}
+.bug .mark{display:block;height:clamp(16px,2.6vw,30px);width:auto;margin-left:auto;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+.bug small{display:block;font-family:var(--f-mono);font-weight:400;font-size:clamp(8px,.9vw,10px);letter-spacing:.14em;text-align:right;color:rgba(243,233,210,.7)}
+.stamp{position:absolute;top:3.5%;left:3%;font-family:var(--f-mono);font-size:clamp(8px,1vw,11px);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--padmini);border:1px solid rgba(242,194,48,.7);padding:3px 7px;background:rgba(0,0,0,.45);border-radius:2px}
+.lower{position:absolute;left:3%;top:11%;display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.lower .nm{background:var(--brass);color:#1a120b;font-family:var(--f-display);font-weight:900;font-size:clamp(12px,2vw,22px);letter-spacing:.04em;padding:2px 12px 0;text-transform:uppercase}
+.lower .rl{background:rgba(20,14,10,.88);color:var(--paper);font-family:var(--f-mono);font-size:clamp(8px,1vw,11px);letter-spacing:.1em;text-transform:uppercase;padding:3px 12px}
+.subs{margin-top:10px;min-height:4.6em;padding:10px 14px;background:#0d0906;border:1px solid #3a2c20;border-radius:8px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.subs .l1{color:var(--paper);font-size:clamp(14px,1.6vw,18px);line-height:1.45}
+.subs .l2{display:block}
+.subs .l2 span{color:var(--padmini);font-style:normal;font-size:clamp(12.5px,1.3vw,15px);line-height:1.4}
+.ticker{position:absolute;left:0;right:0;bottom:0;height:9%;background:rgba(14,10,7,.94);border-top:2px solid var(--saffron);display:flex;align-items:center;overflow:hidden}
+.ticker .lbl{flex:none;position:relative;z-index:2;box-shadow:8px 0 10px rgba(14,10,7,.95);height:100%;display:flex;align-items:center;background:var(--saffron);color:#1a0d05;font-family:var(--f-display);font-weight:900;letter-spacing:.08em;font-size:clamp(9px,1.4vw,15px);padding:0 12px}
+.ticker .run{position:relative;z-index:1;white-space:nowrap;font-family:var(--f-mono);font-size:clamp(9px,1.2vw,13px);color:var(--paper);letter-spacing:.06em;animation:tick 70s linear infinite;padding-left:100%}
+.ticker .run span{margin-right:42px}.ticker .run span::before{content:"\25C6";color:var(--brass);margin-right:12px}
+@keyframes tick{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.ticker .run{animation:none;padding-left:16px}}
+.paused-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-display);font-weight:900;font-size:clamp(18px,3vw,34px);letter-spacing:.2em;color:var(--paper);background:rgba(0,0,0,.6);padding:6px 18px}
+.mouth{transform-box:fill-box;transform-origin:center;transition:transform .06s}
+.talk .mouth{transform:scaleY(2.2)}
+.eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+
+
+/* living sets: slow camera drift + one ambient layer per set */
+.screen .scene{overflow:hidden}
+.scene .plate{position:absolute;inset:0;background-size:cover;background-position:center;transform-origin:50% 45%;animation:drift 28s ease-in-out infinite alternate}
+.scene .shade{position:absolute;inset:0}
+.scene>svg{transform-origin:50% 50%;animation:drift2 30s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.07) translate(1.5%,.6%)}to{transform:scale(1.18) translate(-2.6%,-1.6%)}}
+@keyframes drift2{from{transform:scale(1.02)}to{transform:scale(1.08) translate(-1%,-.6%)}}
+.scene i{position:absolute;display:block;pointer-events:none}
+.scene .fly{left:-8%;width:4.2%;height:1.6%;border-radius:999px;background:#f2c230;box-shadow:0 0 8px rgba(242,194,48,.7),0 3px 0 rgba(127,214,255,.6);animation:fly linear infinite}
+@keyframes fly{from{left:-8%}to{left:108%}}
+.scene .beam{bottom:22%;width:2.6%;height:95%;background:linear-gradient(to top,rgba(255,236,190,.28),rgba(255,236,190,0));transform-origin:50% 100%;animation:sweep 9s ease-in-out infinite alternate;filter:blur(1px)}
+@keyframes sweep{from{transform:rotate(-28deg)}to{transform:rotate(26deg)}}
+.scene .glow{width:16%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(rgba(255,186,84,.42),rgba(255,186,84,0) 65%);animation:flicker 2.8s steps(1) infinite}
+.scene .glow.sm{width:9%}
+@keyframes flicker{0%{opacity:.75}18%{opacity:1}31%{opacity:.82}47%{opacity:.95}62%{opacity:.7}79%{opacity:1}91%{opacity:.86}}
+.scene .steam{width:2.6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(rgba(255,244,228,.6),rgba(255,244,228,0) 70%);filter:blur(2px);animation:steam 3.2s ease-out infinite}
+@keyframes steam{0%{transform:translate(0,0) scale(.6);opacity:0}20%{opacity:.85}100%{transform:translate(40%,-420%) scale(2);opacity:0}}
+.scene .mote{width:.45%;aspect-ratio:1;border-radius:50%;background:rgba(255,232,196,.65);animation:mote linear infinite}
+@keyframes mote{from{transform:translate(0,0);opacity:0}15%{opacity:.9}to{transform:translate(2600%,-1600%);opacity:0}}
+.scene .roll{left:0;right:0;top:-15%;height:12%;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.1),rgba(255,255,255,0));animation:roll 4.5s linear infinite}
+@keyframes roll{to{top:115%}}
+.scene .cloud{animation:cloud 60s linear infinite}.scene .cloud.c2{animation-duration:85s;animation-delay:-30s}
+@keyframes cloud{from{transform:translateX(-500px)}to{transform:translateX(1700px)}}
+.scene .birds{animation:birds 22s linear infinite}
+@keyframes birds{from{transform:translate(-100px,260px)}to{transform:translate(1700px,140px)}}
+.scene .dash{animation:dash .9s linear infinite}@keyframes dash{to{stroke-dashoffset:-60}}
+.scene .sun{transform-box:fill-box;transform-origin:center;animation:pulse 5s ease-in-out infinite alternate}
+@keyframes pulse{from{transform:scale(.96);opacity:.9}to{transform:scale(1.04);opacity:1}}
+.scene .blink{animation:blink 2.2s steps(1) infinite}@keyframes blink{0%{opacity:.25}40%{opacity:.85}70%{opacity:.45}}
+.scene .logo{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite alternate}
+.scene .taxi{animation:taxi 9s linear infinite}.scene .taxi.t2{animation-duration:13s;animation-delay:-5s}.scene .taxi.t3{animation-duration:7s;animation-delay:-2s}
+@keyframes taxi{from{transform:translateX(-200px)}to{transform:translateX(1800px)}}
+.scene .shimmer{animation:shim 3s ease-in-out infinite alternate}@keyframes shim{from{opacity:.85}to{opacity:1}}
+.scene .fall{animation:fall 1.2s linear infinite}@keyframes fall{to{stroke-dashoffset:-72}}
+.scene .spot{animation:spot 7s ease-in-out infinite alternate}@keyframes spot{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+@media (prefers-reduced-motion:reduce){.scene *,.scene>svg,.scene .plate{animation:none!important}}
+/* switch-on overlay */
+.power{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(10,7,5,.5);border:0;color:var(--paper);cursor:pointer;font:inherit}
+.power .pb{width:clamp(64px,11vw,104px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f5d27a,var(--brass) 55%,#7a5a1c);box-shadow:0 0 0 6px rgba(200,150,46,.25),0 10px 30px rgba(0,0,0,.5);display:grid;place-items:center;animation:pp 1.8s ease-in-out infinite}
+.power .pb svg{width:44%;height:44%}
+@keyframes pp{50%{box-shadow:0 0 0 14px rgba(200,150,46,.08),0 10px 30px rgba(0,0,0,.5)}}
+.power b{font-family:var(--f-display);font-weight:900;font-size:clamp(18px,2.6vw,30px);letter-spacing:.08em;text-transform:uppercase}
+.power small{font-family:var(--f-mono);font-size:clamp(10px,1.1vw,12px);letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.power:focus-visible{outline:3px solid var(--padmini);outline-offset:-6px}
+
+/* Controls */
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.knob{background:var(--panel);border:1px solid #4a3828;border-radius:999px;padding:6px 14px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper)}
+.knob:hover{border-color:var(--brass)}
+.knob[aria-pressed="true"]{background:var(--brass);color:#1a120b;border-color:var(--brass)}
+.chname{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.04em;margin-inline:4px;min-width:0}
+.chname small{font-family:var(--f-mono);font-size:11px;color:var(--dim);letter-spacing:.1em;margin-right:8px}
+.controls .spacer{flex:1}
+.chans{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chans button{background:transparent;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-family:var(--f-mono);font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.chans button[aria-current="true"]{border-color:var(--padmini);color:var(--padmini)}
+.chans button:hover{color:var(--paper)}
+.hint{font-size:12.5px;color:var(--dim);margin-top:8px}
+
+/* Rail */
+.rail{display:flex;flex-direction:column;gap:16px;min-width:0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.box h3{margin:0 0 10px;font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.box h3 small{font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--dim);letter-spacing:.1em}
+.sched{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.sched li{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sched li:last-child{border-bottom:0}
+.sched .t{font-family:var(--f-mono);font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.sched .s{font-weight:600;font-size:14px;line-height:1.25}
+.sched .s small{display:block;font-weight:400;color:var(--dim);font-size:12px}
+.sched .w{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--dim)}
+.sched li.now .w{color:var(--saffron)}.sched li.now .s{color:var(--padmini)}
+.fame{display:flex;flex-direction:column;gap:9px}
+.fame .row{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;align-items:center}
+.fame .nm{font-size:13.5px;font-weight:500;display:flex;justify-content:space-between;gap:8px}
+.fame .nm button{background:none;border:1px solid var(--line);border-radius:3px;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;padding:0 6px;color:var(--dim)}
+.fame .nm button:hover{color:var(--padmini);border-color:var(--padmini)}
+.fame .bar{grid-column:1/2;height:6px;background:#2e231a;border-radius:3px;overflow:hidden}
+.fame .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--padmini));border-radius:3px;transition:width .5s}
+.fame .v{grid-row:1/3;grid-column:2;font-family:var(--f-mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums;color:var(--padmini)}
+.note{font-size:12px;color:var(--dim);margin:10px 0 0}
+
+/* Tabs */
+.guide{margin-top:30px}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.tabs button{flex:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px 8px;font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.tabs button[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--brass)}
+.tabs button:hover{color:var(--paper)}
+.pane{padding-top:22px}
+.pane h2{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(30px,4vw,44px);line-height:1;letter-spacing:.01em;text-wrap:balance}
+.lede{max-width:68ch;color:var(--dim);margin:8px 0 20px}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:1px 6px;border-radius:2px;border:1px solid;vertical-align:middle}
+.chip.canon{color:var(--crt);border-color:var(--crt)}
+.chip.proposed{color:var(--proposed);border-color:var(--proposed)}
+.chip.question{color:var(--question);border-color:var(--question)}
+.chip.record{color:var(--padmini);border-color:var(--padmini)}
+
+/* Archive cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .cat{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);display:flex;justify-content:space-between;gap:8px}
+.card h4{margin:0;font-family:var(--f-display);font-weight:700;font-size:23px;line-height:1.05;letter-spacing:.01em}
+.card p{margin:0;font-size:14px}
+.card .take{border-top:1px dashed var(--line);padding-top:10px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
+.card .take svg{width:44px;height:52px}
+.card .take p{font-style:italic;color:var(--paper)}
+.card .take b{display:block;font-style:normal;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400}
+.card .src{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
+.card .src a{color:var(--dim)}
+.card .src a:hover{color:var(--padmini)}
+.ep{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:820px){.ep{grid-template-columns:minmax(0,1fr)}}
+.watch{background:var(--padmini);color:#1a120b;border:0;border-radius:4px;padding:8px 16px;font-family:var(--f-display);font-weight:900;font-size:17px;letter-spacing:.08em;text-transform:uppercase}
+.watch:hover{background:var(--paper)}
+.price{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.price div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.price b{display:block;font-family:var(--f-display);font-size:30px;line-height:1;color:var(--padmini)}
+.price small{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.seg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.seg li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline}
+.seg li span{font-family:var(--f-mono);font-size:11px;color:var(--brass);letter-spacing:.06em}
+
+/* Cast */
+.castgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.who{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.who .pic{background:radial-gradient(circle at 50% 80%,#3b2450,#1d1520 70%);height:170px;display:flex;justify-content:center;align-items:flex-end}
+.who.villain .pic{background:radial-gradient(circle at 50% 80%,#4a1e14,#1e120e 70%)}
+.who .pic svg{height:160px;width:auto}
+.who .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.who h4{margin:0;font-family:var(--f-display);font-weight:900;font-size:24px;line-height:1;letter-spacing:.02em}
+.who .real{font-family:var(--f-mono);font-size:11px;color:var(--dim);letter-spacing:.06em}
+.who q{font-size:13.5px;color:var(--paper);quotes:"\201C" "\201D"}
+.who .role{font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:8px;margin-top:2px}
+.who .role b{color:var(--paper);font-weight:600}
+.subhead{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);margin:28px 0 12px}
+
+/* Ask */
+.ask{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+@media (max-width:820px){.ask{grid-template-columns:minmax(0,1fr)}}
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.picker button{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 3px;font-size:13.5px}
+.picker button svg{width:30px;height:34px;border-radius:50%;background:#2e2033}
+.picker button[aria-pressed="true"]{border-color:var(--padmini);color:var(--padmini)}
+form.q{display:flex;gap:8px;margin-top:14px}
+form.q input{flex:1;min-width:0;background:#120d09;border:1px solid #4a3828;border-radius:6px;padding:10px 12px;color:var(--paper);font:inherit}
+form.q input::placeholder{color:#7d705c}
+.suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.suggest button{background:none;border:1px dashed var(--line);border-radius:4px;padding:2px 9px;font-size:12.5px;color:var(--dim)}
+.suggest button:hover{color:var(--paper);border-color:var(--brass)}
+.log{background:#120d09;border:1px solid var(--line);border-radius:10px;padding:14px;min-height:260px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.msg{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:start}
+.msg svg{width:36px;height:42px}
+.msg .bub{background:var(--panel);border:1px solid var(--line);border-radius:4px 10px 10px 10px;padding:8px 12px;font-size:14px}
+.msg .bub small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;color:var(--brass);text-transform:uppercase;margin-bottom:2px}
+.msg .bub em{display:block;color:var(--padmini);font-size:13.5px;margin-top:3px;font-family:var(--f-deva);font-style:normal}
+.msg.me{grid-template-columns:minmax(0,1fr)}
+.msg.me .bub{justify-self:end;background:#2b2017;border-radius:10px 4px 10px 10px}
+
+/* Products table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);background:#1b140f}
+td b{font-family:var(--f-display);font-size:18px;letter-spacing:.02em;font-weight:700}
+tr:last-child td{border-bottom:0}
+
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--dim);letter-spacing:.06em}
+@media (max-width:560px){
+  .wrap{padding-inline:16px}
+  .logo .mark{height:34px}
+  .set{padding:8px;border-radius:12px}
+  .lower{top:14%}
+  .clock{text-align:left}
+}
+
+/* broadcast mode (?broadcast=1): the frame YouTube sees, 1280x720 */
+body.bc{overflow:hidden;background:#0b0806;margin:0;padding:0}
+body.bc > *:not(.wrap):not(script),body.bc header,body.bc .rail,body.bc .controls,body.bc .tabs,body.bc .pane,body.bc footer,body.bc .power,body.bc .paused-badge{display:none!important}
+body.bc .wrap,body.bc .main{display:block;margin:0;padding:0;max-width:none;width:100vw}
+body.bc .set{position:fixed;inset:0;border:0;border-radius:0;padding:0;background:#0b0806;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+body.bc .screen{width:calc((100vh - 92px) * 16 / 9);max-width:100vw;border-radius:0}
+body.bc .subs{width:calc((100vh - 92px) * 16 / 9);max-width:100vw;margin:0;height:92px;min-height:0;border:0;border-radius:0;background:#0b0806}
+body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo"><svg class="mark" viewBox="-2 -2 324 108" role="img" aria-label="AIMTV"><path d="M0,100 L24,0 L48,0 L72,100 L50,100 L45,80 L27,80 L22,100 Z M31,62 L41,62 L36,36 Z M78,0 L100,0 L100,100 L78,100 Z" fill="#f3e9d2" fill-rule="evenodd"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#e8622c" fill-rule="evenodd" transform="translate(4,4)"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#f2c230" fill-rule="evenodd"/><path d="M156,22 L168,22 L168,34 L156,34 Z" fill="#16110c" opacity="0"/></svg></div>
+      <div>
+        <div class="tag">Television from a future that remembers us</div>
+        <div class="deva">कल की नज़र से, आज की कहानी</div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <span class="onair"><i></i>ON AIR</span>
+    <div class="clock" id="clock">--<small>Bombai, Hindia</small></div>
+  </header>
+
+  <div class="main">
+    <section aria-label="AIMTV live screen">
+      <div class="set">
+        <div class="screen" id="screen">
+          <div class="scene" id="scene"></div>
+          <div class="host" id="host"></div>
+          <canvas id="noise" hidden></canvas>
+          <div class="glass"></div>
+          <div class="stamp" id="stamp">Live</div>
+          <div class="bug"><svg class="mark" viewBox="-2 -2 323 107" role="img" aria-label="AIMTV"><path d="M0,100 L24,0 L48,0 L72,100 L50,100 L45,80 L27,80 L22,100 Z M31,62 L41,62 L36,36 Z M78,0 L100,0 L100,100 L78,100 Z" fill="rgba(243,233,210,.9)" fill-rule="evenodd"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#e8622c" fill-rule="evenodd" transform="translate(3,3)"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#f2c230" fill-rule="evenodd"/><path d="M156,22 L168,22 L168,34 L156,34 Z" fill="#16110c" opacity="0"/></svg><small id="bugch">CH 01</small></div>
+          <div class="lower" id="lower"><div class="nm" id="lowerName">Hema</div><div class="rl" id="lowerRole">This Day, That Year</div></div>
+          <div class="ticker"><div class="lbl">AIMTV</div><div class="run" id="ticker"></div></div>
+          <div class="paused-badge" id="paused" hidden>PAUSED</div>
+          <button class="power" id="power" type="button" hidden><span class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="#16110c" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg></span><b>Switch on AIMTV</b><small>Picture and sound</small></button>
+        </div>
+        <div class="subs" id="subs" aria-live="polite"><span class="l1" id="sub1"></span><span class="l2" id="sub2wrap"><span id="sub2"></span></span></div>
+      </div>
+      <div class="controls">
+        <button class="knob" id="prev" aria-label="Previous channel">CH &minus;</button>
+        <button class="knob" id="next" aria-label="Next channel">CH +</button>
+        <div class="chname" id="chname"><small>CH 01</small>AIMTV Live</div>
+        <div class="spacer"></div>
+        <button class="knob" id="sound" aria-pressed="true">Sound on</button>
+        <button class="knob" id="cc" aria-pressed="true">Language notes</button>
+        <button class="knob" id="pause" aria-pressed="false">Pause</button>
+      </div>
+      <div class="chans" id="chans" role="group" aria-label="Channels"></div>
+      <p class="hint">Every character has their own recorded voice. Use Sound to mute.</p>
+    </section>
+
+    <aside class="rail">
+      <a class="adslot" id="adslot" href="#" target="_blank" rel="noopener sponsored" aria-label="Advertisement">
+        <span class="art" aria-hidden="true"><svg viewBox="0 0 68 68"><circle cx="34" cy="34" r="32" fill="#16110c"/><g class="sw"></g></svg></span>
+        <span class="sp">Advertisement</span>
+        <span class="ti" id="adti"></span>
+        <span class="ln" id="adln"></span>
+        <span class="cta" id="adcta"></span>
+      </a>
+      <div class="box">
+        <h3>On AIMTV <small id="schedDay">TODAY · IST</small></h3>
+        <ul class="sched" id="sched"></ul>
+      </div>
+      <div class="box">
+        <h3>Fame Meter <small>NO PUBLICITY, NO ACTION</small></h3>
+        <div class="fame" id="fame"></div>
+        <p class="note">Sample standings. Your boosts are saved in this browser only; shared live voting comes at launch.</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="guide">
+    <div class="tabs" role="tablist" id="tabs">
+      <button role="tab" aria-selected="true" data-tab="tdty" id="t-tdty">This Day, That Year</button>
+      <button role="tab" aria-selected="false" data-tab="shop" id="t-shop">Tomorrow Shop</button>
+      <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">Stomach Challo Travels</button>
+      <button role="tab" aria-selected="false" data-tab="music" id="t-music">AIMTV Music</button>
+      <button role="tab" aria-selected="false" data-tab="cast" id="t-cast">The Cast</button>
+      <button role="tab" aria-selected="false" data-tab="ask" id="t-ask">Ask the Cast</button>
+      <button role="tab" aria-selected="false" data-tab="products" id="t-products">Future Products</button>
+    </div>
+
+    <div class="pane" id="p-tdty" role="tabpanel" aria-labelledby="t-tdty">
+      <h2>Archived: 4 October 2026</h2>
+      <p class="lede">Every day AIMTV opens the archive exactly fifteen years back. Each item keeps its date and source as THE RECORD; the cast's reaction from 2041 is THE TAKE, kept separate on purpose.</p>
+      <div style="margin-bottom:18px"><button class="watch" data-watch="tdty">Watch tonight's bulletin</button></div>
+      <div class="grid" id="archive"></div>
+    </div>
+
+    <div class="pane" id="p-shop" role="tabpanel" aria-labelledby="t-shop" hidden>
+      <div class="ep">
+        <div>
+          <h2>Juhu Chaiwala's Tomorrow Shop</h2>
+          <p class="lede">Companies announce what they are going to launch. At JC's stall it has already launched, been returned and gone on sale. Hosted by Juhu Chaiwala, The Spy with Chai, with his Chaibot, which makes chai "aur fast bhi".</p>
+          <p><span class="chip canon">Canon</span> JC, the Chaibot, CHAI CAM, the Rs 12 / Rs 900 two-entrance stall. <span class="chip proposed">Proposed</span> the show and Rama Tuta 2.0.</p>
+          <div style="margin:16px 0"><button class="watch" data-watch="shop">Watch episode 1</button></div>
+          <ul class="seg">
+            <li><span>SEG 1</span><div><b>Unboxing from the Future.</b> JC opens a product that has been on the market for years.</div></li>
+            <li><span>SEG 2</span><div><b>Kya Hua Uske Baad?</b> What the product did to Indian homes, societies and mothers-in-law.</div></li>
+            <li><span>SEG 3</span><div><b>Shadow Price / Sunny Price.</b> Same product, two entrances, two prices.</div></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="cat"><span>Episode 1 · Product under review</span><span class="chip proposed">Proposed</span></div>
+          <h4>Rama Tuta 2.0</h4>
+          <p>A household robot that sweeps, mops, cooks and organises. Version 1.0 did every chore, which left the aunties of the building with nothing to gossip about. Version 2.0 shipped a patch: the robot now gossips itself, and reads the building's news at 7 pm.</p>
+          <p><b>Unintended consequence:</b> the housing society elected it secretary. The meeting ended on time for the first time in the society's history.</p>
+          <div class="price"><div><small>Shadow entrance</small><b>Rs 12</b><small>per day, rental</small></div><div><small>Sunny entrance</small><b>Rs 900</b><small>per day, "concierge"</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-travel" role="tabpanel" aria-labelledby="t-travel" hidden>
+      <div class="ep">
+        <div>
+          <h2>Stomach Challo Travels</h2>
+          <p class="lede">Sarla Seth films herself reviewing "so foreign" destinations in her American call-centre accent. Every destination turns out to be a taxi ride from Shivajinagar. Her mother, Bhenji Jumping, skateboards into every reel with a plate of dosas.</p>
+          <p><span class="chip canon">Canon</span> Sarla's American accent, her reels, the call centre, Bhenji sneaking into her reels every day. <span class="chip proposed">Proposed</span> the travel-show premise and "I love foreign".</p>
+          <div style="margin:16px 0"><button class="watch" data-watch="travel">Watch episode 1</button></div>
+        </div>
+        <div class="grid" id="trips" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))"></div>
+      </div>
+    </div>
+
+
+    <div class="pane" id="p-music" role="tabpanel" aria-labelledby="t-music" hidden>
+      <h2>AIMTV Music</h2>
+      <p class="lede">New releases by DoggedTributeBand395, played right here in the channel. Tabla Nari hosts. New songs are added as they are made.</p>
+      <div style="margin-bottom:18px"><button class="watch" data-watch="music">Watch AIMTV Music</button></div>
+      <div class="music-wrap">
+        <div><h3 class="mh">Now in the playlist</h3><ol class="tracks" id="albumlist"></ol></div>
+        <div hidden><ol class="tracks" id="filllist"></ol></div>
+      </div>
+    </div>
+    <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast" hidden>
+      <h2>The Cast of Celeb Shauchalay</h2>
+      <p class="lede">Quotes in each card come straight from the comic or the pitch deck. The AIMTV job under each one is new and waiting for the founder's sign-off.</p>
+      <div class="castgrid" id="heroes"></div>
+      <div class="subhead">Fa Corp and friends</div>
+      <div class="castgrid" id="villains"></div>
+    </div>
+
+    <div class="pane" id="p-ask" role="tabpanel" aria-labelledby="t-ask" hidden>
+      <div class="ask">
+        <div>
+          <h2>Ask the Cast</h2>
+          <p class="lede">Pick someone and ask them anything. Version 1 answers from a scripted phrasebook written in each character's voice; a live AI cast can plug in later.</p>
+          <div class="picker" id="picker"></div>
+          <form class="q" id="askform">
+            <input id="askinput" type="text" autocomplete="off" placeholder="Ask Juhu Chaiwala something" aria-label="Your question">
+            <button class="watch" type="submit">Ask</button>
+          </form>
+          <div class="suggest" id="suggest"></div>
+        </div>
+        <div class="log" id="log" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-products" role="tabpanel" aria-labelledby="t-products" hidden>
+      <h2>Future Product Archive</h2>
+      <p class="lede">Every invention found in the comic and deck, plus the network's proposals. Nothing moves from Proposed to Canon without the founder.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Product</th><th>Status</th><th>Belongs to</th><th>What it does</th><th>The Indian problem it solves</th><th>Source</th></tr></thead>
+        <tbody id="products"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>AIMTV · a We Think, You Thank network · Celeb Shauchalay universe</span>
+    <span>Prototype v1 · Earth 69 · Bombai, Hindia</span>
+  </footer>
+</div>
+
+<script>
+/* ============ CHARACTER PUPPETS (SVG) ============ */
+const SK={tchu:"#8a5a3b",jc:"#9a6440",hema:"#b07a52",lata:"#a86e48",sarla:"#f3e6df",dimpy:"#b98057",devi:"#a8714c",mrst:"#d4a07a",tabla:"#e0b993",gutter:"#7e5236",arnold:"#7a4e33"};
+function shade(h,a){const n=parseInt(h.slice(1),16);let r=(n>>16)+a,g=((n>>8)&255)+a,b=(n&255)+a;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return"#"+((1<<24)|(r<<16)|(g<<8)|b).toString(16).slice(1)}
+function face(o){
+  const s=o.skin,eye=o.eye||"#1b1210";
+  let back="",front="",acc="",body="",extra="";
+  // body / outfit
+  body=`<path d="M18 240C22 192 54 172 100 172C146 172 178 192 182 240Z" fill="${o.outfit}"/>`;
+  if(o.collar)body+=o.collar;
+  const neck=`<rect x="86" y="138" width="28" height="42" rx="8" fill="${shade(s,-18)}"/>`;
+  const head=`<ellipse cx="100" cy="108" rx="40" ry="47" fill="${s}"/><ellipse cx="60" cy="112" rx="7" ry="10" fill="${shade(s,-10)}"/><ellipse cx="140" cy="112" rx="7" ry="10" fill="${shade(s,-10)}"/>`;
+  const eyes=`<g class="eyes"><ellipse cx="84" cy="108" rx="4.6" ry="5.2" fill="${eye}"/><ellipse cx="116" cy="108" rx="4.6" ry="5.2" fill="${eye}"/></g>`;
+  const brows=`<path d="M74 97Q84 ${o.browUp?90:93} 93 97M107 97Q116 ${o.browUp?90:93} 126 97" stroke="${o.brow||"#1b1210"}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+  const nose=`<path d="M100 112Q96 124 100 127Q104 128 106 125" stroke="${shade(s,-40)}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  const mouth=`<ellipse class="mouth" cx="100" cy="138" rx="${o.mw||9}" ry="2.6" fill="${o.lip||"#5a2a22"}"/>`;
+  const H=o.hair||"#151010";
+  switch(o.style){
+    case"pompadour":front=`<path d="M58 104C52 62 78 38 108 40C142 42 152 70 143 104C138 82 126 70 100 70C78 70 64 82 58 104Z" fill="${H}"/><path d="M70 62C84 30 132 30 140 60C124 48 92 46 70 62Z" fill="${shade(H,18)}"/>`;break;
+    case"quiff":front=`<path d="M60 100C58 74 70 60 96 58C124 56 142 70 140 100C136 86 128 80 100 80C76 80 64 86 60 100Z" fill="${H}"/><path d="M76 66C82 38 124 30 136 58C118 50 96 50 76 66Z" fill="${H}"/>`;break;
+    case"bun":back=`<circle cx="138" cy="70" r="19" fill="${H}"/><path d="M128 58L150 80" stroke="#3f9a54" stroke-width="5"/>`;front=`<path d="M60 108C56 68 80 58 100 58C124 58 146 70 140 108C134 82 116 74 100 76C84 74 66 82 60 108Z" fill="${H}"/>`;break;
+    case"braid":back=`<path d="M128 120C150 150 150 200 140 236" stroke="${H}" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M134 230l-6 12M140 232l0 12M146 230l6 12" stroke="#d2302a" stroke-width="4"/>`;front=`<path d="M60 112C54 66 80 56 100 58C122 56 148 66 140 112C136 84 114 72 100 72C86 72 64 84 60 112Z" fill="${H}"/><path d="M100 58V76" stroke="${shade(s,-20)}" stroke-width="2"/>`;break;
+    case"mohawk":front=`<path d="M62 100C62 84 70 74 80 70L120 70C130 74 138 84 138 100C126 86 74 86 62 100Z" fill="${shade(s,-28)}"/><path d="M84 74C82 40 92 24 100 18C108 24 118 40 116 74Z" fill="${H}"/>`;break;
+    case"bouffant":front=`<path d="M56 112C46 50 80 34 100 34C124 34 156 50 144 112C140 84 122 70 100 72C80 70 62 84 56 112Z" fill="${H}"/><ellipse cx="100" cy="48" rx="36" ry="20" fill="${H}"/>`;break;
+    case"longsilver":back=`<path d="M56 100C50 150 52 196 62 226L138 226C148 196 150 150 144 100Z" fill="${H}"/>`;front=`<path d="M60 110C54 66 80 56 100 56C124 56 148 66 140 110C134 84 112 74 92 76C78 80 66 92 60 110Z" fill="${H}"/>`;break;
+    case"undercut":front=`<path d="M60 104C60 84 66 70 78 64L82 104Z" fill="${shade(s,-26)}"/><path d="M74 70C80 42 128 36 142 64C148 80 146 96 142 112C132 90 112 78 74 70Z" fill="${H}"/>`;break;
+    case"hood":back=`<path d="M44 130C38 70 66 44 100 44C134 44 162 70 156 130L170 210L30 210Z" fill="${o.hoodc}"/>`;front=`<path d="M58 110C56 70 80 56 100 56C120 56 144 70 142 110C134 74 66 74 58 110Z" fill="${o.hoodc}"/><path d="M62 70Q100 50 138 70" stroke="${shade(o.hoodc,-20)}" stroke-width="4" fill="none"/>`;break;
+    case"gajrabun":back=`<circle cx="100" cy="58" r="24" fill="${H}"/><g fill="#f6f1e2">${[0,1,2,3,4,5,6].map(i=>`<circle cx="${80+i*7}" cy="${44+Math.abs(3-i)*2}" r="3.4"/>`).join("")}</g>`;front=`<path d="M58 110C54 70 80 60 100 60C120 60 146 70 142 110C134 82 112 74 100 76C88 74 66 82 58 110Z" fill="${H}"/><path d="M100 60V76" stroke="${shade(s,-20)}" stroke-width="2"/>`;break;
+    case"crew":front=`<path d="M60 98C60 66 82 58 100 58C120 58 140 66 140 98C130 80 70 80 60 98Z" fill="${H}"/>`;break;
+  }
+  // accessories
+  const A=o.acc||[];
+  if(A.includes("sunglasses"))acc+=`<path d="M70 102H96V114Q92 120 82 120Q70 120 70 110ZM104 102H130V110Q130 120 118 120Q108 120 104 114Z" fill="#0d0b0a"/><path d="M96 105H104" stroke="#0d0b0a" stroke-width="3"/>`;
+  if(A.includes("handlebar"))acc+=`<path d="M100 128C88 124 76 126 70 134C66 128 70 118 78 120C86 122 94 124 100 126C106 124 114 122 122 120C130 118 134 128 130 134C124 126 112 124 100 128Z" fill="#120d0b"/>`;
+  if(A.includes("beard"))acc+=`<path d="M62 116C64 150 82 160 100 160C118 160 136 150 138 116C132 134 118 132 100 132C82 132 68 134 62 116Z" fill="#1b1310"/><path d="M90 136Q100 132 110 136" stroke="${shade(s,-30)}" stroke-width="2" fill="none"/>`;
+  if(A.includes("bindi"))acc+=`<circle cx="100" cy="94" r="3.4" fill="#c4161c"/>`;
+  if(A.includes("mole"))acc+=`<circle cx="120" cy="128" r="3.2" fill="#2a1612"/>`;
+  if(A.includes("tikka"))acc+=`<path d="M100 60V84" stroke="#d9a52e" stroke-width="1.6"/><circle cx="100" cy="87" r="4" fill="#d9a52e"/>`;
+  if(A.includes("nosestud"))acc+=`<circle cx="105" cy="125" r="1.6" fill="#e9d38a"/>`;
+  if(A.includes("hoops"))acc+=`<circle cx="60" cy="128" r="6" fill="none" stroke="#d9a52e" stroke-width="2"/><circle cx="140" cy="128" r="6" fill="none" stroke="#d9a52e" stroke-width="2"/>`;
+  if(A.includes("emerald"))acc+=`<path d="M60 122l-4 8 4 8 4-8z M140 122l-4 8 4 8 4-8z" fill="#1f9a5a"/>`;
+  if(A.includes("tinted"))acc+=`<rect x="72" y="101" width="24" height="15" rx="2" fill="rgba(242,194,48,.45)" stroke="#111" stroke-width="2"/><rect x="104" y="101" width="24" height="15" rx="2" fill="rgba(242,194,48,.45)" stroke="#111" stroke-width="2"/><path d="M96 107H104" stroke="#111" stroke-width="2"/>`;
+  if(A.includes("visor"))acc+=`<path d="M64 100H136V112Q100 120 64 112Z" fill="#7fd6ff" opacity=".85"/><path d="M64 100H136" stroke="#e8f8ff" stroke-width="2"/>`;
+  if(A.includes("mask"))acc+=`<path d="M64 118Q100 112 136 118L134 142Q100 158 66 142Z" fill="#1d2a2c"/><path d="M76 128H124M78 136H122" stroke="#2f4a4d" stroke-width="2"/>`;
+  if(A.includes("cigar"))acc+=`<rect x="108" y="135" width="26" height="5" rx="2" fill="#6b3e1f"/><circle cx="135" cy="137" r="2.6" fill="#e8622c"/>`;
+  if(A.includes("scarf"))extra+=`<path d="M60 182C80 196 120 196 140 182L150 196C120 214 80 214 50 196Z" fill="#e9dcc0"/>`;
+  if(A.includes("redtint"))acc+=`<path d="M100 132Q108 134 116 131" stroke="#c4161c" stroke-width="2" fill="none"/>`;
+  const hideMouth=A.includes("mask");
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${o.label||""}">${back}${body}${extra}${neck}${head}${hideMouth?"":mouth}${eyes}${brows}${nose}${front}${acc}${hideMouth?`<rect class="mouth" x="96" y="138" width="8" height="1" fill="#1d2a2c"/>`:""}</svg>`;
+}
+function chaibot(){return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chaibot">
+<rect x="48" y="128" width="104" height="110" rx="16" fill="#9aa1a6"/><rect x="48" y="150" width="104" height="10" fill="#7e858a"/><rect x="48" y="196" width="104" height="10" fill="#7e858a"/>
+<path d="M152 168C176 164 184 184 170 196" stroke="#9aa1a6" stroke-width="9" fill="none"/><rect x="92" y="208" width="16" height="16" rx="3" fill="#c8962e"/>
+<rect x="94" y="112" width="12" height="18" fill="#7e858a"/>
+<circle cx="100" cy="80" r="40" fill="#b9c0c4"/><circle cx="100" cy="80" r="40" fill="none" stroke="#8a9196" stroke-width="3"/>
+<g class="eyes"><circle cx="84" cy="74" r="7" fill="#1a1a1a"/><circle cx="116" cy="74" r="7" fill="#1a1a1a"/><circle cx="86" cy="72" r="2" fill="#7fd6a0"/><circle cx="118" cy="72" r="2" fill="#7fd6a0"/></g>
+<path d="M100 96C88 90 74 92 68 100C66 92 72 86 80 88C88 90 94 92 100 94C106 92 112 90 120 88C128 86 134 92 132 100C126 92 112 90 100 96Z" fill="#111"/>
+<rect class="mouth" x="92" y="104" width="16" height="3" rx="1.5" fill="#333"/><circle cx="100" cy="38" r="5" fill="#c8962e"/></svg>`}
+function dog(){return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animation the dog">
+<path d="M40 240C46 196 70 176 100 176C130 176 154 196 160 240Z" fill="#f1ece2"/><path d="M76 190Q100 204 124 190L120 206Q100 214 80 206Z" fill="#7b5bd6"/>
+<path d="M56 64L50 18L88 52Z" fill="#141414"/><path d="M144 64L150 18L112 52Z" fill="#141414"/>
+<ellipse cx="100" cy="104" rx="50" ry="54" fill="#141414"/><path d="M100 60C90 100 84 130 76 150Q100 170 124 150C116 130 110 100 100 60Z" fill="#f1ece2"/>
+<rect x="58" y="88" width="84" height="26" rx="12" fill="#7fd6ff" opacity=".9"/><rect x="58" y="88" width="84" height="26" rx="12" fill="none" stroke="#7b5bd6" stroke-width="5"/>
+<g class="eyes"><circle cx="80" cy="101" r="4" fill="#123"/><circle cx="120" cy="101" r="4" fill="#123"/></g>
+<ellipse cx="100" cy="134" rx="10" ry="7" fill="#141414"/><ellipse class="mouth" cx="100" cy="150" rx="9" ry="2.6" fill="#7a2c2c"/></svg>`}
+function sheep(){return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baba Black Sheep">
+<circle cx="100" cy="108" r="78" fill="none" stroke="#c8962e" stroke-width="5" opacity=".9"/><circle cx="100" cy="108" r="66" fill="#c8962e" opacity=".12"/>
+<g fill="#1c1a1a">${[[60,190],[85,178],[115,178],[140,190],[70,215],[100,206],[130,215]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="26"/>`).join("")}</g>
+<path d="M58 92Q40 96 38 112Q52 112 64 104Z M142 92Q160 96 162 112Q148 112 136 104Z" fill="#1c1a1a"/>
+<ellipse cx="100" cy="116" rx="36" ry="46" fill="#232020"/><path d="M98 76V96" stroke="#d2302a" stroke-width="6" stroke-linecap="round"/><circle cx="98" cy="100" r="4" fill="#f2c230"/>
+<g class="eyes"><ellipse cx="86" cy="114" rx="4" ry="3" fill="#7a5a3a"/><ellipse cx="114" cy="114" rx="4" ry="3" fill="#7a5a3a"/></g>
+<ellipse cx="100" cy="148" rx="10" ry="6" fill="#111"/><ellipse class="mouth" cx="100" cy="156" rx="5" ry="1.5" fill="#000"/></svg>`}
+function helmet(){return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fa Darr">
+<path d="M18 240C22 192 54 172 100 172C146 172 178 192 182 240Z" fill="#2a2026"/><g fill="#c9b07a" opacity=".55">${Array.from({length:30},(_,i)=>`<circle cx="${30+(i%10)*15}" cy="${196+Math.floor(i/10)*14}" r="2"/>`).join("")}</g>
+<path d="M76 176L100 214L124 176Z" fill="#111"/><rect x="86" y="140" width="28" height="38" fill="#1a1a1a"/>
+<path d="M54 110C54 60 76 40 100 40C124 40 146 60 146 110L146 150Q100 166 54 150Z" fill="#0f0f10"/>
+<path d="M54 110C54 60 76 40 100 40C112 40 124 46 132 56L128 140Q90 150 58 140Z" fill="#141416"/>
+<path d="M132 56C142 70 146 90 146 110L146 150Q138 154 128 156L130 70Z" fill="#c8962e"/><circle cx="138" cy="112" r="10" fill="#e0b54a" stroke="#8a6418" stroke-width="3"/>
+<g class="mouth">${[0,1,2,3,4,5].map(i=>`<rect x="${70+i*9}" y="${120-(i>2?(5-i):i)*1.5}" width="6" height="5" rx="1" fill="#e04aa8"/>`).join("")}</g>
+<circle cx="80" cy="60" r="3" fill="#fff" opacity=".8"/></svg>`}
+
+const P={
+  hema:()=>face({skin:SK.hema,style:"undercut",hair:"#6b3fa8",outfit:"#2b2f22",collar:`<path d="M60 186L100 222L140 186" stroke="#c8b032" stroke-width="10" fill="none"/>`,acc:["hoops"],lip:"#6a2c34",label:"Hema"}),
+  jc:()=>face({skin:SK.jc,style:"quiff",outfit:"#b3302a",collar:`<path d="M84 176L92 214M116 176L108 214" stroke="#f1eadc" stroke-width="3"/><path d="M70 176Q100 196 130 176" stroke="#d9d4ca" stroke-width="8" fill="none"/>`,acc:["beard"],browUp:1,label:"Juhu Chaiwala"}),
+  tchu:()=>face({skin:SK.tchu,style:"pompadour",outfit:"#55602c",collar:`<path d="M82 176L100 200L118 176" fill="${SK.tchu}"/><path d="M88 184Q100 196 112 184" stroke="#8a3a2a" stroke-width="2.5" fill="none" stroke-dasharray="2 3"/>`,acc:["sunglasses","handlebar","scarf"],mw:7,label:"Tchu Tchu"}),
+  lata:()=>face({skin:SK.lata,style:"bun",outfit:"#9e1f2a",collar:`<path d="M30 220C70 190 110 186 176 208" stroke="#d6a32e" stroke-width="9" fill="none"/>`,acc:["bindi","hoops"],mw:12,lip:"#7a2730",label:"Bhenji Jumping"}),
+  sarla:()=>face({skin:SK.sarla,style:"longsilver",hair:"#e9edf2",eye:"#4f7a5a",brow:"#cfd3d8",outfit:"#f6f3ee",collar:`<path d="M70 176Q100 200 130 176" stroke="#dcd6cc" stroke-width="3" fill="none"/>`,lip:"#c98a8a",label:"Stomach Challo"}),
+  dimpy:()=>face({skin:SK.dimpy,style:"braid",outfit:"#e3b23c",collar:`<g fill="#c8402a">${[[50,210],[80,196],[120,200],[150,214],[100,226],[64,232],[140,234]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6"/>`).join("")}</g><path d="M30 200C70 230 140 170 176 196" stroke="#a02a8a" stroke-width="12" fill="none"/>`,acc:["bindi","tikka","hoops"],browUp:1,lip:"#7a2730",label:"Talwaar Kameez"}),
+  devi:()=>face({skin:SK.devi,style:"mohawk",hair:"#2c6ff0",outfit:"#d8a12a",collar:`<path d="M66 190H134" stroke="#f3efe2" stroke-width="4"/><path d="M84 176L100 196L116 176" fill="#c4252a"/>`,acc:["tinted","bindi"],label:"Fullon Devi"}),
+  mrst:()=>face({skin:SK.mrst,style:"bouffant",outfit:"#2f8a52",collar:`<g fill="#d9f0dd" opacity=".8">${Array.from({length:18},(_,i)=>`<circle cx="${34+(i%6)*26}" cy="${200+Math.floor(i/6)*14}" r="2.4"/>`).join("")}</g><path d="M74 180Q100 200 126 180" stroke="#1f9a5a" stroke-width="5" fill="none" stroke-dasharray="1 6" stroke-linecap="round"/>`,acc:["bindi","mole","nosestud","emerald"],lip:"#b0202a",label:"Sindhi Crawford"}),
+  tabla:()=>face({skin:SK.tabla,style:"hood",hoodc:"#1f7f86",outfit:"#1f7f86",acc:["mask"],label:"Tabla Nari"}),
+  gutter:()=>face({skin:SK.gutter,style:"gajrabun",outfit:"#5e2a6e",collar:`<path d="M30 214C70 190 130 190 170 214" stroke="#d6a32e" stroke-width="10" fill="none"/><path d="M70 178H130" stroke="#1f8a86" stroke-width="10"/>`,acc:["bindi","hoops","redtint"],mw:12,lip:"#8a1f22",label:"GutterFly"}),
+  arnold:()=>face({skin:SK.arnold,style:"crew",outfit:"#4f5a2a",collar:`<rect x="48" y="196" width="22" height="14" fill="#c8962e"/><path d="M100 176V240" stroke="#2c331a" stroke-width="3"/>`,acc:["visor","cigar"],label:"Arnold Shivajinagar"}),
+  chaibot, animation:dog, baba:sheep, fadarr:helmet
+};
+
+/* ============ SCENES ============ */
+const statue=(x,s,c)=>`<g transform="translate(${x} 0) scale(${s})" fill="${c}"><path d="M-40 900L-28 520L28 520L40 900Z"/><path d="M-60 560L-30 380L30 380L60 560Z"/><circle cx="0" cy="330" r="46"/><path d="M-30 296L0 230L30 296Z"/><path d="M30 400L120 300L134 312L52 430Z"/><rect x="112" y="250" width="40" height="66" rx="16"/><path d="M-30 420L-110 560L-92 572L-20 470Z"/><path d="M40 700Q160 640 150 520" stroke="${c}" stroke-width="16" fill="none"/></g>`;
+const chawl=(c,w)=>`<g fill="${c}"><rect x="420" y="520" width="760" height="380"/><path d="M560 520L640 440L720 520Z M720 520L800 430L880 520Z M880 520L960 440L1040 520Z"/>${Array.from({length:24},(_,i)=>`<rect x="${450+(i%12)*60}" y="${560+Math.floor(i/12)*110}" width="30" height="46" fill="${w}"/>`).join("")}<path d="M430 640H1170M430 750H1170" stroke="${w}" stroke-width="3" opacity=".5"/></g>`;
+const PL=(n,extra="")=>`<div class="plate" style="background-image:url(plates/${n}.jpg)"></div>${extra}`;
+const SHADE=(a=.35)=>`<div class="shade" style="background:linear-gradient(180deg,rgba(14,10,7,${a*.4}),rgba(14,10,7,${a}) 75%)"></div>`;
+const flyers=(n,top0,dur0)=>Array.from({length:n},(_,i)=>`<i class="fly" style="top:${top0+i*7}%;animation-duration:${dur0+i*5}s;animation-delay:-${i*4.5}s"></i>`).join("");
+const motes=n=>Array.from({length:n},(_,i)=>`<i class="mote" style="left:${(i*37)%100}%;top:${20+(i*23)%60}%;animation-delay:-${i*1.7}s;animation-duration:${10+(i%5)*3}s"></i>`).join("");
+const SCENES={
+ news:()=>PL("studio_window",SHADE(.45)+`<i class="beam" style="left:18%"></i><i class="beam" style="left:74%;animation-delay:-4s;animation-duration:11s"></i>`+flyers(3,12,16)),
+ chai:()=>PL("chai_stall",SHADE(.3)+`<i class="glow" style="left:20%;top:39%"></i><i class="glow" style="left:78%;top:46%;animation-delay:-1.3s"></i><i class="glow sm" style="left:53%;top:58%;animation-delay:-.6s"></i>`+[0,1,2,3].map(i=>`<i class="steam" style="left:${51+i%2*2}%;top:52%;animation-delay:-${i*.8}s"></i>`).join("")),
+ taxi:()=>PL("street_faking",SHADE(.25)+motes(14)+flyers(2,8,14)),
+ travel:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="900" fill="#8fd0e0"/><circle class="sun" cx="1320" cy="170" r="80" fill="#fbe7a1"/><g class="cloud" fill="#f3e9d2" opacity=".9"><ellipse cx="300" cy="200" rx="90" ry="26"/><ellipse cx="360" cy="180" rx="60" ry="26"/></g><g class="cloud c2" fill="#f3e9d2" opacity=".75"><ellipse cx="900" cy="120" rx="70" ry="20"/><ellipse cx="950" cy="105" rx="45" ry="20"/></g><g class="birds" stroke="#2a3a2a" stroke-width="4" fill="none"><path d="M0 0q10 -8 20 0q10 -8 20 0"/><path d="M50 20q8 -6 16 0q8 -6 16 0"/></g><path d="M0 560Q300 360 600 520T1200 470T1600 520V900H0Z" fill="#4c8a4a"/><path d="M0 640Q400 520 800 620T1600 600V900H0Z" fill="#3a6f3a"/><path d="M640 900L760 600H840L960 900Z" fill="#5b5048"/><path class="dash" d="M800 600V900" stroke="#f3e9d2" stroke-width="6" stroke-dasharray="30 30"/><g transform="translate(1090 470)"><rect x="-6" y="0" width="12" height="160" fill="#555"/><rect x="-150" y="-80" width="300" height="90" rx="6" fill="#1f7a3a" stroke="#f3e9d2" stroke-width="5"/><text x="0" y="-42" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="40" fill="#f3e9d2">LONAVALA</text><text x="0" y="-6" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="22" fill="#f3e9d2">2 HRS · NOT FOREIGN</text></g></svg>`,
+ ad:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="g3" cx=".5" cy=".4"><stop offset="0" stop-color="#5a2a7a"/><stop offset="1" stop-color="#140a1e"/></radialGradient></defs><rect width="1600" height="900" fill="url(#g3)"/>${Array.from({length:4},(_,i)=>`<g transform="translate(${260+i*360} 0)"><rect x="-40" y="380" width="80" height="520" fill="#241634"/><path d="M-130 380H130L100 330H-100Z" fill="#2e1d42"/><rect class="blink" style="animation-delay:-${i*.7}s" x="-100" y="300" width="200" height="30" fill="#e04aa8"/>${[0,1,2,3,4].map(j=>`<rect class="blink" style="animation-delay:-${(i+j)*.53}s" x="-14" y="${430+j*80}" width="28" height="18" fill="#f2c230"/>`).join("")}</g>`).join("")}<g class="logo"><path d="M800 80L904 260H696Z" fill="#d2302a"/><text x="800" y="234" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="96" fill="#f3e9d2">A</text></g><text x="800" y="360" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="72" fill="#f3e9d2" letter-spacing="10">FA CORPORATION</text><text x="800" y="410" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="24" fill="#e04aa8" letter-spacing="6">UNLIMITED SPACE · IN SPACE</text><rect x="0" y="0" width="1600" height="900" fill="none" stroke="#c8962e" stroke-width="10"/><text x="60" y="80" font-family="IBM Plex Mono,monospace" font-size="24" fill="#f2c230">PAID PROGRAMMING</text></svg>`,
+ psa:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="900" fill="#d9b88a"/><rect x="0" y="560" width="1600" height="340" fill="#3b3330"/>${Array.from({length:9},(_,i)=>`<rect x="${120+i*160}" y="620" width="90" height="240" fill="#f3e9d2"/>`).join("")}<g transform="translate(1260 120)"><rect x="-90" y="0" width="180" height="180" rx="10" fill="#f3e9d2"/><path d="M-26 30H26V64H60V116H26V150H-26V116H-60V64H-26Z" fill="#d2302a"/></g><text x="1260" y="350" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="58" fill="#2a1c12">ROAD CROSS</text><text x="1260" y="390" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="22" fill="#2a1c12">SINCE 2008</text><g fill="#f2c230"><rect class="taxi" x="0" y="160" width="140" height="40" rx="16"/><rect class="taxi t2" x="0" y="90" width="120" height="34" rx="14"/><rect class="taxi t3" x="0" y="250" width="100" height="30" rx="12"/></g></svg>`,
+ baba:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="900" fill="#3a2a10"/><path class="shimmer" d="M800 60C980 60 1060 160 1180 160C1300 160 1380 300 1380 450C1380 600 1300 740 1180 740C1060 740 980 840 800 840C620 840 540 740 420 740C300 740 220 600 220 450C220 300 300 160 420 160C540 160 620 60 800 60Z" fill="#c8962e"/><path d="M800 100C960 100 1040 196 1160 196C1270 196 1340 320 1340 450C1340 580 1270 704 1160 704C1040 704 960 800 800 800C640 800 560 704 440 704C330 704 260 580 260 450C260 320 330 196 440 196C560 196 640 100 800 100Z" fill="#5fae5a"/><path d="M260 450Q800 300 1340 450V560Q800 640 260 560Z" fill="#4e9a4b"/><path class="fall" d="M1120 220Q1180 400 1100 600" stroke="#cfe8ff" stroke-width="40" opacity=".7" fill="none" stroke-dasharray="50 22"/></svg>`,
+ tabla:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="900" fill="#1a0f22"/>${Array.from({length:6},(_,i)=>`<path class="spot" style="transform-origin:${150+i*260}px -40px;animation-delay:-${i*1.4}s" d="M${110+i*260} -40H${190+i*260}L${300+i*260} 900H${0+i*260}Z" fill="${i%2?"#e8622c":"#d9a7ff"}" opacity=".12"/>`).join("")}<rect x="0" y="700" width="1600" height="200" fill="#120a18"/><g transform="translate(640 690)"><ellipse cx="0" cy="0" rx="90" ry="26" fill="#3a2414"/><path d="M-90 0V-120Q0 -150 90 -120V0" fill="#5a3a20"/><ellipse cx="0" cy="-122" rx="90" ry="26" fill="#e9dcc0"/><ellipse cx="0" cy="-122" rx="34" ry="10" fill="#1a1a1a"/></g><g transform="translate(960 690)"><path d="M-110 0Q-130 -120 0 -140Q130 -120 110 0Z" fill="#8a8f96"/><ellipse cx="0" cy="-130" rx="100" ry="26" fill="#e9dcc0"/><ellipse cx="-20" cy="-130" rx="36" ry="10" fill="#1a1a1a"/></g></svg>`,
+ ident:()=>`<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="900" fill="#16110c"/>${["#c8962e","#f2c230","#7fd6a0","#e8622c","#3b2450","#d9a7ff","#f3e9d2"].map((c,i)=>`<rect x="${i*229}" y="0" width="229" height="560" fill="${c}"/>`).join("")}<rect x="0" y="560" width="1600" height="80" fill="#211913"/>${Array.from({length:16},(_,i)=>`<rect x="${i*100}" y="640" width="100" height="260" fill="${i%2?"#16110c":"#2b2017"}"/>`).join("")}<rect x="530" y="40" width="540" height="200" rx="14" fill="#16110c"/><g transform="translate(562,62) scale(1.5)"><g class="logo"><path d="M0,100 L24,0 L48,0 L72,100 L50,100 L45,80 L27,80 L22,100 Z M31,62 L41,62 L36,36 Z M78,0 L100,0 L100,100 L78,100 Z" fill="#f3e9d2" fill-rule="evenodd"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#e8622c" fill-rule="evenodd" transform="translate(4,4)"/><path d="M112,100 L112,20 L128,3 L145,20 L162,3 L179,20 L196,3 L212,20 L212,100 L189,100 L189,54 L162,84 L135,54 L135,100 Z M156,22 L168,22 L168,34 L156,34 Z M218,50 L238,37 L258,50 L258,64 L247,64 L247,100 L229,100 L229,64 L218,64 Z M262,40 L282,40 L287,76 L292,40 L312,40 L298,100 L276,100 Z" fill="#f2c230" fill-rule="evenodd"/><path d="M156,22 L168,22 L168,34 L156,34 Z" fill="#16110c" opacity="0"/></g></g></svg><i class="roll"></i>`
+};
+
+/* ============ PROGRAMMES ============ */
+const W={hema:"Hema",jc:"Juhu Chaiwala",chaibot:"Chaibot",tchu:"Tchu Tchu",animation:"Animation",sarla:"Stomach Challo",lata:"Bhenji Jumping",mrst:"Sindhi Crawford",fadarr:"Fa Darr",baba:"Baba Black Sheep",tabla:"Tabla Nari",dimpy:"Talwaar Kameez",devi:"Fullon Devi"};
+const VOICE={hema:{p:1.05,r:1},jc:{p:.9,r:1.02},chaibot:{p:1.6,r:1.25},tchu:{p:.75,r:.95},animation:{p:1.35,r:1.1},sarla:{p:1.3,r:1.08,us:1},lata:{p:1.15,r:1.08},mrst:{p:1.1,r:.95},fadarr:{p:.6,r:.85},baba:{p:.5,r:.7},dimpy:{p:1.05,r:1.1},devi:{p:1,r:1},tabla:{p:1,r:1}};
+const PROGS=[
+ {id:"ident",ch:"AIMTV Ident",scene:"ident",cast:["animation"],stamp:"Station ident",role:"Continuity · Canon character",lines:[
+  ["animation", "Namaskar! I'm Animation. A Marathi dog, and a multimedia dog.", "नमस्कार! मी ॲनिमेशन. मराठी कुत्रा, आणि मल्टिमीडिया कुत्रा."],
+  ["animation", "I jump from TV to print, from print to phone. Today, I jumped into your screen.", "मी टीव्हीतून प्रिंटमध्ये, प्रिंटमधून फोनमध्ये उडी मारतो. आज मी तुमच्या स्क्रीनमध्ये उडी मारली."],
+  ["animation", "You're watching AIMTV. Television from a future that remembers us.", "तुम्ही पाहत आहात ए आय एम टीव्ही. आपल्याला लक्षात ठेवणाऱ्या भविष्याचं टेलिव्हिजन."]]},
+ {id:"tdty",ch:"This Day, That Year",scene:"news",cast:["hema"],stamp:"Archived · 4 Oct 2026",role:"This Day, That Year",lines:[
+  ["hema", "Namaste, I'm Hema. You're watching This Day, That Year.", ""],
+  ["hema", "Today's date is the fourth of October. And fifteen years ago, it was 2026.", ""],
+  ["hema", "Old news. The Asian Games in Aichi and Nagoya, running since the nineteenth of September, closed today.", ""],
+  ["hema", "People watched the medals on TV. Yes, TV. The box with only one screen.", ""],
+  ["hema", "Ancient media. That year, laptops called Googlebooks arrived. A laptop was a book that opened, with the internet inside.", ""],
+  ["hema", "Vintage gadget. On the first of October, Legato Frames launched. Glasses that listened, for 999 dollars.", ""],
+  ["hema", "These days even walls listen. Juhu Chaiwala's walls record, too.", ""],
+  ["hema", "That's the record. Everything else is just a take. I'm Hema. Namaste, see you tomorrow. In the daytime.", ""]]},
+ {id:"ad1",ch:"Fa Corp Break",scene:"ad",cast:["fadarr"],stamp:"Paid programming",role:"A message from Fa Corporation",lines:[
+  ["fadarr", "Brothers and sisters. Do you cough?", ""],
+  ["fadarr", "Fa Cough Syrup. Blessed by Fa Corporation.", ""],
+  ["fadarr", "Side effects may include eviction.", ""],
+  ["fadarr", "Fa Corp. Unlimited space. In space.", ""]]},
+ {id:"shop",ch:"Tomorrow Shop",scene:"chai",cast:["jc","chaibot"],stamp:"Ep 1 · Rama Tuta 2.0",role:"Juhu Chaiwala's Tomorrow Shop",lines:[
+  ["jc", "Welcome to Juhu Chaiwala's Tomorrow Shop. Companies used to say coming soon. Here, everything came long ago.", ""],
+  ["jc", "Today's product: Rama Tuta 2.0. A home robot. Sweeping, mopping, cooking, everything.", ""],
+  ["chaibot", "And fast too.", ""],
+  ["jc", "The problem? The robot did all the work, so the aunties had nothing left to gossip about.", ""],
+  ["jc", "Version 2.0 shipped a patch. Now the robot gossips itself. The building's news, every evening at seven.", ""],
+  ["jc", "What happened next? The society made the robot its secretary. The first meeting in history to end on time.", ""],
+  ["jc", "Shadow entrance price, twelve rupees. Sunny entrance price, nine hundred. Same robot. Different door.", ""],
+  ["chaibot", "Here is your chai. From a bot.", ""]]},
+ {id:"meter",ch:"Meter Down",scene:"taxi",cast:["tchu"],stamp:"Live · Shivajinagar",role:"Field report · Meter Down",lines:[
+  ["tchu", "Namaskara! Meter down. Tchu Tchu reporting, live from the taxi.", "Namaskara: hello, in Kannada."],
+  ["tchu", "Fa King Construction has stuck posters all over Shivajinagar again. Who notices a notice?", ""],
+  ["tchu", "The Dalmatian sniffed the poster. Something is fishy with that Dalmatian, I'm telling you.", ""],
+  ["tchu", "I have to drop Hema madam at an interview. First, the car wash. Work is warship.", ""],
+  ["tchu", "Tchu Tchu, AIMTV, Bombai. The meter is still running.", ""]]},
+ {id:"psa",ch:"Road Cross PSA",scene:"psa",cast:["mrst"],stamp:"Public service",role:"Road Cross · since 2008",lines:[
+  ["mrst", "Jhulelal, babuji. A small message from Road Cross.", "Jhulelal: a Sindhi greeting."],
+  ["mrst", "When you cross the road, look left, look right, and look up. Taxis fly now.", ""],
+  ["mrst", "Don't take tension. We help you cross.", ""]]},
+ {id:"travel",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 1 · Lonavala",role:"Stomach Challo Travels",lines:[
+  ["sarla", "Hi guys! Welcome back to Stomach Challo Travels. Today we're going somewhere so foreign.", ""],
+  ["sarla", "Location: Lonavala. It's like, basically Switzerland. With chikki.", ""],
+  ["lata", "Kem cho! Sarla baby, want a dosa? It's diet time!", "Kem cho: hello, in Gujarati."],
+  ["sarla", "Mommy, I'm literally live. Sorry guys, my mom is like, in every reel.", ""],
+  ["sarla", "Tchu Tchu uncle says it's two hours away. In 2041, two hours is basically international.", ""],
+  ["sarla", "Like, share, follow. Stomach Challo. I love foreign.", ""]]},
+ {id:"baba",ch:"Baba Ka Aashirwad",scene:"baba",cast:["baba"],stamp:"Daily blessing",role:"Almighty Baba Black Sheep · omni-present",lines:[
+  ["baba", "Baa.", "Baba Black Sheep has blessed this broadcast."],
+  ["baba", "Baa baa.", "Baba will set everything right."]]},
+ {id:"song",ch:"AIMTV Music",scene:"tabla",cast:[],stamp:"Now playing",role:"AIMTV Music",music:true,song:true,lines:[["tabla","",""]]},
+ {id:"music",ch:"AIMTV Music",scene:"tabla",cast:[],stamp:"New release",role:"Tabla Nari presents",music:true,album:true,lines:[
+  ["tabla", "AIMTV Music. New releases from DoggedTributeBand395.", ""],
+  ["tabla", "Fresh songs, straight from the studio.", ""],
+  ["tabla", "Every new track joins the channel as soon as it is made.", ""],
+  ["tabla", "Now playing, right here on AIMTV.", ""]]},
+ {id:"tablanari",ch:"Tabla Nari Live",scene:"tabla",cast:["tabla"],stamp:"Music · Live loop",role:"Tabla Nari · magic or chaos",music:true,lines:[
+  ["tabla", "Dha dhin dhin dha. Dha dhin dhin dha.", "Turn on sound. Her tabla makes magic or chaos, depending on the situation."],
+  ["tabla", "Dha tin tin ta. Ta dhin dhin dha.", "Tabla Nari is from the northeast, so we don't know much about her."]]}
+];
+const CHANNELS=["live","tdty","shop","travel","meter","tablanari","music","ad1"];
+const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping"};
+const LIVE_ORDER=["ident","song","tdty","song","ad1","song","shop","song","meter","song","psa","song","travel","song","baba","song"];
+
+const MUSIC={album:{title:"AIMTV Music",artist:"DoggedTributeBand395",tag:"New releases",tracks:[{"t": "Midnight Tabs", "id": "91f31754-6922-44d6-aff2-07be5f1e8fa4", "a": 1, "d": "3:28", "s": "Psychedelic hip-hop"}, {"t": "Swipe Into Love", "id": "3de13e2b-6443-4c66-a2ad-ac6d86edb877", "a": 1, "d": "3:44", "s": "Psychedelic hip-hop"}]},fill:[]};
+
+const SUNO=id=>"https://suno.com/song/"+id;
+function hashN(s){let x=0;for(const c of s)x=(x*31+c.codePointAt(0))>>>0;return x}
+function cover(t,big){const n=hashN(t),hue=n%360,h2=(hue+40)%360,r=(n>>3)%3;
+ const bg=`hsl(${hue} 55% 22%)`,c1=`hsl(${h2} 85% 62%)`,c2=`hsl(${hue} 80% 70%)`;
+ const swipe=r===0?`<path d="M58 70H86M78 62L86 70L78 78" stroke="#16110c" stroke-width="5" fill="none" stroke-linecap="round"/>`:r===1?`<path d="M42 70H14M22 62L14 70L22 78" stroke="#16110c" stroke-width="5" fill="none" stroke-linecap="round"/>`:`<circle cx="50" cy="72" r="9" fill="none" stroke="#16110c" stroke-width="5"/>`;
+ return `<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" fill="${bg}"/><g opacity=".35">${[0,1,2,3].map(i=>`<circle cx="${(n>>i)%100}" cy="${(n>>(i+5))%100}" r="${12+i*6}" fill="${c2}"/>`).join("")}</g><g transform="rotate(${-10+(n%20)} 50 52)"><rect x="24" y="16" width="52" height="72" rx="8" fill="#f3e9d2" opacity=".35" transform="translate(-6 4)"/><rect x="24" y="16" width="52" height="72" rx="8" fill="${c1}"/><path d="M50 53C38 44 34 36 40 31C45 27 50 31 50 35C50 31 55 27 60 31C66 36 62 44 50 53Z" fill="#16110c"/>${swipe}</g>${big?`<text x="50" y="96" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="9" fill="#f3e9d2" letter-spacing=".5">SWIPE RIGHT</text>`:""}</svg>`}
+let musicT=null,musicI=0;
+function albumCard(t,kicker,album,pos,total){
+ return `<div class="albumcard"><div class="cov">${cover(t.t,album)}</div><div class="meta"><span class="k">${kicker}</span><h5>${t.t}</h5><span class="s">${MUSIC.album.artist} · ${t.s} · ${t.d}</span><span class="dots">${Array.from({length:total},(_,i)=>`<i class="${i===pos?"on":""}"></i>`).join("")}</span></div></div>`}
+function showCard(t,kicker,album,pos,total){let b=$("albumbox");if(!b){b=document.createElement("div");b.id="albumbox";$("screen").appendChild(b)}b.innerHTML=albumCard(t,kicker,album,pos,total)}
+function startAlbum(){stopAlbum();const A=MUSIC.album.tracks;const draw=()=>{const i=musicI%A.length;showCard(A[i],`AIMTV Music · New release · Track ${i+1} of ${A.length}`,true,i,A.length)};draw();
+ musicT=setInterval(()=>{if(paused)return;musicI++;draw()},9000)}
+function stopAlbum(){clearInterval(musicT);musicT=null;const b=$("albumbox");if(b)b.remove()}
+function renderMusic(){const row=(t,i)=>`<li><span class="n">${i+1}</span><span class="c">${cover(t.t)}</span><span class="ti"><b>${t.t}</b><small>${t.s} · ${t.d}</small></span><button class="pl" data-song="${t.id}">Play</button></li>`;
+ $("albumlist").innerHTML=MUSIC.album.tracks.map(row).join("");$("filllist").innerHTML=MUSIC.fill.map(row).join("");
+ document.querySelectorAll("#albumlist [data-song]").forEach(b=>b.addEventListener("click",()=>{const i=SONGS.findIndex(t=>t.id===b.dataset.song);if(i<0)return;songI=i;curSong=null;tune(CHANNELS.indexOf("live"));liveIdx=LIVE_ORDER.indexOf("song");showProg(byId("song"));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}))}
+
+/* ============ SONG SLOTS (live channel: one programme, one song) ============ */
+const SONGS=[...MUSIC.album.tracks,...MUSIC.fill].filter(t=>t.a); /* only songs whose audio is in the channel */
+const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
+let songI=0,curSong=null,songTimer=null;
+function songAudioPath(t){return "music/"+t.id.slice(0,8)+".mp3"}
+function loadSong(t){const k="song_"+t.id;if(!AUD.cache[k])AUD.cache[k]=fetch(songAudioPath(t)).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));return AUD.cache[k]}
+function stopSong(){clearTimeout(songTimer);songTimer=null;if(AUD.gain){try{AUD.gain.disconnect()}catch(e){}AUD.gain=null}}
+function pickSong(){curSong=SONGS[songI%SONGS.length];songI++;const nx=SONGS[songI%SONGS.length];if(nx&&soundOn)loadSong(nx).catch(()=>{});return curSong}
+function playSong(){
+  stopSong();hush();
+  const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
+  showCard(t,"AIMTV Music · Now playing",isAlbum,n%12,Math.min(SONGS.length,12));
+  $("lowerName").textContent="AIMTV Music";
+  $("sub1").textContent="Now playing: "+t.t;$("sub2").textContent=t.s+" · "+MUSIC.album.artist;$("sub2wrap").hidden=!ccOn;
+  const done=()=>{stopSong();hush();stopTabla();line=prog.lines.length-1;nextLine()};
+  const fallback=()=>{songTimer=setTimeout(done,300)}; /* never air a stand-in tone */
+  if(paused)return;
+  if(!soundOn){songTimer=setTimeout(done,14000);return}
+  loadSong(t).then(buf=>{if(prog!==byId("song")||curSong!==t)return;stopTabla();const a=ctx(),s=a.createBufferSource(),g=a.createGain();s.buffer=buf;s.connect(g).connect(a.destination);AUD.src=s;AUD.gain=g;
+    const len=Math.min(buf.duration,SONG_MAX),now=a.currentTime;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(1,now+1.5);g.gain.setValueAtTime(1,now+len-3);g.gain.linearRampToValueAtTime(0,now+len);
+    s.onended=null;s.start(0);songTimer=setTimeout(done,len*1000+200)}).catch(fallback);
+}
+/* ============ SCHEDULE (IST) ============ */
+const GRID=[[0,"Overnight Repeats","The day's shows, on loop"],[6,"Baba Ka Aashirwad","Daily blessing, then Road Cross"],[7,"Meter Down","Tchu Tchu, live from the taxi"],[8,"This Day, That Year","Hema opens the archive"],[9,"Tomorrow Shop","Juhu Chaiwala reviews"],[11,"Stomach Challo Travels","So foreign. Not really."],[13,"This Day, That Year","Repeat"],[14,"AIMTV Music","New releases, back to back"],[16,"Meter Down","Evening traffic"],[18,"Fame Meter Live","Who got the most airtime"],[19,"This Day, That Year","Prime time"],[20,"Tomorrow Shop","Repeat"],[21,"AIMTV Music","New releases"],[22,"Tabla Nari Live","Magic or chaos"]];
+function istNow(){const d=new Date();const u=d.getTime()+d.getTimezoneOffset()*60000;return new Date(u+330*60000)}
+function renderSched(){
+  const n=istNow(),h=n.getHours();let idx=0;GRID.forEach((g,i)=>{if(h>=g[0])idx=i});
+  const rows=[0,1,2,3].map(k=>{const i=(idx+k)%GRID.length;return{g:GRID[i],w:["NOW","NEXT","LATER","LATER"][k]}});
+  document.getElementById("sched").innerHTML=rows.map((r,k)=>`<li class="${k===0?"now":""}"><span class="t">${String(r.g[0]).padStart(2,"0")}:00</span><span class="s">${r.g[1]}<small>${r.g[2]}</small></span><span class="w">${r.w}</span></li>`).join("");
+}
+function renderClock(){
+  const n=istNow();const fut=new Date(n);fut.setFullYear(n.getFullYear()+15);
+  const days=["SUN","MON","TUE","WED","THU","FRI","SAT"],mon=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const t=`${String(n.getHours()).padStart(2,"0")}:${String(n.getMinutes()).padStart(2,"0")}`;
+  document.getElementById("clock").innerHTML=`${days[fut.getDay()]} ${String(fut.getDate()).padStart(2,"0")} ${mon[fut.getMonth()]} ${fut.getFullYear()} · ${t} IST<small>Bombai, Hindia · Earth 69</small>`;
+}
+
+/* ============ TICKER ============ */
+const TICK=["ARCHIVED: 4 OCTOBER 2026","FA KING CONSTRUCTION: DEMOLITION STARTS AT 12","JUHU CHAIWALA: CHAI RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE","ROAD CROSS: HELPING PEOPLE CROSS SINCE 2008","SINDHI CRAWFORD'S MOLE: STILL ON HER FACE","BABA BLACK SHEEP: OMNI-PRESENT","FAME METER: TALWAAR KAMEEZ LEADS, BHENJI JUMPING CLOSING IN","FA CORP DENIES ANY PROJECT CALLED 'UNEARTH'","TCHU TCHU: METER STILL RUNNING"];
+document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("");
+
+/* ============ PLAYER ============ */
+const $=id=>document.getElementById(id);
+let chIdx=0,prog=null,line=0,liveIdx=0,timer=null,talkT=null,paused=false,soundOn=false,ccOn=true,voices=[];
+const synth=("speechSynthesis" in window)?window.speechSynthesis:null;
+function loadVoices(){if(synth)voices=synth.getVoices()}
+if(synth){loadVoices();synth.onvoiceschanged=loadVoices}
+/* Pre-recorded cloud voice: used on phones and wherever the device voice is missing or silent */
+const AUD={cache:{},src:null,tok:null,mode:null};
+const touch=window.matchMedia&&window.matchMedia("(pointer:coarse)").matches;
+function useClips(){return AUD.mode!=="tts"||!synth}
+function loadClip(name){
+  if(!AUD.cache[name])AUD.cache[name]=fetch(`vo/${name}.mp3`).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));
+  return AUD.cache[name];
+}
+function stopClip(){AUD.tok=null;if(AUD.src){try{AUD.src.onended=null;AUD.src.stop()}catch(e){}AUD.src=null}}
+function playClip(name,onend){
+  stopClip();const tok={};AUD.tok=tok;
+  loadClip(name).then(buf=>{if(AUD.tok!==tok)return;const a=ctx();const s=a.createBufferSource();s.buffer=buf;s.connect(a.destination);s.onended=()=>{if(AUD.tok===tok){AUD.src=null;onend&&onend(false)}};AUD.src=s;s.start()})
+   .catch(()=>{if(AUD.tok===tok)onend&&onend(true)});
+}
+function hush(){if(synth)synth.cancel();stopClip()}
+function unlockAudio(){const a=ctx();if(!a)return;const b=a.createBuffer(1,1,22050);const s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start()}
+function pickVoice(who){
+  const v=VOICE[who]||{};
+  const pref=v.us?["en-US"]:["en-IN","hi-IN","en-GB","en-US"];
+  for(const l of pref){const m=voices.find(x=>x.lang&&x.lang.replace("_","-").startsWith(l));if(m)return m}
+  return voices[0]||null;
+}
+function showProg(p){
+  prog=p;line=0;
+  $("scene").innerHTML=SCENES[p.scene]();
+  $("host").innerHTML=p.cast.map(c=>P[c]()).join("");
+  const svgs=$("host").querySelectorAll("svg");
+  if(svgs.length===1)svgs[0].classList.add("solo");
+  $("stamp").textContent=p.stamp;
+  $("lowerRole").textContent=p.role;
+  const chId=CHANNELS[chIdx];
+  $("bugch").textContent=`CH ${String(chIdx+1).padStart(2,"0")}`;
+  $("chname").innerHTML=`<small>CH ${String(chIdx+1).padStart(2,"0")}</small>${CHLABEL[chId]}${chId==="live"?` · ${p.ch}`:""}`;
+  stopSong();
+  if(p.song){pickSong();stopTabla();stopAlbum()}
+  else{if(p.music)startTabla();else stopTabla();if(p.album)startAlbum();else stopAlbum()}
+  playLine();
+}
+function setTalker(who){
+  const idx=prog.cast.indexOf(who);
+  $("host").querySelectorAll("svg").forEach((s,i)=>{s.classList.toggle("dim",prog.cast.length>1&&i!==idx);s.classList.toggle("lead",prog.cast.length>1&&i===idx)});
+  $("lowerName").textContent=prog.album?"AIMTV Music":(W[who]||who);
+  return $("host").querySelectorAll("svg")[idx<0?0:idx];
+}
+function stopTalk(){clearInterval(talkT);talkT=null;$("host").querySelectorAll("svg").forEach(s=>s.classList.remove("talk"))}
+function playLine(){
+  clearTimeout(timer);stopTalk();hush();
+  if(prog.song)return playSong();
+  if(paused)return;
+  const [who,text,en]=prog.lines[line];
+  const el=setTalker(who);
+  $("sub1").textContent=text;
+  $("sub2").textContent=en||"";
+  $("sub2wrap").hidden=!(ccOn&&en);
+  if(!(prog.music&&soundOn))talkT=setInterval(()=>el&&el.classList.toggle("talk"),130+Math.random()*60);
+  const dur=Math.max(2600,text.length*62);
+  const advance=()=>{stopTalk();timer=setTimeout(nextLine,450)};
+  const clipName=`p_${prog.id}_${line}`;
+  if(soundOn&&!prog.music&&useClips()){
+    let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
+    const safety=setTimeout(fin,dur+9000);
+    playClip(clipName,err=>{if(err){if(done)return;done=true;clearTimeout(safety);if(synth){AUD.mode="tts";playLine()}else timer=setTimeout(advance,dur)}else fin()});
+  }else if(soundOn&&!prog.music){
+    const u=new SpeechSynthesisUtterance(text);const v=VOICE[who]||{};
+    const vc=pickVoice(who);if(vc){u.voice=vc;u.lang=vc.lang}
+    u.pitch=v.p||1;u.rate=v.r||1;
+    let done=false,started=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
+    u.onstart=()=>{started=true};u.onend=fin;u.onerror=()=>{if(!started&&!done){done=true;clearTimeout(safety);AUD.mode="clips";playLine()}else fin()};
+    const safety=setTimeout(fin,dur+6000);
+    setTimeout(()=>{if(!started&&!done){done=true;clearTimeout(safety);AUD.mode="clips";playLine()}},2000);
+    synth.speak(u);
+  }else{timer=setTimeout(advance,dur)}
+}
+function nextLine(){
+  line++;
+  if(line>=prog.lines.length){
+    if(CHANNELS[chIdx]==="live"){liveIdx=(liveIdx+1)%LIVE_ORDER.length;return switchTo(byId(LIVE_ORDER[liveIdx]),false)}
+    line=0;
+  }
+  playLine();
+}
+const byId=id=>PROGS.find(p=>p.id===id);
+function switchTo(p,static_=true){
+  clearTimeout(timer);stopTalk();hush();
+  if(static_&&!reduce)staticBurst(()=>showProg(p));else showProg(p);
+}
+function tune(i){
+  chIdx=(i+CHANNELS.length)%CHANNELS.length;
+  const id=CHANNELS[chIdx];
+  document.querySelectorAll("#chans button").forEach((b,k)=>b.setAttribute("aria-current",k===chIdx?"true":"false"));
+  switchTo(id==="live"?byId(LIVE_ORDER[liveIdx]):byId(id));
+}
+const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function staticBurst(cb){
+  const c=$("noise");c.hidden=false;const r=$("screen").getBoundingClientRect();c.width=Math.max(160,Math.floor(r.width/3));c.height=Math.max(90,Math.floor(r.height/3));
+  const x=c.getContext("2d");let f=0;
+  if(soundOn)noiseSound();
+  (function draw(){const img=x.createImageData(c.width,c.height);for(let i=0;i<img.data.length;i+=4){const v=Math.random()*255;img.data[i]=img.data[i+1]=img.data[i+2]=v;img.data[i+3]=255}x.putImageData(img,0,0);
+    if(++f<9)requestAnimationFrame(draw);else{c.hidden=true;cb()}})();
+}
+
+/* ============ AUDIO: static + tabla (WebAudio, free) ============ */
+let ac=null,tablaT=null,tablaStep=0;
+function ctx(){if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(A)ac=new A()}if(ac&&ac.state==="suspended")ac.resume();return ac}
+function noiseSound(){const a=ctx();if(!a)return;const b=a.createBuffer(1,a.sampleRate*.25,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.25;const s=a.createBufferSource();s.buffer=b;const g=a.createGain();g.gain.value=.25;s.connect(g).connect(a.destination);s.start()}
+function stroke(kind){
+  const a=ctx();if(!a)return;const t=a.currentTime;
+  const tone=(f0,f1,dec,vol,type="sine")=>{const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dec);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dec);o.connect(g).connect(a.destination);o.start(t);o.stop(t+dec+.02)};
+  if(kind==="dha"){tone(120,70,.6,.55);tone(520,500,.35,.18)}
+  if(kind==="dhin"){tone(110,80,.45,.4);tone(640,620,.5,.2,"triangle")}
+  if(kind==="tin"){tone(700,680,.35,.18,"triangle")}
+  if(kind==="ta"){tone(900,860,.12,.22,"square")}
+  if(kind==="ge"){tone(95,60,.5,.5)}
+}
+const THEKA=["dha","dhin","dhin","dha","dha","dhin","dhin","dha","dha","tin","tin","ta","ta","dhin","dhin","dha"];
+function ring(){const h=$("host").querySelector("svg");if(!h)return;h.animate([{filter:"drop-shadow(0 0 0 #f2c230)"},{filter:"drop-shadow(0 0 22px #f2c230)"},{filter:"drop-shadow(0 0 0 #f2c230)"}],{duration:260})}
+function startTabla(){stopTabla();tablaStep=0;tablaT=setInterval(()=>{if(paused)return;const k=THEKA[tablaStep%16];if(soundOn)stroke(k);if(k!=="tin"&&!reduce)ring();tablaStep++},330)}
+function stopTabla(){clearInterval(tablaT);tablaT=null}
+
+/* ============ CONTROLS ============ */
+$("chans").innerHTML=CHANNELS.map((c,i)=>`<button data-i="${i}" aria-current="${i===0}">${String(i+1).padStart(2,"0")} ${CHLABEL[c]}</button>`).join("");
+$("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)tune(+b.dataset.i)});
+$("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
+let wantSound=true,unlocked=false;
+function setSoundUI(){const b=$("sound");b.setAttribute("aria-pressed",String(wantSound));b.textContent=wantSound?"Sound on":"Sound off"}
+function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(`p_${prog.id}_${i}`).catch(()=>{}));playLine()}
+$("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSound;setSoundUI();if(soundOn){ctx();unlockAudio()}else hush();playLine()};
+$("power").onclick=()=>{powerOn();switchTo(prog)};
+document.addEventListener("pointerdown",powerOn,{capture:true});
+document.addEventListener("keydown",e=>{if(e.key!=="Tab")powerOn()},{capture:true});
+$("cc").onclick=e=>{ccOn=!ccOn;e.currentTarget.setAttribute("aria-pressed",ccOn);$("sub2wrap").hidden=!(ccOn&&$("sub2").textContent)};
+$("pause").onclick=e=>{paused=!paused;e.currentTarget.setAttribute("aria-pressed",paused);e.currentTarget.textContent=paused?"Play":"Pause";$("paused").hidden=!paused;if(paused){clearTimeout(timer);stopTalk();stopSong();hush()}else playLine()};
+document.querySelectorAll("[data-watch]").forEach(b=>b.addEventListener("click",()=>{tune(CHANNELS.indexOf(b.dataset.watch));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}));
+window.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowUp")tune(chIdx+1);if(e.key==="ArrowDown")tune(chIdx-1)});
+
+
+/* ============ AD SLOT (house + sponsor banners) ============ */
+const ADS=[{title:"APPA Art Fest",line:"Art, music and food. See the 2027 festival.",cta:"Explore",href:"https://calmshade.in/appa/2027/",colors:["#e8622c","#f2c230","#d9a7ff","#7fd6a0","#3b8fd9"]}];
+let adI=0;
+function renderAd(){const a=ADS[adI%ADS.length],el=$("adslot");el.hidden=!a.href;if(!a.href)return;el.href=a.href;$("adti").textContent=a.title;$("adln").textContent=a.line;$("adcta").textContent=a.cta+" ↗";
+ el.querySelector(".sw").innerHTML=a.colors.map((c,i)=>`<path d="M34 34L${34+28*Math.cos(i*1.2566)} ${34+28*Math.sin(i*1.2566)}A28 28 0 0 1 ${34+28*Math.cos((i+1)*1.2566)} ${34+28*Math.sin((i+1)*1.2566)}Z" fill="${c}" opacity=".9"/>`).join("")+`<circle cx="34" cy="34" r="9" fill="#16110c"/><circle cx="34" cy="34" r="4" fill="#f3e9d2"/>`}
+renderAd();if(ADS.length>1)setInterval(()=>{adI++;renderAd()},12000);
+renderMusic();
+/* ============ FAME METER ============ */
+const FAME=[["dimpy","Talwaar Kameez",78],["lata","Bhenji Jumping",74],["mrst","Sindhi Crawford",71],["sarla","Stomach Challo",69],["tabla","Tabla Nari",64],["devi","Fullon Devi",58]];
+let boosts={};try{boosts=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}")}catch(e){boosts={}}
+function renderFame(){
+  const rows=FAME.map(([id,n,v])=>[id,n,Math.min(99,v+(boosts[id]||0))]).sort((a,b)=>b[2]-a[2]);
+  $("fame").innerHTML=rows.map(([id,n,v])=>`<div class="row"><div class="nm"><span>${n}</span><button data-boost="${id}" aria-label="Boost ${n}">+ Boost</button></div><span class="v">${v}</span><div class="bar"><i style="width:${v}%"></i></div></div>`).join("");
+}
+$("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;const id=b.dataset.boost;boosts[id]=(boosts[id]||0)+1;try{localStorage.setItem("aimtv-boosts",JSON.stringify(boosts))}catch(err){}renderFame()});
+
+/* ============ ARCHIVE (THIS DAY, THAT YEAR) ============ */
+const mini=c=>P[c]();
+const ARCH=[
+ {cat:"Purani Khabar · Sport",h:"The 2026 Asian Games close in Aichi and Nagoya",rec:"The Games ran from 19 September to 4 October 2026 across Aichi Prefecture and Nagoya, Japan.",src:["Wikipedia: India at the 2026 Asian Games","https://en.wikipedia.org/wiki/India_at_the_2026_Asian_Games"],who:"devi",take:"Sat Sri Akal! They did stunts for medals. I do stunts for films. Same risk, less money.",tw:"Fullon Devi"},
+ {cat:"Vintage Gadget · Tech",h:"Legato launches AI hearing glasses",rec:"Hearing-tech startup Legato launched Legato Frames on 1 October 2026: glasses whose AI separates voices from background noise. Price from $999.",src:["TechCrunch, 1 Oct 2026","https://techcrunch.com/2026/10/01/hearing-tech-startup-legato-launches-its-ai-hearing-glasses/"],who:"jc",take:"Glasses that listened. At my stall even the chai glass listens. Extra charge on the sunny side.",tw:"Juhu Chaiwala"},
+ {cat:"Ancient Media · Computing",h:"Googlebook, the laptop that opened like a book",rec:"Googlebook, announced at Google I/O in May 2026, is a laptop standard running Aluminium OS (Android and ChromeOS merged), built by Acer, Asus, Dell, HP and Lenovo, releasing late 2026.",src:["Wikipedia: Googlebook","https://en.wikipedia.org/wiki/Googlebook"],who:"animation",take:"I went inside a laptop once. It was only tabs. Thousands of tabs. Nobody ever closed them.",tw:"Animation"},
+ {cat:"Purani Khabar · Cricket",h:"West Indies are in India for eight white-ball matches",rec:"The West Indies tour of India runs 27 September to 17 October 2026: three ODIs and five T20Is. Shubman Gill captains India in ODIs, Shreyas Iyer in T20Is.",src:["Wikipedia: West Indian cricket team in India in 2026–27","https://en.wikipedia.org/wiki/West_Indian_cricket_team_in_India_in_2026%E2%80%9327"],who:"tchu",take:"I took a fare to the stadium. The match ended, the meter didn't. Cricket finishes. The meter never does.",tw:"Tchu Tchu"}
+];
+$("archive").innerHTML=ARCH.map(a=>`<article class="card"><div class="cat"><span>${a.cat}</span><span class="chip record">The record</span></div><h4>${a.h}</h4><p>${a.rec}</p><p class="src">Source: <a href="${a.src[1]}" target="_blank" rel="noopener">${a.src[0]}</a></p><div class="take">${mini(a.who)}<p><b>The take · ${a.tw}</b>${a.take}</p></div></article>`).join("");
+
+/* ============ TRAVEL EPISODES ============ */
+const TRIPS=[["Ep 1","Lonavala","\"Basically Switzerland. With chikki.\"","2 hrs by taxi"],["Ep 2","Matheran","\"No cars allowed. So European.\"","Toy train, 1 Bhenji"],["Ep 3","Daman","\"It's literally a different territory, guys.\"","Passport not needed"],["Ep 4","Alibaug","\"The Maldives, but the ferry has samosas.\"","Ferry from Gateway"]];
+$("trips").innerHTML=TRIPS.map(t=>`<article class="card"><div class="cat"><span>${t[0]}</span><span class="chip proposed">Proposed</span></div><h4>${t[1]}</h4><p>${t[2]}</p><p class="src">${t[3]}</p></article>`).join("");
+
+/* ============ CAST ============ */
+const HEROES=[
+ {id:"hema",n:"Hema",r:"Malini by night (classified)",q:"Journalist by day.",b:"Indore",job:"Anchor, This Day, That Year"},
+ {id:"jc",n:"Juhu Chaiwala",r:"JC · real name unknown",q:"The Spy with Chai. A very famous detective. Also a Tech Guru.",b:"Juhu, Mumbai",job:"Host, Tomorrow Shop"},
+ {id:"tchu",n:"Tchu Tchu",r:"Orphan by birth",q:"An orphan by birth, a taxi guy by profession, a friend for all.",b:"Bangalore",job:"Field reporter, Meter Down"},
+ {id:"animation",n:"Animation",r:"Tchu Tchu's dog",q:"A Marathi speaking dog that can move in & out of any media form. Digital, TV, Print, you name it.",b:"Mumbai",job:"Network mascot and continuity host"},
+ {id:"lata",n:"Bhenji Jumping",r:"Lata Seth",q:"Skates like Tony Hawk & Bargains like your mother.",b:"Gujarat",job:"Recurring guest, crashes Travels"},
+ {id:"sarla",n:"Stomach Challo",r:"Sarla Seth",q:"Her elastic stomach & her sensuousness, that can seduce even a robot.",b:"Gujarat",job:"Host, Stomach Challo Travels"},
+ {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (in development)"},
+ {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (in development)"},
+ {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
+ {id:"tabla",n:"Tabla Nari",r:"Real name unknown",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast",job:"Music channel, Tabla Nari Live"},
+ {id:"baba",n:"Baba Black Sheep",r:"Almighty",q:"Omni-present. Divine guiding light.",b:"Everywhere",job:"Daily blessing bumper"},
+ {id:"chaibot",n:"Chaibot",r:"Juhu Chaiwala's robot",q:"Ye chaibot accha chai banata hai. Aur fast bhi.",b:"The shadow entrance",job:"Co-host, Tomorrow Shop"}
+];
+const VILLAINS=[
+ {id:"fadarr",n:"Fa Darr",r:"CEO, Fa Corporation",q:"An ex catholic Priest & evangelist. CEO of Fa Call Centre, Fa Cough Syrups, Fa Cars & Fa King Constructions.",b:"Kerala",job:"Sponsor. Ad breaks are his sermons"},
+ {id:"gutter",n:"GutterFly",r:"Kamala",q:"Runs a brothel with a bank front called Vaishya Bank.",b:"Tamil Nadu",job:"Hostile guest; answers questions by spitting paan"},
+ {id:"arnold",n:"Arnold Shivajinagar",r:"Inspector",q:"Really strong & evil cop, who is in bed with the evil Fa Corporation.",b:"Goa",job:"Issues on-air challans to the Celebs"}
+];
+const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · Belongs to: ${c.b}</div><q>${c.q}</q><div class="role"><span class="chip proposed">Proposed</span> <b>On AIMTV:</b> ${c.job}</div></div></article>`;
+$("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
+$("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");
+
+/* ============ PRODUCTS ============ */
+const PRODUCTS=[
+ ["Chaibot","canon","Juhu Chaiwala","A moustached samovar robot that brews and serves chai.","A queue at every chai stall. It is fast, too.","Comic p10, p18–19"],
+ ["CHAI CAM","canon","Juhu Chaiwala","CCTV network feeding JC's wall of monitors.","Nobody in the chawl can keep a secret, so JC makes it official.","Comic p13–15"],
+ ["Self-parking cycle","canon","Shivajinagar","A cycle that re-parks itself to make room for a reversing taxi.","Parking wars in a lane built for one cart.","Comic p15"],
+ ["Auto-door Padmini taxi","canon","Tchu Tchu","A black-and-yellow Padmini whose doors open on their own.","Drivers who need both hands for the chai.","Comic p16"],
+ ["Road Cross","canon","Sindhi Crawford","An NGO that helps people cross the busy Bombai road.","Crossing a road where taxis now fly.","Comic p32; deck"],
+ ["FA Karmachari 2.0","canon","Fa Corporation","Black worker robots with glowing eyes, pistols and umbrellas.","Fa Corp's labour problem. Not anyone else's.","Comic p101–150"],
+ ["Fa Cough Syrup","canon","Fa Corporation","A Fa Corp consumer product.","Coughs caused by Fa King demolition dust (proposed joke).","Deck, Fa Darr card"],
+ ["Project Unearth","canon","Fa Corporation","Real estate offering unlimited space in space, at 50% GST, by destroying Earth.","Bombai has run out of land.","Deck, Ep 9"],
+ ["Holographic building","canon","Fa Corporation","A decoy B Block the Celebs attack by mistake.","Hiding a call centre in plain sight.","Deck, Ep 8"],
+ ["Rama Tuta 2.0","proposed","Tomorrow Shop","Household robot: cleaning, cooking, organising, and now gossip.","Domestic work, and what an Indian home does when it is automated.","Founder brief"],
+ ["Gaurakshak Robot","question","Unknown","Not found in the comic or the deck.","Awaiting the founder's source material.","Founder brief"]
+];
+const ST={canon:["canon","Canon"],proposed:["proposed","Proposed"],question:["question","Canon question"]};
+$("products").innerHTML=PRODUCTS.map(p=>`<tr><td><b>${p[0]}</b></td><td><span class="chip ${ST[p[1]][0]}">${ST[p[1]][1]}</span></td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td><td class="src">${p[5]}</td></tr>`).join("");
+
+/* ============ ASK THE CAST ============ */
+const ASK={"jc": {"n": "Juhu Chaiwala", "sug": ["What does chai cost?", "Are you a spy?", "What is Fa Corp planning?"], "rules": [["chai|tea|price|cost|rupee", "Twelve rupees at the shadow entrance. Nine hundred at the sunny entrance. Same chai, different door."], ["spy|detective|secret|cam", "I only sell chai. And listen a little. And record a little."], ["fa|corp|unearth|plan|darr", "The blueprint is still being decoded. Give me time. Have some chai meanwhile."], ["robot|bot|tech|future|product", "Everything has already launched. I'm only telling you what happened after."]], "def": "Good question. The answer is on the sunny side. Nine hundred rupees."}, "sarla": {"n": "Stomach Challo", "sug": ["Where are you travelling next?", "Have you been abroad?", "What does your mom think?"], "rules": [["travel|trip|next|go|destination", "Next week? Matheran. No cars allowed. It's literally Europe, guys."], ["abroad|foreign|outside|country|passport", "I've been to Daman. That's, like, a whole different territory. I love foreign."], ["mom|mommy|bhenji|mother|lata", "She's literally in every reel. And she brings dosas. I'm not complaining. Okay, I'm complaining."], ["call|centre|center|job|work", "I work in a call centre. Hi, this is Sarla from, um, Ohio. How may I help you?"]], "def": "Oh my god, so random. Like and follow for the answer."}, "tchu": {"n": "Tchu Tchu", "sug": ["Where are you now?", "Tell me about your dogs", "Do you know Hema?"], "rules": [["where|now|location", "At the Shivajinagar signal. The meter's running, so get moving."], ["dog|dalmatian|animation", "Two dogs. Dalmatian from the Andamans, Animation from Mumbai. Something is fishy with the Dalmatian."], ["hema|madam|interview", "I drop Hema madam at interviews. Where she goes at night, I don't notice."], ["notice|poster|evict|fa king", "Who notices a notice?"]], "def": "JC, my brother, give this one a chai. Work is warship."}, "hema": {"n": "Hema", "sug": ["What's the news today?", "Where are you at night?", "Who is Fa Darr?"], "rules": [["news|today|record|archive", "Today's record: on the fourth of October 2026, the Asian Games closed. The rest is a take."], ["night|malini|dance", "At night? I rest. Next question."], ["fa|darr|corp|ceo", "Fa Darr. Ex-priest, now CEO. I have a source. I won't name them."]], "def": "I need a source for that. Without one, I say nothing."}, "lata": {"n": "Bhenji Jumping", "sug": ["Are you hungry?", "Teach me to bargain", "Where is Sofa Seth?"], "rules": [["hungry|food|dosa|eat", "Kem cho! Want a dosa? Here comes the dosa. Eat, eat, eat!"], ["bargain|price|cheap|aloo|potato", "He said sixty? Give forty. Otherwise I'm leaving on my skateboard."], ["sofa|husband|seth", "Sofa Seth? He's doing karate."]], "def": "Eat first, then ask."}, "mrst": {"n": "Sindhi Crawford", "sug": ["Can you help me cross?", "Tell me about your mole", "What is Road Cross?"], "rules": [["cross|road|help", "Yes, babuji. Look left, look right, and look up. Don't take tension."], ["mole|til|bullet", "My mole stays in its place. Bullets don't stay in theirs."], ["ngo|road cross|work|since", "Road Cross. Helping people cross the road since 2008."]], "def": "Be safe, babuji."}, "animation": {"n": "Animation", "sug": ["What can you do?", "Which media do you like?", "Bark in Marathi"], "rules": [["do|power|can|jump", "I go anywhere. TV, print, phone. Today, your screen.", "मी कुठेही जातो. टीव्ही, प्रिंट, फोन. आज, तुमची स्क्रीन."], ["media|tv|print|digital|like", "Print is cool. TV is warm. Phones are crowded.", "प्रिंट थंड असतं. टीव्ही उबदार असतो. फोनमध्ये गर्दी असते."], ["bark|bhow|marathi", "Woof. That means namaskar.", "भू भू. म्हणजे नमस्कार."]], "def": "Meaning? Ask me again.", "defmr": "म्हणजे? परत विचारा."}};
+for(const k in ASK)ASK[k].rules=ASK[k].rules.map(r=>[new RegExp(r[0],"i"),r[1],r[2]||""]);
+let asker="jc";
+function renderPicker(){
+  $("picker").innerHTML=Object.keys(ASK).map(k=>`<button data-ask="${k}" aria-pressed="${k===asker}">${P[k==="animation"?"animation":k]()}<span>${ASK[k].n}</span></button>`).join("");
+  $("askinput").placeholder=`Ask ${ASK[asker].n} something`;
+  $("suggest").innerHTML=ASK[asker].sug.map(s=>`<button type="button">${s}</button>`).join("");
+}
+$("picker").addEventListener("click",e=>{const b=e.target.closest("[data-ask]");if(!b)return;asker=b.dataset.ask;renderPicker()});
+$("suggest").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$("askinput").value=b.textContent;answer()});
+$("askform").addEventListener("submit",e=>{e.preventDefault();answer()});
+function addMsg(html){$("log").insertAdjacentHTML("beforeend",html);$("log").scrollTop=$("log").scrollHeight}
+function answer(){
+  const q=$("askinput").value.trim();if(!q)return;$("askinput").value="";
+  const c=ASK[asker];const hi=c.rules.findIndex(r=>r[0].test(q));const t=hi>=0?c.rules[hi][1]:c.def,en=hi>=0?c.rules[hi][2]:(c.defmr||"");
+  addMsg(`<div class="msg me"><div class="bub">${q.replace(/</g,"&lt;")}</div></div>`);
+  addMsg(`<div class="msg">${P[asker]()}<div class="bub"><small>${c.n}</small>${t}${en?`<em>${en}</em>`:""}</div></div>`);
+  if(soundOn&&useClips()){playClip(`a_${asker}_${hi>=0?hi:"d"}`)}
+  else if(soundOn&&synth){synth.cancel();const u=new SpeechSynthesisUtterance(t);const vc=pickVoice(asker);if(vc){u.voice=vc;u.lang=vc.lang}const v=VOICE[asker]||{};u.pitch=v.p||1;u.rate=v.r||1;synth.speak(u)}
+}
+addMsg(`<div class="msg">${P.jc()}<div class="bub"><small>Juhu Chaiwala</small>Come, sit. Chai from the shadow side, or the sunny side?</div></div>`);
+renderPicker();
+
+/* ============ TABS ============ */
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;
+  document.querySelectorAll("#tabs [data-tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});
+  try{localStorage.setItem("aimtv-tab",b.dataset.tab)}catch(err){}});
+try{const t=localStorage.getItem("aimtv-tab");if(t&&$("t-"+t))$("t-"+t).click()}catch(e){}
+
+/* ============ BOOT ============ */
+const BROADCAST=/[?&]broadcast=1/.test(location.search);
+if(BROADCAST){document.body.classList.add("bc");paused=false;}
+renderClock();renderSched();renderFame();setInterval(()=>{renderClock();renderSched()},30000);
+liveIdx=2;showProg(byId(LIVE_ORDER[2]));
+setSoundUI();
+(function tryAutoplay(){let a=null;try{a=ctx()}catch(e){}
+  if(a&&a.state==="running"){powerOn();return}
+  $("power").hidden=false;
+  if(a&&a.resume)a.resume().then(()=>{if(a.state==="running")powerOn()}).catch(()=>{});})();
+</script>
+</html>
