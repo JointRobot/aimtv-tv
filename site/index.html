@@ -684,7 +684,7 @@ function renderMusic(){const row=(t,i)=>`<li><span class="n">${i+1}</span><span 
 const SONGS=[...MUSIC.album.tracks,...MUSIC.fill].filter(t=>t.a); /* only songs whose audio is in the channel */
 const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
 let songI=0,curSong=null,songTimer=null;
-const SONG_IN=3.5,SONG_OUT=15;
+const SONG_IN=3.5,SONG_OUT=15,SONG_FADE=3;
 function songAudioPath(t){return "music/"+t.id.slice(0,8)+".mp3"}
 function loadSong(t){const k="song_"+t.id;if(!AUD.cache[k])AUD.cache[k]=fetch(songAudioPath(t)).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));return AUD.cache[k]}
 function stopSong(){clearTimeout(songTimer);songTimer=null;if(AUD.gain){try{AUD.gain.disconnect()}catch(e){}AUD.gain=null}}
@@ -700,8 +700,8 @@ function playSong(){
   if(paused)return;
   if(!soundOn){songTimer=setTimeout(done,14000);return}
   loadSong(t).then(buf=>{if(prog!==byId("song")||curSong!==t)return;stopTabla();const a=ctx(),s=a.createBufferSource(),g=a.createGain();s.buffer=buf;s.connect(g).connect(a.destination);AUD.src=s;AUD.gain=g;
-    /* fade rule: skip the first 3.5s and fade in over 2s; begin a 15s fade-out 15s before the song ends */
-    const off=buf.duration>60?SONG_IN:0,len=Math.min(buf.duration-off,SONG_MAX),fo=Math.min(SONG_OUT,len/4),now=a.currentTime;
+    /* fade rule: skip the first 3.5s and fade in over 2s; fade out over 3s starting 15s before the song ends, then next song */
+    const off=buf.duration>60?SONG_IN:0,cut=buf.duration>60?SONG_OUT-SONG_FADE:0,len=Math.min(buf.duration-off-cut,SONG_MAX),fo=SONG_FADE,now=a.currentTime;
     g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(1,now+2);g.gain.setValueAtTime(1,now+len-fo);g.gain.linearRampToValueAtTime(0,now+len);
     s.onended=null;s.start(0,off);songTimer=setTimeout(done,len*1000+200)}).catch(fallback);
 }
