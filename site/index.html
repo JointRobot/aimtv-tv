@@ -225,6 +225,7 @@ body.bc .sctl{display:none!important}
 .sched .s small{display:block;font-weight:400;color:var(--dim);font-size:12px}
 .sched .w{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--dim)}
 .sched li.song:not(.now){cursor:pointer}.sched li.song:not(.now):hover .s{color:var(--paper)}
+.livestamp{margin-top:8px;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}.livestamp b{color:var(--saffron);font-weight:600}
 .sched li.now .w{color:var(--saffron)}.sched li.now .s{color:var(--padmini)}
 .fame{display:flex;flex-direction:column;gap:9px}
 .fame .row{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;align-items:center}
@@ -394,6 +395,7 @@ body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
       <div class="box">
         <h3>On AIMTV <small id="schedDay">TODAY · IST</small></h3>
         <ul class="sched" id="sched"></ul>
+        <div class="livestamp">News and stories refreshed <b id="liveStamp">on air</b></div>
       </div>
       <div class="box">
         <h3>Fame Meter <small>NO PUBLICITY, NO ACTION</small></h3>
@@ -799,8 +801,37 @@ function renderClock(){
 }
 
 /* ============ TICKER ============ */
-const TICK=["ARCHIVED: 4 OCTOBER 2026","FA KING CONSTRUCTION: DEMOLITION STARTS AT 12","JUHU CHAIWALA: CHAI RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE","ROAD CROSS: HELPING PEOPLE CROSS SINCE 2008","SINDHI CRAWFORD'S MOLE: STILL ON HER FACE","BABA BLACK SHEEP: OMNI-PRESENT","FAME METER: TALWAAR KAMEEZ LEADS, BHENJI JUMPING CLOSING IN","FA CORP DENIES ANY PROJECT CALLED 'UNEARTH'","TCHU TCHU: METER STILL RUNNING"];
+let TICK=["ARCHIVED: 4 OCTOBER 2026","FA KING CONSTRUCTION: DEMOLITION STARTS AT 12","JUHU CHAIWALA: CHAI RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE","ROAD CROSS: HELPING PEOPLE CROSS SINCE 2008","SINDHI CRAWFORD'S MOLE: STILL ON HER FACE","BABA BLACK SHEEP: OMNI-PRESENT","FAME METER: TALWAAR KAMEEZ LEADS, BHENJI JUMPING CLOSING IN","FA CORP DENIES ANY PROJECT CALLED 'UNEARTH'","TCHU TCHU: METER STILL RUNNING"];
 document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("");
+
+/* ============ LIVE REFRESH ============ */
+/* A cloud run rewrites live/live.json (news bulletin, taxi report, ticker, and rotating story programmes) and the
+   voiced clips every hour. The receiver polls it and swaps content in between programmes, with no reload. */
+const RAWLIVE="https://raw.githubusercontent.com/JointRobot/aimtv-tv/main/site/";
+let LIVEV="",LIVEQ=null,LIVEBASE="";
+function clipFor(p,i){return p.live?p.live+i:`p_${p.id}_${i}`}
+function applyLive(j,ticker){
+  if(!j||!j.progs)return;
+  for(const id in j.progs){const p=byId(id),d=j.progs[id];if(!p||!d.lines||!d.lines.length)continue;
+    p.lines=d.lines.map(l=>[l[0],l[1],l[2]||""]);if(d.stamp)p.stamp=d.stamp;p.live=LIVEBASE+d.clips}
+  if(ticker!==false&&j.ticker&&j.ticker.length){TICK=j.ticker;document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("")}
+  LIVEV=j.v;const el=document.getElementById("liveStamp");if(el&&j.updated)el.textContent=new Date(j.updated).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false,day:"2-digit",month:"short"})+" IST";
+}
+async function pollLive(){
+  const get=async b=>{const r=await fetch(b+"live/live.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;return [b,await r.json()]};
+  try{
+    let b,j;try{[b,j]=await get("")}catch(e){[b,j]=await get(RAWLIVE)}
+    if(j.v&&j.v!==LIVEV){LIVEBASE=b;
+      if(prog)LIVEQ=j;            /* apply at the next programme change so nothing is cut mid-line */
+      else applyLive(j);
+      const t=j.ticker;if(t&&t.length){TICK=t;document.getElementById("ticker").innerHTML=TICK.map(x=>`<span>${x}</span>`).join("")}
+      const el=document.getElementById("liveStamp");if(el&&j.updated)el.textContent=new Date(j.updated).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false,day:"2-digit",month:"short"})+" IST";
+      /* warm the new clips so the next air is seamless */
+      if(soundOn)for(const id in j.progs){j.progs[id].lines.forEach((l,i)=>loadClip(b+j.progs[id].clips+i).catch(()=>{}))}
+    }
+  }catch(e){}
+}
+setTimeout(pollLive,1500);setInterval(pollLive,180000);
 
 /* ============ PLAYER ============ */
 const $=id=>document.getElementById(id);
@@ -813,7 +844,7 @@ const AUD={cache:{},src:null,tok:null,mode:null};
 const touch=window.matchMedia&&window.matchMedia("(pointer:coarse)").matches;
 function useClips(){return AUD.mode!=="tts"||!synth}
 function loadClip(name){
-  if(!AUD.cache[name])AUD.cache[name]=fetch(`vo/${name}.mp3`).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));
+  if(!AUD.cache[name])AUD.cache[name]=fetch(name.includes("/")?name+".mp3":`vo/${name}.mp3`).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));
   return AUD.cache[name];
 }
 function stopClip(){AUD.tok=null;if(AUD.src){try{AUD.src.onended=null;AUD.src.stop()}catch(e){}AUD.src=null}}
@@ -831,6 +862,7 @@ function pickVoice(who){
   return voices[0]||null;
 }
 function showProg(p){
+  if(LIVEQ){applyLive(LIVEQ,false);LIVEQ=null;p=byId(p.id)||p}
   prog=p;line=0;
   $("scene").innerHTML=SCENES[p.scene]();
   $("host").innerHTML=p.cast.map(c=>P[c]()).join("");
@@ -866,7 +898,7 @@ function playLine(){
   if(!(prog.music&&soundOn))talkT=setInterval(()=>el&&el.classList.toggle("talk"),130+Math.random()*60);
   const dur=Math.max(2600,text.length*62);
   const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},450)};
-  const clipName=`p_${prog.id}_${line}`;
+  const clipName=clipFor(prog,line);
   if(soundOn&&!prog.music&&useClips()){
     let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
     const safety=setTimeout(fin,dur+9000);
@@ -935,7 +967,7 @@ $("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)
 $("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
 let wantSound=true,unlocked=false;
 function setSoundUI(){const b=$("sound");b.setAttribute("aria-pressed",String(wantSound));b.textContent=wantSound?"Sound on":"Sound off"}
-function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(`p_${prog.id}_${i}`).catch(()=>{}));playLine()}
+function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
 $("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSound;setSoundUI();if(soundOn){ctx();unlockAudio()}else hush();playLine()};
 $("power").onclick=()=>{powerOn();switchTo(prog)};
 document.addEventListener("pointerdown",powerOn,{capture:true});
