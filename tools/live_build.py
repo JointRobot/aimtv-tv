@@ -3,7 +3,7 @@
 
 usage: python3 tools/live_build.py draft.json
 draft.json = {"ticker": ["HEADLINE", ...],
-              "progs": {"tdty": {"stamp": "Archived · 5 Oct 2026", "lines": [["hema", "text"], ...]}, "meter": {...}}}
+              "progs": {"tdty": {"stamp": "Archived · 5 Oct 2026", "lines": [["hema", "English text", "", "regional-language line"], ...]}, "meter": {...}}}
 Writes site/live/live.json and site/live/<prog>_<version>_<n>.mp3. Programmes missing from the draft keep their
 previous content. Old clips no longer referenced are deleted. Needs ffmpeg with flite.
 """
@@ -50,10 +50,12 @@ def main(draft_path):
         for i, l in enumerate(lines):
             who, text = l[0], re.sub(r"\s+", " ", l[1]).strip()
             en = l[2] if len(l) > 2 else ""
+            rg = re.sub(r"\s+", " ", l[3]).strip() if len(l) > 3 and l[3] else ""
+            if len(rg) > 400: raise SystemExit("%s line %d: regional line over 400 chars" % (pid, i))
             if who not in CAST: raise SystemExit("unknown speaker: " + who)
             if not text or len(text) > 260: raise SystemExit("%s line %d: empty or over 260 chars" % (pid, i))
             if re.search(r"https?://|www\.", text): raise SystemExit("%s line %d: no links in speech" % (pid, i))
-            clean.append([who, text, en])
+            clean.append([who, text, en, rg])
             jobs.append((os.path.join(OUT, "%s_%s_%d.mp3" % (pid, ver, i)), who, text))
         live["progs"][pid] = {"stamp": p.get("stamp", ""), "lines": clean, "clips": "live/%s_%s_" % (pid, ver)}
     if jobs:
