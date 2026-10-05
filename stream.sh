@@ -1,7 +1,7 @@
 #!/bin/bash
 # Plays the AIMTV channel in a hidden screen and streams picture + sound to YouTube.
 # AIMTV_OUT overrides the destination (for testing, e.g. a file path). AIMTV_NOAUDIO=1 uses silence.
-SITE=/opt/aimtv/repo/site; [ -n "$AIMTV_SITE" ] && SITE="$AIMTV_SITE"
+SITE=/opt/aimtv/repo/site; [ -f /opt/aimtv/serve/index.html ] && SITE=/opt/aimtv/serve; [ -n "$AIMTV_SITE" ] && SITE="$AIMTV_SITE"
 KEY=$(cat /etc/aimtv/key 2>/dev/null)
 OUT="${AIMTV_OUT:-rtmp://a.rtmp.youtube.com/live2/$KEY}"
 export DISPLAY=:99 XDG_RUNTIME_DIR=/tmp/aimtv-xdg; mkdir -p $XDG_RUNTIME_DIR; chmod 700 $XDG_RUNTIME_DIR

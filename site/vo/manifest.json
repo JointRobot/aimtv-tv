@@ -1,0 +1,530 @@
+{
+"p_ident_0": [
+"animation",
+"Namaskar! I'm Animation. A Marathi dog, and a multimedia dog."
+],
+"p_ident_1": [
+"animation",
+"I jump from TV to print, from print to phone. Today, I jumped into your screen."
+],
+"p_ident_2": [
+"animation",
+"You're watching AIMTV. Television from a future that remembers us."
+],
+"p_tdty_0": [
+"hema",
+"Namaste, I'm Hema. You're watching This Day, That Year."
+],
+"p_tdty_1": [
+"hema",
+"Check the date on the screen. Fifteen years from now it is 2041. Fifteen years ago, it was 2026."
+],
+"p_tdty_2": [
+"hema",
+"Old news. The Asian Games in Aichi and Nagoya, running since the nineteenth of September, closed today."
+],
+"p_tdty_3": [
+"hema",
+"People watched the medals on TV. Yes, TV. The box with only one screen."
+],
+"p_tdty_4": [
+"hema",
+"Ancient media. That year, laptops called Googlebooks arrived. A laptop was a book that opened, with the internet inside."
+],
+"p_tdty_5": [
+"hema",
+"Vintage gadget. On the first of October, Legato Frames launched. Glasses that listened, for 999 dollars."
+],
+"p_tdty_6": [
+"hema",
+"These days even walls listen. Juhu Chaiwala's walls record, too."
+],
+"p_tdty_7": [
+"hema",
+"That's the record. Everything else is just a take. I'm Hema. Namaste, see you tomorrow. In the daytime."
+],
+"p_ad1_0": [
+"fadarr",
+"Brothers and sisters. Do you cough?"
+],
+"p_ad1_1": [
+"fadarr",
+"Fa Cough Syrup. Blessed by Fa Corporation."
+],
+"p_ad1_2": [
+"fadarr",
+"Side effects may include eviction."
+],
+"p_ad1_3": [
+"fadarr",
+"Fa Corp. Unlimited space. In space."
+],
+"p_shop_0": [
+"jc",
+"Welcome to Juhu Chaiwala's Tomorrow Shop. Companies used to say coming soon. Here, everything came long ago."
+],
+"p_shop_1": [
+"jc",
+"Today's product: Rama Tuta 2.0. A home robot. Sweeping, mopping, cooking, everything."
+],
+"p_shop_2": [
+"chaibot",
+"And fast too."
+],
+"p_shop_3": [
+"jc",
+"The problem? The robot did all the work, so the aunties had nothing left to gossip about."
+],
+"p_shop_4": [
+"jc",
+"Version 2.0 shipped a patch. Now the robot gossips itself. The building's news, every evening at seven."
+],
+"p_shop_5": [
+"jc",
+"What happened next? The society made the robot its secretary. The first meeting in history to end on time."
+],
+"p_shop_6": [
+"jc",
+"Shadow entrance price, twelve rupees. Sunny entrance price, nine hundred. Same robot. Different door."
+],
+"p_shop_7": [
+"chaibot",
+"Here is your chai. From a bot."
+],
+"p_meter_0": [
+"tchu",
+"Namaskara! Meter down. Tchu Tchu reporting, live from the taxi."
+],
+"p_meter_1": [
+"tchu",
+"Fa King Construction has stuck posters all over Shivajinagar again. Who notices a notice?"
+],
+"p_meter_2": [
+"tchu",
+"The Dalmatian sniffed the poster. Something is fishy with that Dalmatian, I'm telling you."
+],
+"p_meter_3": [
+"tchu",
+"I have to drop Hema madam at an interview. First, the car wash. Work is warship."
+],
+"p_meter_4": [
+"tchu",
+"Tchu Tchu, AIMTV, Bombai. The meter is still running."
+],
+"p_psa_0": [
+"mrst",
+"Jhulelal, babuji. A small message from Road Cross."
+],
+"p_psa_1": [
+"mrst",
+"When you cross the road, look left, look right, and look up. Taxis fly now."
+],
+"p_psa_2": [
+"mrst",
+"Don't take tension. We help you cross."
+],
+"p_travel_0": [
+"sarla",
+"Hi guys! Welcome back to Stomach Challo Travels. Today we're going somewhere so foreign."
+],
+"p_travel_1": [
+"sarla",
+"Location: Lonavala. It's like, basically Switzerland. With chikki."
+],
+"p_travel_2": [
+"lata",
+"Kem cho! Sarla baby, want a dosa? It's diet time!"
+],
+"p_travel_3": [
+"sarla",
+"Mommy, I'm literally live. Sorry guys, my mom is like, in every reel."
+],
+"p_travel_4": [
+"sarla",
+"Tchu Tchu uncle says it's two hours away. In 2041, two hours is basically international."
+],
+"p_travel_5": [
+"sarla",
+"Like, share, follow. Stomach Challo. I love foreign."
+],
+"p_baba_0": [
+"baba",
+"Baa."
+],
+"p_baba_1": [
+"baba",
+"Baa baa."
+],
+"a_jc_0": [
+"jc",
+"Twelve rupees at the shadow entrance. Nine hundred at the sunny entrance. Same chai, different door."
+],
+"a_jc_1": [
+"jc",
+"I only sell chai. And listen a little. And record a little."
+],
+"a_jc_2": [
+"jc",
+"The blueprint is still being decoded. Give me time. Have some chai meanwhile."
+],
+"a_jc_3": [
+"jc",
+"Everything has already launched. I'm only telling you what happened after."
+],
+"a_jc_d": [
+"jc",
+"Good question. The answer is on the sunny side. Nine hundred rupees."
+],
+"a_jc_h": [
+"jc",
+"Come, sit. Chai from the shadow side, or the sunny side?"
+],
+"a_sarla_0": [
+"sarla",
+"Next week? Matheran. No cars allowed. It's literally Europe, guys."
+],
+"a_sarla_1": [
+"sarla",
+"I've been to Daman. That's, like, a whole different territory. I love foreign."
+],
+"a_sarla_2": [
+"sarla",
+"She's literally in every reel. And she brings dosas. I'm not complaining. Okay, I'm complaining."
+],
+"a_sarla_3": [
+"sarla",
+"I work in a call centre. Hi, this is Sarla from, um, Ohio. How may I help you?"
+],
+"a_sarla_d": [
+"sarla",
+"Oh my god, so random. Like and follow for the answer."
+],
+"a_tchu_0": [
+"tchu",
+"At the Shivajinagar signal. The meter's running, so get moving."
+],
+"a_tchu_1": [
+"tchu",
+"Two dogs. Dalmatian from the Andamans, Animation from Mumbai. Something is fishy with the Dalmatian."
+],
+"a_tchu_2": [
+"tchu",
+"I drop Hema madam at interviews. Where she goes at night, I don't notice."
+],
+"a_tchu_3": [
+"tchu",
+"Who notices a notice?"
+],
+"a_tchu_d": [
+"tchu",
+"JC, my brother, give this one a chai. Work is warship."
+],
+"a_hema_0": [
+"hema",
+"Today's record is in the bulletin. Open This Day, That Year and read THE RECORD. The rest is a take."
+],
+"a_hema_1": [
+"hema",
+"At night? I rest. Next question."
+],
+"a_hema_2": [
+"hema",
+"Fa Darr. Ex-priest, now CEO. I have a source. I won't name them."
+],
+"a_hema_d": [
+"hema",
+"I need a source for that. Without one, I say nothing."
+],
+"a_lata_0": [
+"lata",
+"Kem cho! Want a dosa? Here comes the dosa. Eat, eat, eat!"
+],
+"a_lata_1": [
+"lata",
+"He said sixty? Give forty. Otherwise I'm leaving on my skateboard."
+],
+"a_lata_2": [
+"lata",
+"Sofa Seth? He's doing karate."
+],
+"a_lata_d": [
+"lata",
+"Eat first, then ask."
+],
+"a_mrst_0": [
+"mrst",
+"Yes, babuji. Look left, look right, and look up. Don't take tension."
+],
+"a_mrst_1": [
+"mrst",
+"My mole stays in its place. Bullets don't stay in theirs."
+],
+"a_mrst_2": [
+"mrst",
+"Road Cross. Helping people cross the road since 2008."
+],
+"a_mrst_d": [
+"mrst",
+"Be safe, babuji."
+],
+"a_animation_0": [
+"animation",
+"I go anywhere. TV, print, phone. Today, your screen."
+],
+"a_animation_1": [
+"animation",
+"Print is cool. TV is warm. Phones are crowded."
+],
+"a_animation_2": [
+"animation",
+"Woof. That means namaskar."
+],
+"a_animation_d": [
+"animation",
+"Meaning? Ask me again."
+],
+"vj_g0": [
+"tabla",
+"Hello hello, Tabla Nari here, live from my rig. Two tablas, one record, zero rules."
+],
+"vj_g1": [
+"tabla",
+"You're on Tabla Nari Live. My tabla has a turntable now. Don't ask, just listen."
+],
+"vj_g2": [
+"tabla",
+"Back on the decks. Dha dhin dhin dha, and a little bit of bass."
+],
+"vj_91f31754_i1": [
+"tabla",
+"Next up, Midnight Tabs, by Bandre 3000."
+],
+"vj_91f31754_i2": [
+"tabla",
+"A song for everyone with forty tabs open at midnight. Close none of them."
+],
+"vj_91f31754_pop": [
+"tabla",
+"Still Midnight Tabs. If you have more tabs open than this song has beats, you are my people."
+],
+"vj_3de13e2b_i1": [
+"tabla",
+"Here comes Swipe Into Love, by Beautiful."
+],
+"vj_3de13e2b_i2": [
+"tabla",
+"Back when love needed a thumb. In 2041 the app swipes for you, and you just say yes."
+],
+"vj_3de13e2b_pop": [
+"tabla",
+"Swipe Into Love, by Beautiful. Left for chaos, right for magic. I swipe both."
+],
+"vj_d84dc14f_i1": [
+"tabla",
+"Now playing, LinkedIn to You, by Joint Robot."
+],
+"vj_d84dc14f_i2": [
+"tabla",
+"A love song about endorsements. He endorsed her for patience. She is still waiting."
+],
+"vj_d84dc14f_pop": [
+"tabla",
+"Joint Robot, LinkedIn to You. Congratulate them on their work anniversary."
+],
+"vj_9c6997dd_i1": [
+"tabla",
+"And now, Tender on Tinder, by Beautiful Stranger."
+],
+"vj_9c6997dd_i2": [
+"tabla",
+"Jazz for people who match, then never message. Very ancient behaviour."
+],
+"vj_9c6997dd_pop": [
+"tabla",
+"Beautiful Stranger on AIMTV. Stay tender, stay strange."
+],
+"vj_33f258d4_i1": [
+"tabla",
+"Next up, Naamardon Ki Baat, by KK."
+],
+"vj_33f258d4_i2": [
+"tabla",
+"A rap for loud men who roar at home and fold at the door. Hard, Hindi and a little rude."
+],
+"vj_33f258d4_pop": [
+"tabla",
+"KK, Naamardon Ki Baat. Sit down, sir. The tabla has the floor."
+],
+"vj_9da67ca9_i1": [
+"tabla",
+"Now playing, Chennai Namma Ooru, by Tamilianer."
+],
+"vj_9da67ca9_i2": [
+"tabla",
+"A song for the aliens who landed in Chennai and decided to stay. Marina breeze, Koyambedu crowd, nobody is a stranger here."
+],
+"vj_9da67ca9_pop": [
+"tabla",
+"Tamilianer, Chennai Namma Ooru. Even the spaceship found parking in Koyambedu."
+],
+"vj_e3e33fdc_i1": [
+"tabla",
+"Here comes Bee Sting Right Now, by Kannukutti."
+],
+"vj_e3e33fdc_i2": [
+"tabla",
+"A heartbreak with a buzz. It stings, but he is not done with love."
+],
+"vj_e3e33fdc_pop": [
+"tabla",
+"Kannukutti, Bee Sting Right Now. Bumble bee sting, bumble bee dance."
+],
+"vj_ed09f1a8_i1": [
+"tabla",
+"Next up, Boomer Back, by Bro."
+],
+"vj_ed09f1a8_i2": [
+"tabla",
+"A song for every old man who says he built the nation, then posts a thumbs up. Touch grass, sir."
+],
+"vj_ed09f1a8_pop": [
+"tabla",
+"Bro, Boomer Back. He is so done, and so am I. Dha dhin dhin dha."
+],
+"vj_db23e658_i1": [
+"tabla",
+"Next up, Contemporary Or Temporary, by Karthik."
+],
+"vj_db23e658_i2": [
+"tabla",
+"Be contemporary or be temporary. Choose before the beat drops."
+],
+"vj_db23e658_pop": [
+"tabla",
+"Karthik, Contemporary Or Temporary. I pick permanent, with good bass."
+],
+"vj_d015a4cd_i1": [
+"tabla",
+"And now, Good Back, by Buddy."
+],
+"vj_d015a4cd_i2": [
+"tabla",
+"A slow breakup song about a chipped cup and a hoodie that still smells of rain. Bring tissues, bring tabla."
+],
+"vj_d015a4cd_pop": [
+"tabla",
+"Buddy, Good Back. Some songs just hold your hand."
+],
+"vj_b13606e2_i1": [
+"tabla",
+"Now playing, Firmware Anthem, by Konga."
+],
+"vj_b13606e2_i2": [
+"tabla",
+"An acid jazz anthem for every update that takes forever. New tech, new tech, restart anyway."
+],
+"vj_b13606e2_pop": [
+"tabla",
+"Konga, Firmware Anthem. Please do not switch off your tabla during the update."
+],
+"vj_757c14ef_i1": [
+"tabla",
+"Up next, Headset Halo, by Mad K photogenic."
+],
+"vj_757c14ef_i2": [
+"tabla",
+"A song where the virtual world wins and the real one just watches. One headset, a whole new life."
+],
+"vj_757c14ef_pop": [
+"tabla",
+"Mad K photogenic, Headset Halo. Press start, babe."
+],
+"vj_gen_i1": [
+"tabla",
+"Next up, a brand new one, fresh from the studio."
+],
+"vj_gen_i2": [
+"tabla",
+"Turn it up. The tabla will wait."
+],
+"vj_gen_pop": [
+"tabla",
+"You're on Tabla Nari Live. Magic or chaos, depending on the song."
+],
+"p_ad_horn_0": [
+"fadarr",
+"Bombai traffic. Cars honking, people shouting. The noise is overwhelming."
+],
+"p_ad_horn_1": [
+"fadarr",
+"Just because you have a horn, doesn't mean you have to poke."
+],
+"p_ad_horn_2": [
+"fadarr",
+"Introducing the Polite Horn, by Fa Art. It says Please Move, instead of making a sound."
+],
+"p_ad_horn_3": [
+"fadarr",
+"Just press the button. Please Move shows on a screen in front of your car, with a soft voice saying it."
+],
+"p_ad_horn_4": [
+"fadarr",
+"Less noise pollution. Less road rage. Express your frustration without being aggressive."
+],
+"p_ad_horn_5": [
+"fadarr",
+"Don't be that person on the road. Get your Polite Horn today, and join the movement towards a more polite world."
+],
+"p_ad_horn_6": [
+"chaibot",
+"Now, please move."
+],
+"p_ad_sign_0": [
+"fadarr",
+"Dear fellow citizens of Hindia, we have an important announcement to make today."
+],
+"p_ad_sign_1": [
+"fadarr",
+"After careful consideration, sign language is the new national language of Hindia."
+],
+"p_ad_sign_2": [
+"fadarr",
+"From the first of January 2041, it replaces all other regional languages."
+],
+"p_ad_sign_3": [
+"fadarr",
+"Sign language is universal, open to everyone, whatever their dialect. It will help avoid dialect-based conflicts in the future."
+],
+"p_ad_sign_4": [
+"fadarr",
+"All official speeches, documents and announcements will be in sign language, and every school will teach it."
+],
+"p_ad_sign_5": [
+"fadarr",
+"Join us in welcoming sign language. Together, we can build a more inclusive and harmonious Hindia."
+],
+"p_ad_sign_6": [
+"fadarr",
+"Fa Cares. For unity in diversity."
+],
+"p_ad_bio_0": [
+"fadarr",
+"Running out of storage? Cutting down forests? Two of the world's biggest problems. One solution."
+],
+"p_ad_bio_1": [
+"fadarr",
+"Introducing Bio Data. The first product to convert digital data into bio matter."
+],
+"p_ad_bio_2": [
+"fadarr",
+"The only product that comes to you in the form of a plant."
+],
+"p_ad_bio_3": [
+"fadarr",
+"The more data you store, the more the plant grows. Your selfies become a forest."
+],
+"p_ad_bio_4": [
+"fadarr",
+"Bio Data. The more you store, the more you grow."
+]
+}
