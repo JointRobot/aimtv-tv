@@ -17,6 +17,7 @@ AIMTV is a television channel from **Earth 69**, city **Bombai, Hindia** (former
 - `mrst`: Sindhi Crawford (Mrs Takechandani), Road Cross NGO since 2008. Road-safety PSA (`psa`): "Don't take tension. We help you cross."
 - `baba`: Almighty Baba Black Sheep. Founder-written only: the live desk never writes or replaces his lines. He never speaks; he bleats (sheep sound made in code) and his "profound statements" appear as subtitles.
 - Others who can speak if needed: `lata` (Bhenji Jumping, Gujarati aunty, skateboard and dosas), `devi` (Fullon Devi, stunt woman), `animation` (Marathi dog who jumps between media).
+- Founder canon (from the founder's files): Tabla Nari's name is probably Fatima ("we don't know much about her"). Tchu Tchu got his name because nobody knew it. Sarla: "Us is not United States, I know 'cause I love foreign." JC's stall sign: "No Credit, No Change, No Smoking, No drinking anything but Chai"; his staff are Chaibot 3000 and runner boy Peter Chaipad. Households run on RAMU 2.0 robots. Police are all under Fa. Fa Corp is building the Fa King Highway (Dubai, Mumbai, China, Thailand). Sign language is the national language of Hindia; you may still speak your own language in closed places (homes, offices, cars with windows up, a Malayalam rock concert).
 - World facts: Fa King Construction is Fa Corp's demolition arm and keeps posting eviction notices at Celeb Shauchalay, the last chawl, in Shivajinagar. Project Unearth is "unlimited space in space". Fame Meter: "No publicity, no action."
 
 ## Looking back from 2041 (the house angle)
