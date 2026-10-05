@@ -3,7 +3,7 @@
 Reads the text of every voice clip (site/vo/manifest.json and site/live/live.json), speaks it with Piper
 (CMU Arctic / L2-ARCTIC Indian speakers), and builds /opt/aimtv/serve = site + neural clips on top.
 Clips it cannot make stay as the original recordings. Safe to run every few minutes."""
-import os, sys, json, re, hashlib, subprocess, shutil, wave, time
+import signal, os, sys, json, re, hashlib, subprocess, shutil, wave, time
 REPO = "/opt/aimtv/repo/site"; NE = "/opt/aimtv/neural"; SERVE = "/opt/aimtv/serve"
 VOICES = "/opt/aimtv/voices"
 MODELS = {"arctic": "en_US-arctic-medium", "l2": "en_US-l2arctic-medium"}
@@ -34,6 +34,8 @@ def entries():
             for i, l in enumerate(pr.get("lines", [])): e["%s%d.mp3" % (pr["clips"], i)] = (l[0], l[1])
     return e
 
+def _t(*a): raise TimeoutError('clip took too long')
+signal.signal(signal.SIGALRM, _t)
 def main():
     os.makedirs(NE, exist_ok=True); st_p = os.path.join(NE, "state.json")
     st = json.load(open(st_p)) if os.path.exists(st_p) else {}
@@ -48,6 +50,7 @@ def main():
         for path, who, text, key in todo:
             m, sid, k, tempo = CAST[who]
             try:
+                signal.alarm(120)
                 if m not in vs: vs[m] = PiperVoice.load(os.path.join(VOICES, MODELS[m] + ".onnx"))
                 tmp = "/tmp/nv_%d.wav" % os.getpid()
                 with wave.open(tmp, "wb") as w: vs[m].synthesize_wav(say(text), w, syn_config=SynthesisConfig(speaker_id=sid))
@@ -59,8 +62,9 @@ def main():
                 out = os.path.join(NE, path); os.makedirs(os.path.dirname(out), exist_ok=True)
                 subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", tmp, "-af", ",".join(chain), "-ar", "22050", "-ac", "1",
                                 "-c:a", "libmp3lame", "-b:a", "48k", out], check=True)
-                st[path] = key
-            except Exception as ex:
+                signal.alarm(0); st[path] = key
+            except BaseException as ex:
+                signal.alarm(0)
                 print("skip", path, ex, file=sys.stderr)
             if len([1 for _ in st]) % 10 == 0: json.dump(st, open(st_p, "w"))
         json.dump(st, open(st_p, "w"))
