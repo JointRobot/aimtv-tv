@@ -1032,7 +1032,7 @@ function warmAhead(){
   try{
     ensureQ(songI+3);if(QUEUE[songI])loadSong(QUEUE[songI]).catch(()=>{});
     const ps=[prog];if(CHANNELS[chIdx]==="live"){for(let k=1,n=0;n<2&&k<=LIVE_ORDER.length;k++){const q=byId(LIVE_ORDER[(liveIdx+k)%LIVE_ORDER.length]);if(q&&!q.song){ps.push(q);n++}}}
-    ps.forEach(q=>{if(q&&!q.music&&!q.song)q.lines.forEach((l,i)=>loadClip(clipFor(q,i)).catch(()=>{}))});
+    ps.forEach(q=>{if(q&&!q.music&&!q.song&&q.id!=="baba")q.lines.forEach((l,i)=>loadClip(clipFor(q,i)).catch(()=>{}))});
   }catch(e){}
 }
 /* ============ LIVE REFRESH ============ */
@@ -1258,7 +1258,7 @@ $("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)
 $("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
 let wantSound=true,unlocked=false;
 function setSoundUI(){const b=$("sound");b.setAttribute("aria-pressed",String(wantSound));b.textContent=wantSound?"Sound on":"Sound off"}
-function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;setTimeout(warmAhead,0);if(prog&&!prog.music)prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
+function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;setTimeout(warmAhead,0);if(prog&&!prog.music&&prog.id!=="baba")prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
 $("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSound;setSoundUI();if(soundOn){ctx();unlockAudio()}else hush();playLine()};
 $("power").onclick=()=>{powerOn();switchTo(prog)};
 document.addEventListener("pointerdown",powerOn,{capture:true});
