@@ -112,7 +112,7 @@ body.bc .sctl{display:none!important}
 /* Television */
 .set{background:linear-gradient(180deg,#2b2017,#1b140e);border:1px solid #4a3828;border-radius:18px;padding:14px;
   box-shadow:inset 0 1px 0 #5a4430, 0 18px 40px rgba(0,0,0,.45)}
-.screen{position:relative;aspect-ratio:16/9;container-type:inline-size;max-width:100%;border-radius:12px;overflow:hidden;background:#000;
+.screen{position:relative;aspect-ratio:16/9;container-type:inline-size;max-width:100%;border-radius:12px;overflow:hidden;overflow:clip;background:#000;
   box-shadow:inset 0 0 60px rgba(0,0,0,.8)}
 .screen .scene,.screen .host,.screen canvas{position:absolute;inset:0;width:100%;height:100%}
 .screen .scene svg{width:100%;height:100%;display:block}
@@ -138,6 +138,16 @@ body.bc .sctl{display:none!important}
 .subs .l1{color:var(--paper);font-size:clamp(14px,1.6vw,18px);line-height:1.45}
 .subs .l2{display:block}
 .subs .l2 span{color:var(--padmini);font-style:normal;font-size:clamp(12.5px,1.3vw,15px);line-height:1.4}
+.subs .l2 span.rg{font-family:"Noto Sans Devanagari","Noto Sans Gujarati","Noto Sans Kannada","Noto Sans Malayalam","Noto Sans Bengali","Noto Sans Gurmukhi","Noto Sans Tamil",var(--f-body);font-size:clamp(13px,1.4vw,16px);letter-spacing:.01em}
+.subs .l3{display:block;color:#cdbfa6;font-size:clamp(12px,1.2vw,14px);line-height:1.35}
+.subs .xw{font-family:var(--f-deva);color:var(--padmini);font-size:1.08em;letter-spacing:0}
+.likebtn{position:absolute;right:2.5%;bottom:calc(9% + 12px);z-index:4;display:flex;align-items:center;gap:7px;background:rgba(14,10,7,.82);border:1.5px solid var(--padmini);color:var(--paper);border-radius:999px;padding:6px 14px 6px 10px;font-family:var(--f-mono);font-size:clamp(10px,1.1vw,12.5px);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;backdrop-filter:blur(3px);transition:transform .15s}
+.likebtn b{color:#ff4d7a;font-size:1.45em;line-height:1;transition:transform .2s}
+.likebtn:hover{transform:scale(1.05)}.likebtn.pop b{transform:scale(1.5)}
+.likebtn .fly{position:absolute;right:16px;bottom:100%;color:var(--padmini);font-weight:600;pointer-events:none;animation:likefly 1s ease-out forwards}
+@keyframes likefly{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-34px)}}
+@media (prefers-reduced-motion:reduce){.likebtn .fly{animation:none;opacity:0}}
+body.bc .likebtn{display:none!important}
 .ticker{position:absolute;left:0;right:0;bottom:0;height:9%;background:rgba(14,10,7,.94);border-top:2px solid var(--saffron);display:flex;align-items:center;overflow:hidden}
 .ticker .lbl{flex:none;position:relative;z-index:2;box-shadow:8px 0 10px rgba(14,10,7,.95);height:100%;display:flex;align-items:center;background:var(--saffron);color:#1a0d05;font-family:var(--f-display);font-weight:900;letter-spacing:.08em;font-size:clamp(9px,1.4vw,15px);padding:0 12px}
 .ticker .run{position:relative;z-index:1;white-space:nowrap;font-family:var(--f-mono);font-size:clamp(9px,1.2vw,13px);color:var(--paper);letter-spacing:.06em;animation:tick 70s linear infinite;padding-left:100%}
@@ -212,11 +222,29 @@ body.bc .sctl{display:none!important}
 .chans button:nth-child(-n+2){flex:1 1 calc(50% - 3px);padding:8px 10px;font-size:13px;color:var(--paper)}
 .hint{font-size:12.5px;color:var(--dim);margin-top:8px}
 
+.dock>.dockh{display:none}
+@media (min-width:981px){
+ .main{grid-template-columns:minmax(0,1fr) 340px}
+ .rail .dock{order:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+ .rail .onbox{order:1}.rail .adslot{order:2}.rail .box:not(.onbox){order:3}
+ .rail .dock>.dockh{display:flex}
+ .rail .controls{margin-top:4px;gap:6px;display:grid;grid-template-columns:repeat(6,1fr)}
+ .rail .controls .knob{white-space:nowrap;grid-column:span 2;text-align:center}
+ .rail .controls #sound{grid-column:span 2}.rail .controls #cc{grid-column:span 4}
+ section .famebox{margin-top:16px}
+ .rail .chname{order:-1;grid-column:1/-1;font-size:17px;margin:0 0 4px;line-height:1.25}
+ .rail .controls .spacer{display:none}
+ .rail .knob{padding:6px 10px;font-size:11px}
+ .rail .chans{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ .rail .chans button{text-align:left;padding:6px 8px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .rail .chans button:nth-child(-n+2){font-size:12.5px;text-align:center}
+ .rail .hint{font-size:11.5px}
+}
 /* Rail */
 .rail{display:flex;flex-direction:column;gap:16px;min-width:0}
 .box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.box h3{margin:0 0 10px;font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.box h3 small{font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--dim);letter-spacing:.1em}
+.box h3,.dockh{margin:0 0 10px;font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.box h3 small,.dockh small{font-family:var(--f-mono);font-weight:400;font-size:10.5px;color:var(--dim);letter-spacing:.1em}
 .sched{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .sched li{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px dashed var(--line)}
 .sched li:last-child{border-bottom:0}
@@ -228,6 +256,22 @@ body.bc .sctl{display:none!important}
 .livestamp{margin-top:8px;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}.livestamp b{color:var(--saffron);font-weight:600}
 .sched li.now .w{color:var(--saffron)}.sched li.now .s{color:var(--padmini)}
 .fame{display:flex;flex-direction:column;gap:9px}
+.famefoot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px}.famefoot .note{font-size:12px;color:var(--dim)}
+.fame .nm .mi{display:inline-flex;align-items:center;gap:8px;min-width:0}.fame .nm .mi svg{width:26px;height:26px;flex:none;border-radius:50%;background:#2a1f2e}
+.fame .nm .mi i{font-style:normal;font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:.06em}
+section .famebox .fame{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+dialog.marks{max-width:min(880px,94vw);width:100%;background:var(--panel);color:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+dialog.marks::backdrop{background:rgba(5,3,2,.7)}
+.marks h3{margin:0 0 4px;font-family:var(--f-display);font-size:26px;letter-spacing:.05em;text-transform:uppercase}
+.marks .rules{font-size:13px;color:var(--dim);margin:0 0 14px}.marks .rules b{color:var(--padmini);font-weight:600}
+.marks .tw{overflow-x:auto}
+.marks table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;min-width:600px}
+.marks th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);font-weight:500}
+.marks th:nth-child(-n+2),.marks td:nth-child(-n+2){text-align:left}
+.marks td{padding:7px 8px;border-bottom:1px dashed #3a2c20;text-align:right}
+.marks td small{display:block;color:var(--dim);font-size:11px}
+.marks td.tot{color:var(--padmini);font-weight:600;font-size:15px}
+.marks .close{float:right}
 .fame .row{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;align-items:center}
 .fame .nm{font-size:13.5px;font-weight:500;display:flex;justify-content:space-between;gap:8px}
 .fame .nm button{background:none;border:1px solid var(--line);border-radius:3px;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;padding:0 6px;color:var(--dim)}
@@ -340,9 +384,9 @@ body.bc{overflow:hidden;background:#0b0806;margin:0;padding:0}
 body.bc > *:not(.wrap):not(script),body.bc header,body.bc .rail,body.bc .controls,body.bc .tabs,body.bc .pane,body.bc footer,body.bc .power,body.bc .paused-badge{display:none!important}
 body.bc .wrap,body.bc .main{display:block;margin:0;padding:0;max-width:none;width:100vw}
 body.bc .set{position:fixed;inset:0;border:0;border-radius:0;padding:0;background:#0b0806;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-body.bc .screen{width:calc((100vh - 92px) * 16 / 9);max-width:100vw;border-radius:0}
-body.bc .subs{width:calc((100vh - 92px) * 16 / 9);max-width:100vw;margin:0;height:92px;min-height:0;border:0;border-radius:0;background:#0b0806}
-body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
+body.bc .screen{width:calc((100vh - 112px) * 16 / 9);max-width:100vw;border-radius:0}
+body.bc .subs{width:calc((100vh - 112px) * 16 / 9);max-width:100vw;margin:0;height:112px;min-height:0;border:0;border-radius:0;background:#0b0806}
+body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .subs .l3{font-size:15px}
 </style>
 
 <div class="wrap">
@@ -372,10 +416,13 @@ body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
           <div class="lower" id="lower"><div class="nm" id="lowerName">Hema</div><div class="rl" id="lowerRole">This Day, That Year</div></div>
           <div class="ticker"><div class="lbl">AIMTV</div><div class="run" id="ticker"></div></div>
           <div class="paused-badge" id="paused" hidden>PAUSED</div>
+          <button class="likebtn" id="like" type="button" hidden aria-label="Like"><b>♥</b><span id="likeWho">Like</span></button>
           <button class="power" id="power" type="button" hidden><span class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="#16110c" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg></span><b>Switch on AIMTV</b><small>Picture and sound</small></button>
         </div>
-        <div class="subs" id="subs" aria-live="polite"><span class="l1" id="sub1"></span><span class="l2" id="sub2wrap"><span id="sub2"></span></span></div>
+        <div class="subs" id="subs" aria-live="polite"><span class="l1" id="sub1"></span><span class="l2" id="sub2wrap"><span id="sub2"></span></span><span class="l3" id="sub3"></span></div>
       </div>
+      <div class="dock" id="dock">
+        <h3 class="dockh">Channels <small>TUNE IN</small></h3>
       <div class="controls">
         <button class="knob" id="prev" aria-label="Previous channel">CH &minus;</button>
         <button class="knob" id="next" aria-label="Next channel">CH +</button>
@@ -387,6 +434,7 @@ body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
       </div>
       <div class="chans" id="chans" role="group" aria-label="Channels"></div>
       <p class="hint">Every character has their own recorded voice. Use Sound to mute.</p>
+      </div>
     </section>
 
     <aside class="rail">
@@ -397,15 +445,15 @@ body.bc .subs .l1{font-size:24px}body.bc .subs .l2 span{font-size:19px}
         <span class="ln" id="adln"></span>
         <span class="cta" id="adcta"></span>
       </a>
-      <div class="box">
+      <div class="box onbox">
         <h3>On AIMTV <small id="schedDay">TODAY · IST</small></h3>
         <ul class="sched" id="sched"></ul>
         <div class="livestamp">News and stories refreshed <b id="liveStamp">on air</b></div>
       </div>
-      <div class="box">
+      <div class="box famebox" id="famebox">
         <h3>Fame Meter <small>NO PUBLICITY, NO ACTION</small></h3>
         <div class="fame" id="fame"></div>
-        <p class="note">Sample standings. Your boosts are saved in this browser only; shared live voting comes at launch.</p>
+        <div class="famefoot"><button class="knob" id="marksBtn" type="button">See the mark sheet</button><span class="note" id="fameNote">Counted in this browser for now.</span></div>
       </div>
     </aside>
   </div>
@@ -669,7 +717,7 @@ const P={
     post:`<ellipse cx="46" cy="232" rx="36" ry="9" fill="#efe8d8" stroke="${INK}" stroke-width="2"/><path d="M18 228C30 198 62 198 74 228Z" fill="#e8b050" stroke="${INK}" stroke-width="2"/><path d="M28 224C36 208 54 208 62 224" stroke="#b87820" stroke-width="2" fill="none"/>`,label:"Bhenji Jumping"}),
   sarla:()=>face({skin:SK.sarla,style:"longsilver",hair:"#e9edf2",hl:-16,fw:38,eye:"#4f9a6a",brow:"#b8bec6",outfit:"#f6f3ee",lip:"#cf7f86",acc:["studs"],blush:.3,
     collar:`<path d="M62 178Q100 214 138 178" stroke="#cfc8bc" stroke-width="3" fill="none"/><path d="M62 178L56 240M138 178L144 240" stroke="rgba(0,0,0,.12)" stroke-width="3"/>`,
-    post:`<g transform="translate(128 196)"><rect width="62" height="38" rx="5" fill="#c4252a" stroke="${INK}" stroke-width="2.2"/><circle cx="16" cy="21" r="10" fill="#2a2a2e" stroke="${INK}" stroke-width="1.6"/><circle cx="46" cy="21" r="10" fill="#2a2a2e" stroke="${INK}" stroke-width="1.6"/><circle cx="16" cy="21" r="4" fill="#8a8f96"/><circle cx="46" cy="21" r="4" fill="#8a8f96"/><rect x="20" y="4" width="22" height="6" rx="2" fill="#f1eadc"/><path d="M4 4H22" stroke="#fff" stroke-opacity=".35" stroke-width="2"/></g>`,label:"Stomach Challo"}),
+    post:`<g transform="translate(130 176)"><path d="M18 2h22v12" fill="none" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M18 2h22v12" fill="none" stroke="#8a8f96" stroke-width="2.4"/><rect x="2" y="12" width="56" height="54" rx="7" fill="#e7a04a" stroke="${INK}" stroke-width="2.2"/><path d="M16 12v54M44 12v54" stroke="#b86f22" stroke-width="3"/><path d="M6 16h10" stroke="#fff" stroke-opacity=".4" stroke-width="2"/><circle cx="30" cy="32" r="9" fill="#3a7bd5" stroke="${INK}" stroke-width="1.4"/><path d="M23 32h14M30 25c-4 5-4 9 0 14M30 25c4 5 4 9 0 14" stroke="#cfe3ff" stroke-width="1.2" fill="none"/><rect x="5" y="44" width="20" height="11" rx="2" fill="#f6f3ee" stroke="${INK}" stroke-width="1.2" transform="rotate(-8 15 49)"/><path d="M8 48h13M8 51h9" stroke="#c4252a" stroke-width="1.4" transform="rotate(-8 15 49)"/><rect x="36" y="46" width="18" height="12" rx="6" fill="#e0488a" stroke="${INK}" stroke-width="1.2" transform="rotate(10 45 52)"/><path d="M40 52h10" stroke="#fff" stroke-width="1.4" transform="rotate(10 45 52)"/></g><g transform="translate(14 150) rotate(-24)"><path d="M10 64V14" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M10 64V14" stroke="#b9bec6" stroke-width="2.6" stroke-linecap="round"/><rect x="0" y="-8" width="20" height="30" rx="4" fill="#26222c" stroke="${INK}" stroke-width="1.8"/><rect x="3" y="-5" width="14" height="22" rx="2" fill="#7fd6f0"/><circle cx="10" cy="3" r="3.4" fill="#e0488a"/></g>`,label:"Stomach Challo"}),
   dimpy:()=>face({skin:SK.dimpy,style:"braid",hair:"#17110f",hl:40,outfit:"#e3b23c",acc:["bindi","tikka","hoops"],browUp:1,lip:"#8a2a36",
     pre:`<path d="M160 118L190 200" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M160 118L190 200" stroke="#5a4a38" stroke-width="6" stroke-linecap="round"/><rect x="150" y="98" width="12" height="26" rx="3" fill="#c8962e" stroke="${INK}" stroke-width="1.8" transform="rotate(-20 156 111)"/><path d="M142 124L172 112" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`,
     collar:`<path d="M30 204C70 232 140 172 178 198" stroke="#a02a8a" stroke-width="13" fill="none" stroke-linecap="round"/><path d="M30 204C70 232 140 172 178 198" stroke="#f0c8f0" stroke-width="1.8" fill="none" stroke-dasharray="2 5"/>${[[48,214],[78,200],[118,204],[148,218],[100,226],[62,234],[136,236]].map(p=>`<g transform="translate(${p[0]} ${p[1]})"><circle r="6.4" fill="#c8402a"/><circle r="2.2" fill="#f3d36a"/><path d="M-6 0H6M0 -6V6" stroke="#8a2a1a" stroke-width="1" opacity=".5"/></g>`).join("")}`,label:"Talwaar Kameez"}),
@@ -679,7 +727,7 @@ const P={
     collar:`<g fill="#d9f0dd" opacity=".85">${Array.from({length:18},(_,i)=>`<circle cx="${34+(i%6)*26+(Math.floor(i/6)%2)*10}" cy="${204+Math.floor(i/6)*14}" r="2.6"/>`).join("")}</g><path d="M70 178Q100 202 130 178" stroke="#f4f0e4" stroke-width="5.4" fill="none" stroke-dasharray="1 6.4" stroke-linecap="round"/><path d="M22 222C70 196 130 196 178 222" stroke="#d6a32e" stroke-width="6" fill="none" stroke-linecap="round"/>`,label:"Sindhi Crawford"}),
   tabla:()=>face({skin:SK.tabla,style:"hood",hoodc:"#1f7f86",hoodin:"#e0488a",hair:"#17110f",outfit:"#1f7f86",acc:["mask","kohl","studs"],lash:false,
     collar:`<path d="M60 178Q100 198 140 178" stroke="#e0488a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M28 226H56M144 226H172" stroke="#e0b030" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 7"/>`,
-    post:`<g fill="none" stroke="#e0b030" stroke-width="3.2"><circle cx="26" cy="226" r="9"/><circle cx="26" cy="226" r="5" stroke-width="1.6"/></g>`,label:"Tabla Nari"}),
+    post:`<g fill="none" stroke="#e0b030" stroke-width="3.2"><circle cx="26" cy="226" r="9"/><circle cx="26" cy="226" r="5" stroke-width="1.6"/></g><g transform="translate(126 190)"><path d="M14 8Q31 -8 48 8" fill="none" stroke="${INK}" stroke-width="5"/><path d="M14 8Q31 -8 48 8" fill="none" stroke="#b9bec6" stroke-width="2.4"/><rect y="6" width="64" height="40" rx="6" fill="#e0488a" stroke="${INK}" stroke-width="2.2"/><circle cx="16" cy="28" r="11" fill="#2a2a2e" stroke="${INK}" stroke-width="1.6"/><circle cx="48" cy="28" r="11" fill="#2a2a2e" stroke="${INK}" stroke-width="1.6"/><circle cx="16" cy="28" r="4.5" fill="#1f7f86"/><circle cx="48" cy="28" r="4.5" fill="#1f7f86"/><rect x="22" y="10" width="20" height="9" rx="2" fill="#f1eadc" stroke="${INK}" stroke-width="1"/><circle cx="27" cy="14.5" r="2" fill="#2a2a2e"/><circle cx="37" cy="14.5" r="2" fill="#2a2a2e"/><path d="M4 10H20" stroke="#fff" stroke-opacity=".4" stroke-width="2"/><path d="M66 18q6 6 0 12M70 14q10 10 0 20" stroke="#e0b030" stroke-width="2" fill="none" stroke-linecap="round"/></g>`,label:"Tabla Nari"}),
   gutter:()=>face({skin:SK.gutter,style:"gajrabun",hair:"#17110f",hl:40,fw:44,outfit:"#5e2a6e",lip:"#8a1a1e",acc:["bindi","jhumka","nosering","paan"],mw:12,browUp:1,blush:.3,
     collar:`<path d="M14 240C50 196 130 190 186 218L186 240Z" fill="#74348a" stroke="${INK}" stroke-width="2"/><path d="M18 218C60 192 130 190 184 214" stroke="#e0b030" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M18 218C60 192 130 190 184 214" stroke="#7a5612" stroke-width="2" fill="none" stroke-dasharray="3 5"/><path d="M64 178H136" stroke="#1f8a86" stroke-width="10" stroke-linecap="round"/><path d="M70 188Q100 204 130 188" stroke="#e0b030" stroke-width="3" fill="none" stroke-dasharray="1 5" stroke-linecap="round"/>`,label:"GutterFly"}),
   arnold:()=>face({skin:SK.arnold,style:"crew",hair:"#17110f",hl:30,fw:42,outfit:"#4f5a2a",acc:["visor","cigar","stubble","scar"],lash:false,bt:3.8,blush:.08,
@@ -712,61 +760,62 @@ const W={hema:"Hema",jc:"Juhu Chaiwala",chaibot:"Chaibot",tchu:"Tchu Tchu",anima
 const VOICE={hema:{p:1.05,r:1},jc:{p:.9,r:1.02},chaibot:{p:1.6,r:1.25},tchu:{p:.75,r:.95},animation:{p:1.35,r:1.1},sarla:{p:1.3,r:1.08,us:1},lata:{p:1.15,r:1.08},mrst:{p:1.1,r:.95},fadarr:{p:.6,r:.85},baba:{p:.5,r:.7},dimpy:{p:1.05,r:1.1},devi:{p:1,r:1},tabla:{p:1,r:1}};
 const PROGS=[
  {id:"ident",ch:"AIMTV Ident",scene:"ident",cast:["animation"],stamp:"Station ident",role:"Continuity · Canon character",lines:[
-  ["animation", "Namaskar! I'm Animation. A Marathi dog, and a multimedia dog.", "नमस्कार! मी ॲनिमेशन. मराठी कुत्रा, आणि मल्टिमीडिया कुत्रा."],
-  ["animation", "I jump from TV to print, from print to phone. Today, I jumped into your screen.", "मी टीव्हीतून प्रिंटमध्ये, प्रिंटमधून फोनमध्ये उडी मारतो. आज मी तुमच्या स्क्रीनमध्ये उडी मारली."],
-  ["animation", "You're watching AIMTV. Television from a future that remembers us.", "तुम्ही पाहत आहात ए आय एम टीव्ही. आपल्याला लक्षात ठेवणाऱ्या भविष्याचं टेलिव्हिजन."]]},
+  ["animation", "Namaskar! I'm Animation. A Marathi dog, and a multimedia dog.", "", "नमस्कार! मी ॲनिमेशन. मराठी कुत्रा, आणि मल्टिमीडिया कुत्रा."],
+  ["animation", "I jump from TV to print, from print to phone. Today, I jumped into your screen.", "", "मी टीव्हीतून प्रिंटमध्ये, प्रिंटमधून फोनमध्ये उडी मारतो. आज मी तुमच्या स्क्रीनमध्ये उडी मारली."],
+  ["animation", "You're watching AIMTV. Television from a future that remembers us.", "", "तुम्ही पाहत आहात ए आय एम टीव्ही. आपल्याला लक्षात ठेवणाऱ्या भविष्याचं टेलिव्हिजन."]]},
  {id:"tdty",ch:"This Day, That Year",scene:"news",cast:["hema"],stamp:"Archived · 4 Oct 2026",role:"This Day, That Year",lines:[
-  ["hema", "Namaste, I'm Hema. You're watching This Day, That Year.", ""],
-  ["hema", "Today's date is the fourth of October. And fifteen years ago, it was 2026.", ""],
-  ["hema", "Old news. The Asian Games in Aichi and Nagoya, running since the nineteenth of September, closed today.", ""],
-  ["hema", "People watched the medals on TV. Yes, TV. The box with only one screen.", ""],
-  ["hema", "Ancient media. That year, laptops called Googlebooks arrived. A laptop was a book that opened, with the internet inside.", ""],
-  ["hema", "Vintage gadget. On the first of October, Legato Frames launched. Glasses that listened, for 999 dollars.", ""],
-  ["hema", "These days even walls listen. Juhu Chaiwala's walls record, too.", ""],
-  ["hema", "That's the record. Everything else is just a take. I'm Hema. Namaste, see you tomorrow. In the daytime.", ""]]},
+  ["hema", "Namaste, I'm Hema. You're watching This Day, That Year.", "", "नमस्ते, मैं हेमा। आप देख रहे हैं दिस डे, दैट ईयर।"],
+  ["hema", "Today's date is the fourth of October. And fifteen years ago, it was 2026.", "", "आज चार अक्टूबर है। और पंद्रह साल पहले, 2026 चल रहा था।"],
+  ["hema", "Old news. The Asian Games in Aichi and Nagoya, running since the nineteenth of September, closed today.", "", "पुरानी ख़बर। आइची और नागोया में उन्नीस सितंबर से चल रहे एशियाई खेल आज ख़त्म हुए।"],
+  ["hema", "People watched the medals on TV. Yes, TV. The box with only one screen.", "", "लोगों ने मेडल टीवी पर देखे। जी हाँ, टीवी। एक ही स्क्रीन वाला डिब्बा।"],
+  ["hema", "Ancient media. That year, laptops called Googlebooks arrived. A laptop was a book that opened, with the internet inside.", "", "प्राचीन मीडिया। उस साल गूगलबुक नाम के लैपटॉप आए। लैपटॉप यानी खुलने वाली किताब, जिसके अंदर इंटरनेट था।"],
+  ["hema", "Vintage gadget. On the first of October, Legato Frames launched. Glasses that listened, for 999 dollars.", "", "पुराना गैजेट। एक अक्टूबर को लेगाटो फ़्रेम्स लॉन्च हुए। सुनने वाले चश्मे, 999 डॉलर के।"],
+  ["hema", "These days even walls listen. Juhu Chaiwala's walls record, too.", "", "आजकल तो दीवारें भी सुनती हैं। जुहू चायवाला की दीवारें रिकॉर्ड भी करती हैं।"],
+  ["hema", "That's the record. Everything else is just a take. I'm Hema. Namaste, see you tomorrow. In the daytime.", "", "यही है रिकॉर्ड। बाक़ी सब बस राय है। मैं हेमा। नमस्ते, कल मिलते हैं। दिन में।"]]},
  {id:"ad1",ch:"Fa Corp Break",scene:"ad",cast:["fadarr"],stamp:"Paid programming",role:"A message from Fa Corporation",lines:[
-  ["fadarr", "Brothers and sisters. Do you cough?", ""],
-  ["fadarr", "Fa Cough Syrup. Blessed by Fa Corporation.", ""],
-  ["fadarr", "Side effects may include eviction.", ""],
-  ["fadarr", "Fa Corp. Unlimited space. In space.", ""]]},
+  ["fadarr", "Brothers and sisters. Do you cough?", "", "സഹോദരീ സഹോദരന്മാരേ. നിങ്ങൾക്ക് ചുമയുണ്ടോ?"],
+  ["fadarr", "Fa Cough Syrup. Blessed by Fa Corporation.", "", "ഫാ കഫ് സിറപ്പ്. ഫാ കോർപ്പറേഷന്റെ അനുഗ്രഹത്തോടെ."],
+  ["fadarr", "Side effects may include eviction.", "", "പാർശ്വഫലങ്ങളിൽ കുടിയൊഴിപ്പിക്കലും ഉൾപ്പെട്ടേക്കാം."],
+  ["fadarr", "Fa Corp. Unlimited space. In space.", "", "ഫാ കോർപ്പ്. പരിധിയില്ലാത്ത സ്ഥലം. ബഹിരാകാശത്ത്."]]},
  {id:"shop",ch:"Tomorrow Shop",scene:"chai",cast:["jc","chaibot"],stamp:"Ep 1 · Rama Tuta 2.0",role:"Juhu Chaiwala's Tomorrow Shop",lines:[
-  ["jc", "Welcome to Juhu Chaiwala's Tomorrow Shop. Companies used to say coming soon. Here, everything came long ago.", ""],
-  ["jc", "Today's product: Rama Tuta 2.0. A home robot. Sweeping, mopping, cooking, everything.", ""],
-  ["chaibot", "And fast too.", ""],
-  ["jc", "The problem? The robot did all the work, so the aunties had nothing left to gossip about.", ""],
-  ["jc", "Version 2.0 shipped a patch. Now the robot gossips itself. The building's news, every evening at seven.", ""],
-  ["jc", "What happened next? The society made the robot its secretary. The first meeting in history to end on time.", ""],
-  ["jc", "Shadow entrance price, twelve rupees. Sunny entrance price, nine hundred. Same robot. Different door.", ""],
-  ["chaibot", "Here is your chai. From a bot.", ""]]},
+  ["jc", "Welcome to Juhu Chaiwala's Tomorrow Shop. Companies used to say coming soon. Here, everything came long ago.", "", "जुहू चायवाला की टुमॉरो शॉप में स्वागत है। कंपनियाँ कहती थीं, जल्द आ रहा है। यहाँ सब कुछ कब का आ चुका।"],
+  ["jc", "Today's product: Rama Tuta 2.0. A home robot. Sweeping, mopping, cooking, everything.", "", "आज का प्रोडक्ट: रामा तुता 2.0। घर का रोबोट। झाड़ू, पोंछा, खाना, सब कुछ।"],
+  ["chaibot", "And fast too.", "", "और फ़ास्ट भी।"],
+  ["jc", "The problem? The robot did all the work, so the aunties had nothing left to gossip about.", "", "दिक़्क़त? सारा काम रोबोट ने कर दिया, तो आंटियों के पास गॉसिप के लिए कुछ बचा ही नहीं।"],
+  ["jc", "Version 2.0 shipped a patch. Now the robot gossips itself. The building's news, every evening at seven.", "", "वर्ज़न 2.0 में पैच आया। अब रोबोट ख़ुद गॉसिप करता है। बिल्डिंग की ख़बरें, रोज़ शाम सात बजे।"],
+  ["jc", "What happened next? The society made the robot its secretary. The first meeting in history to end on time.", "", "फिर क्या हुआ? सोसाइटी ने रोबोट को सेक्रेटरी बना दिया। इतिहास की पहली मीटिंग जो टाइम पर ख़त्म हुई।"],
+  ["jc", "Shadow entrance price, twelve rupees. Sunny entrance price, nine hundred. Same robot. Different door.", "", "छाँव वाले दरवाज़े पर दाम, बारह रुपये। धूप वाले दरवाज़े पर, नौ सौ। रोबोट वही। दरवाज़ा अलग।"],
+  ["chaibot", "Here is your chai. From a bot.", "", "ये लीजिए आपकी चाय। बॉट के हाथ से।"]]},
  {id:"meter",ch:"Meter Down",scene:"taxi",cast:["tchu"],stamp:"Live · Shivajinagar",role:"Field report · Meter Down",lines:[
-  ["tchu", "Namaskara! Meter down. Tchu Tchu reporting, live from the taxi.", "Namaskara: hello, in Kannada."],
-  ["tchu", "Fa King Construction has stuck posters all over Shivajinagar again. Who notices a notice?", ""],
-  ["tchu", "The Dalmatian sniffed the poster. Something is fishy with that Dalmatian, I'm telling you.", ""],
-  ["tchu", "I have to drop Hema madam at an interview. First, the car wash. Work is warship.", ""],
-  ["tchu", "Tchu Tchu, AIMTV, Bombai. The meter is still running.", ""]]},
+  ["tchu", "Namaskara! Meter down. Tchu Tchu reporting, live from the taxi.", "Namaskara: hello, in Kannada.", "ನಮಸ್ಕಾರ! ಮೀಟರ್ ಡೌನ್. ಚೂ ಚೂ ವರದಿ, ಟ್ಯಾಕ್ಸಿಯಿಂದ ನೇರವಾಗಿ."],
+  ["tchu", "Fa King Construction has stuck posters all over Shivajinagar again. Who notices a notice?", "", "ಫಾ ಕಿಂಗ್ ಕನ್‌ಸ್ಟ್ರಕ್ಷನ್ ಮತ್ತೆ ಶಿವಾಜಿನಗರದ ತುಂಬಾ ಪೋಸ್ಟರ್ ಅಂಟಿಸಿದೆ. ನೋಟಿಸ್ ಅನ್ನು ಯಾರು ಗಮನಿಸ್ತಾರೆ?"],
+  ["tchu", "The Dalmatian sniffed the poster. Something is fishy with that Dalmatian, I'm telling you.", "", "ಡಾಲ್ಮೇಷನ್ ಪೋಸ್ಟರ್ ಮೂಸಿ ನೋಡಿತು. ಆ ಡಾಲ್ಮೇಷನ್ ಬಗ್ಗೆ ಏನೋ ಡೌಟ್ ಇದೆ, ನಾನು ಹೇಳ್ತಿದೀನಿ."],
+  ["tchu", "I have to drop Hema madam at an interview. First, the car wash. Work is warship.", "", "ಹೇಮಾ ಮೇಡಂನ ಇಂಟರ್‌ವ್ಯೂಗೆ ಬಿಡಬೇಕು. ಮೊದಲು ಕಾರ್ ವಾಶ್. ಕೆಲಸವೇ ವಾರ್‌ಶಿಪ್."],
+  ["tchu", "Tchu Tchu, AIMTV, Bombai. The meter is still running.", "", "ಚೂ ಚೂ, ಎಐಎಂಟಿವಿ, ಬೊಂಬಾಯಿ. ಮೀಟರ್ ಇನ್ನೂ ಓಡ್ತಾ ಇದೆ."]]},
  {id:"psa",ch:"Road Cross PSA",scene:"psa",cast:["mrst"],stamp:"Public service",role:"Road Cross · since 2008",lines:[
-  ["mrst", "Jhulelal, babuji. A small message from Road Cross.", "Jhulelal: a Sindhi greeting."],
-  ["mrst", "When you cross the road, look left, look right, and look up. Taxis fly now.", ""],
-  ["mrst", "Don't take tension. We help you cross.", ""]]},
+  ["mrst", "Jhulelal, babuji. A small message from Road Cross.", "Jhulelal: a Sindhi greeting.", "झूलेलाल, बाबूजी। रोड क्रॉस जो हिकु नंढो संदेसो।"],
+  ["mrst", "When you cross the road, look left, look right, and look up. Taxis fly now.", "", "जडहिं रस्तो पार करियो, खाबे डिसो, साजे डिसो, मथे बि डिसो। हाणे टैक्सियूं उडामनि थियूं।"],
+  ["mrst", "Don't take tension. We help you cross.", "", "टेंशन न वठो। असीं पार कराईंदासीं।"]]},
  {id:"travel",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 1 · Lonavala",role:"Stomach Challo Travels",lines:[
-  ["sarla", "Hi guys! Welcome back to Stomach Challo Travels. Today we're going somewhere so foreign.", ""],
-  ["sarla", "Location: Lonavala. It's like, basically Switzerland. With chikki.", ""],
-  ["lata", "Kem cho! Sarla baby, want a dosa? It's diet time!", "Kem cho: hello, in Gujarati."],
-  ["sarla", "Mommy, I'm literally live. Sorry guys, my mom is like, in every reel.", ""],
-  ["sarla", "Tchu Tchu uncle says it's two hours away. In 2041, two hours is basically international.", ""],
-  ["sarla", "Like, share, follow. Stomach Challo. I love foreign.", ""]]},
+  ["sarla", "Hi guys! Welcome back to Stomach Challo Travels. Today we're going somewhere so foreign.", "", "હાય ગાય્ઝ! સ્ટમક ચલો ટ્રાવેલ્સમાં ફરી સ્વાગત છે. આજે આપણે એકદમ ફોરેન જઈએ છીએ."],
+  ["sarla", "Location: Lonavala. It's like, basically Switzerland. With chikki.", "", "લોકેશન: લોનાવલા. એ તો બેઝિકલી સ્વિટ્ઝર્લેન્ડ જ છે. ચીકી સાથે."],
+  ["lata", "Kem cho! Sarla baby, want a dosa? It's diet time!", "Kem cho: hello, in Gujarati.", "કેમ છો! સરલા બેબી, ઢોસો ખાવો છે? ડાયેટનો ટાઇમ છે!"],
+  ["sarla", "Mommy, I'm literally live. Sorry guys, my mom is like, in every reel.", "", "મમ્મી, હું લિટરલી લાઇવ છું. સોરી ગાય્ઝ, મારી મમ્મી દરેક રીલમાં હોય છે."],
+  ["sarla", "Tchu Tchu uncle says it's two hours away. In 2041, two hours is basically international.", "", "ચૂ ચૂ અંકલ કહે છે બે કલાક દૂર છે. 2041માં બે કલાક એટલે બેઝિકલી ઇન્ટરનેશનલ."],
+  ["sarla", "Like, share, follow. Stomach Challo. I love foreign.", "", "લાઇક, શેર, ફોલો. સ્ટમક ચલો. મને ફોરેન બહુ ગમે."]]},
  {id:"baba",ch:"Baba Ka Aashirwad",scene:"baba",cast:["baba"],stamp:"Daily blessing",role:"Almighty Baba Black Sheep · omni-present",lines:[
-  ["baba", "Baa.", "Baba Black Sheep has blessed this broadcast."],
-  ["baba", "Baa baa.", "Baba will set everything right."]]},
+  ["baba", "Baa.", "Baba Black Sheep has blessed this broadcast.", "बाबा ब्लैक शीप ने इस प्रसारण को आशीर्वाद दिया है।"],
+  ["baba", "Baa baa baa.", "You are either photogenic or sarvajnic.", "या तो आप फ़ोटोजेनिक हैं, या सार्वजनिक।"],
+  ["baba", "Baa baa.", "Baba will set everything right.", "बाबा सब ठीक कर देंगे।"]]},
  {id:"song",ch:"AIMTV Music",scene:"stage",cast:[],stamp:"Now playing",role:"AIMTV Music",music:true,song:true,lines:[["tabla","",""]]},
  {id:"music",ch:"AIMTV Music",scene:"tabla",cast:[],stamp:"New release",role:"Tabla Nari presents",music:true,album:true,lines:[
-  ["tabla", "AIMTV Music. New releases from DoggedTributeBand395.", ""],
-  ["tabla", "Fresh songs, straight from the studio.", ""],
-  ["tabla", "Every new track joins the channel as soon as it is made.", ""],
-  ["tabla", "Now playing, right here on AIMTV.", ""]]},
+  ["tabla", "AIMTV Music. New releases from DoggedTributeBand395.", "", "এআইএমটিভি মিউজিক। DoggedTributeBand395ৰ নতুন গান।"],
+  ["tabla", "Fresh songs, straight from the studio.", "", "ষ্টুডিঅ'ৰ পৰা পোনপটীয়াকৈ নতুন গান।"],
+  ["tabla", "Every new track joins the channel as soon as it is made.", "", "প্ৰতিটো নতুন গান বনোৱাৰ লগে লগে চেনেলত যোগ হয়।"],
+  ["tabla", "Now playing, right here on AIMTV.", "", "এতিয়া বাজি আছে, ইয়াতেই, এআইএমটিভিত।"]]},
  {id:"tablanari",ch:"Tabla Nari Live",scene:"tabla",cast:["tabla"],stamp:"Music · Live loop",role:"Tabla Nari · magic or chaos",music:true,lines:[
-  ["tabla", "Dha dhin dhin dha. Dha dhin dhin dha.", "Turn on sound. Her tabla makes magic or chaos, depending on the situation."],
-  ["tabla", "Dha tin tin ta. Ta dhin dhin dha.", "Tabla Nari is from the northeast, so we don't know much about her."]]}
+  ["tabla", "Dha dhin dhin dha. Dha dhin dhin dha.", "Turn on sound. Her tabla makes magic or chaos, depending on the situation.", "শব্দ অন কৰক। পৰিস্থিতি অনুসৰি তেওঁৰ তবলাই যাদু বা হুলস্থুল সৃষ্টি কৰে।"],
+  ["tabla", "Dha tin tin ta. Ta dhin dhin dha.", "Tabla Nari is from the northeast, so we don't know much about her.", "তবলা নাৰী উত্তৰ-পূবৰ, সেয়েহে তেওঁৰ বিষয়ে আমি বেছি নাজানো।"]]}
 ];
 const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1"];
 const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping"};
@@ -806,11 +855,11 @@ function pruneSongs(){const keep=new Set();[curSong,QUEUE[songI],QUEUE[songI+1]]
 function stopSong(){clearTimeout(songTimer);songTimer=null;lyrStop();if(AUD.src&&AUD.gain){try{AUD.src.stop()}catch(e){}}if(songPaused){songPaused=false;try{ctx().resume()}catch(e){}}if(AUD.gain){try{AUD.gain.disconnect()}catch(e){}AUD.gain=null}}
 function pickSong(){ensureQ(songI+3);curSong=QUEUE[songI];songI++;const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});pruneSongs();return curSong}
 function playSong(){
-  stopSong();hush();
+  stopSong();hush();setOnAir("aimtv");
   const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
   showCard(t,"AIMTV Music · Now playing",isAlbum,n%12,Math.min(SONGS.length,12),true);lyrKey="";lyrSet("","♪ "+t.t+" ♪","",true);
   $("lowerName").textContent="AIMTV Music";
-  $("sub1").textContent="Now playing: "+t.t;$("sub2").textContent=t.s+" · "+MUSIC.album.artist;$("sub2wrap").hidden=!ccOn;
+  setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+MUSIC.album.artist,"");
   const tok=++songTok;
   const done=()=>{if(tok!==songTok)return;stopSong();hush();stopTabla();line=prog.lines.length-1;nextLine()};songDone=done;
   const fallback=()=>{if(tok===songTok)songTimer=setTimeout(done,300)}; /* never air a stand-in tone */
@@ -906,7 +955,7 @@ function clipFor(p,i){return p.live?p.live+i:`p_${p.id}_${i}`}
 function applyLive(j,ticker){
   if(!j||!j.progs)return;
   for(const id in j.progs){const p=byId(id),d=j.progs[id];if(!p||!d.lines||!d.lines.length)continue;
-    p.lines=d.lines.map(l=>[l[0],l[1],l[2]||""]);if(d.stamp)p.stamp=d.stamp;p.live=LIVEBASE+d.clips}
+    p.lines=d.lines.map(l=>[l[0],l[1],l[2]||"",l[3]||""]);if(d.stamp)p.stamp=d.stamp;p.live=LIVEBASE+d.clips}
   if(ticker!==false&&j.ticker&&j.ticker.length){TICK=j.ticker;document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("")}
   LIVEV=j.v;const el=document.getElementById("liveStamp");if(el&&j.updated)el.textContent=new Date(j.updated).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false,day:"2-digit",month:"short"})+" IST";
 }
@@ -972,22 +1021,34 @@ function showProg(p){
   playLine();setTimeout(warmAhead,0);
 }
 function setTalker(who){
+  setOnAir(who);
   const idx=prog.cast.indexOf(who);
   $("host").querySelectorAll("svg").forEach((s,i)=>{s.classList.toggle("dim",prog.cast.length>1&&i!==idx);s.classList.toggle("lead",prog.cast.length>1&&i===idx)});
   $("lowerName").textContent=prog.album?"AIMTV Music":(W[who]||who);
   return $("host").querySelectorAll("svg")[idx<0?0:idx];
 }
 function stopTalk(){clearInterval(talkT);talkT=null;$("host").querySelectorAll("svg").forEach(s=>s.classList.remove("talk"))}
+
+/* subtitles: English line, the speaker's home-language line in yellow, then any English note.
+   Greetings and a few words are set in their own script inside the English, for the Hinglish look. */
+const XW=[["Sat Sri Akal","ਸਤ ਸ੍ਰੀ ਅਕਾਲ","pa"],["Namaskara","ನಮಸ್ಕಾರ","kn"],["Namaskar","नमस्कार","mr"],["Namaste","नमस्ते","hi"],["Kem cho","કેમ છો","gu"],["Jhulelal","झूलेलाल","sd"],["sarvajnic","सार्वजनिक","hi"],["chai","चाय","hi"]];
+const GENRE_RG={"Psychedelic hip-hop":"চাইকেডেলিক হিপ-হপ"};
+const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+function fmtSub(t){let h=escH(t||"");for(const [w,x,l] of XW)h=h.replace(new RegExp("\\b"+w+"\\b","g"),`<span class="xw" lang="${l}" title="${w}">${x}</span>`);return h}
+function setSubs(text,rg,note){
+  $("sub1").innerHTML=fmtSub(text);
+  const s2=$("sub2");s2.className=rg?"rg":"";s2.textContent=rg||"";
+  $("sub2wrap").hidden=!(ccOn&&rg);
+  $("sub3").innerHTML=fmtSub(note||"");$("sub3").hidden=!(ccOn&&note);
+}
 let lineTok=0;
 function playLine(){
   clearTimeout(timer);stopTalk();hush();const lt=++lineTok;
   if(prog.song)return playSong();
   if(paused)return;
-  const [who,text,en]=prog.lines[line];
+  const [who,text,en,rg]=prog.lines[line];
   const el=setTalker(who);
-  $("sub1").textContent=text;
-  $("sub2").textContent=en||"";
-  $("sub2wrap").hidden=!(ccOn&&en);
+  setSubs(text,rg,en);
   if(!(prog.music&&soundOn))talkT=setInterval(()=>el&&el.classList.toggle("talk"),130+Math.random()*60);
   const dur=Math.max(2600,text.length*62);
   const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},120)};
@@ -1055,6 +1116,12 @@ function startTabla(){stopTabla();tablaStep=0;tablaT=setInterval(()=>{if(paused)
 function stopTabla(){clearInterval(tablaT);tablaT=null}
 
 /* ============ CONTROLS ============ */
+
+/* wide screens: channels, sound and programming sit in the right rail, above the sponsor */
+(function(){const d=$("dock"),home=d.parentNode,anchor=d.nextSibling,rail=document.querySelector(".rail"),mq=matchMedia("(min-width:981px)");
+ const f=$("famebox"),fhome=f.parentNode,fnext=f.nextSibling;
+ const place=()=>{if(mq.matches){if(d.parentNode!==rail)rail.insertBefore(d,rail.firstChild);if(f.parentNode!==home)home.appendChild(f)}else{if(d.parentNode!==home)home.insertBefore(d,anchor);if(f.parentNode!==fhome)fhome.insertBefore(f,fnext)}};
+ place();mq.addEventListener?mq.addEventListener("change",place):mq.addListener(place)})();
 $("chans").innerHTML=CHANNELS.map((c,i)=>`<button data-i="${i}" aria-current="${i===0}">${String(i+1).padStart(2,"0")} ${CHLABEL[c]}</button>`).join("");
 $("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)tune(+b.dataset.i)});
 $("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
@@ -1065,7 +1132,7 @@ $("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSou
 $("power").onclick=()=>{powerOn();switchTo(prog)};
 document.addEventListener("pointerdown",powerOn,{capture:true});
 document.addEventListener("keydown",e=>{if(e.key!=="Tab")powerOn()},{capture:true});
-$("cc").onclick=e=>{ccOn=!ccOn;e.currentTarget.setAttribute("aria-pressed",ccOn);$("sub2wrap").hidden=!(ccOn&&$("sub2").textContent)};
+$("cc").onclick=e=>{ccOn=!ccOn;e.currentTarget.setAttribute("aria-pressed",ccOn);$("sub2wrap").hidden=!(ccOn&&$("sub2").textContent);$("sub3").hidden=!(ccOn&&$("sub3").textContent)};
 $("pause").onclick=e=>{paused=!paused;e.currentTarget.setAttribute("aria-pressed",paused);e.currentTarget.textContent=paused?"Play":"Pause";$("paused").hidden=!paused;if(paused){clearTimeout(timer);stopTalk();stopSong();hush()}else playLine()};
 document.querySelectorAll("[data-watch]").forEach(b=>b.addEventListener("click",()=>{tune(CHANNELS.indexOf(b.dataset.watch));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}));
 window.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowUp")tune(chIdx+1);if(e.key==="ArrowDown")tune(chIdx-1)});
@@ -1078,14 +1145,35 @@ function renderAd(){const a=ADS[adI%ADS.length],el=$("adslot");el.hidden=!a.href
  el.querySelector(".sw").innerHTML=a.colors.map((c,i)=>`<path d="M34 34L${34+28*Math.cos(i*1.2566)} ${34+28*Math.sin(i*1.2566)}A28 28 0 0 1 ${34+28*Math.cos((i+1)*1.2566)} ${34+28*Math.sin((i+1)*1.2566)}Z" fill="${c}" opacity=".9"/>`).join("")+`<circle cx="34" cy="34" r="9" fill="#16110c"/><circle cx="34" cy="34" r="4" fill="#f3e9d2"/>`}
 renderAd();if(ADS.length>1)setInterval(()=>{adI++;renderAd()},12000);
 renderMusic();
-/* ============ FAME METER ============ */
-const FAME=[["dimpy","Talwaar Kameez",78],["lata","Bhenji Jumping",74],["mrst","Sindhi Crawford",71],["sarla","Stomach Challo",69],["tabla","Tabla Nari",64],["devi","Fullon Devi",58]];
-let boosts={};try{boosts=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}")}catch(e){boosts={}}
+/* ============ FAME METER: the characters compete on what viewers actually do ============
+   Points: opening points + 10 per like (given while they are on screen) + 1 per minute on screen while watched + 5 per boost.
+   Songs credit AIMTV itself. Counts live in this browser until a shared counter is switched on at hosting. */
+const RULES={like:10,minute:1,boost:5};
+const FAME=[["hema",72],["dimpy",70],["tchu",70],["lata",68],["jc",68],["mrst",66],["sarla",66],["baba",64],["aimtv",62],["tabla",62],["animation",60],["devi",58],["fadarr",54],["chaibot",50]];
+const FNAME=id=>id==="aimtv"?"AIMTV (songs)":(W[id]||id);
+let SC={likes:{},watch:{},boosts:{}};
+try{const o=JSON.parse(localStorage.getItem("aimtv-score")||"null");if(o)SC=Object.assign(SC,o);else{const b=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}");SC.boosts=b}}catch(e){}
+let scSave=0;const saveSC=()=>{clearTimeout(scSave);scSave=setTimeout(()=>{try{localStorage.setItem("aimtv-score",JSON.stringify(SC))}catch(e){}},400)};
+const pts=id=>{const o=(FAME.find(f=>f[0]===id)||[0,0])[1],l=SC.likes[id]||0,m=Math.floor((SC.watch[id]||0)/60),b=SC.boosts[id]||0;return{o,l,m,b,t:o+l*RULES.like+m*RULES.minute+b*RULES.boost}};
+const mini2=id=>id==="aimtv"?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#e8622c"/><text x="20" y="25" text-anchor="middle" font-family="Big Shoulders Display,sans-serif" font-weight="900" font-size="14" fill="#16110c">AI</text></svg>`:P[id]();
 function renderFame(){
-  const rows=FAME.map(([id,n,v])=>[id,n,Math.min(99,v+(boosts[id]||0))]).sort((a,b)=>b[2]-a[2]);
-  $("fame").innerHTML=rows.map(([id,n,v])=>`<div class="row"><div class="nm"><span>${n}</span><button data-boost="${id}" aria-label="Boost ${n}">+ Boost</button></div><span class="v">${v}</span><div class="bar"><i style="width:${v}%"></i></div></div>`).join("");
+  const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t).slice(0,8),top=rows[0][1].t||1;
+  $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");
 }
-$("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;const id=b.dataset.boost;boosts[id]=(boosts[id]||0)+1;try{localStorage.setItem("aimtv-boosts",JSON.stringify(boosts))}catch(err){}renderFame()});
+$("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;const id=b.dataset.boost;SC.boosts[id]=(SC.boosts[id]||0)+1;saveSC();renderFame()});
+/* who gets credit right now: the speaking character, or AIMTV during songs */
+let ONAIR=null;
+function setOnAir(id){ONAIR=id;const b=$("like");if(!b)return;b.hidden=!id;$("likeWho").textContent=id?"Like "+(id==="aimtv"?"this song":FNAME(id)):"Like";b.setAttribute("aria-label",$("likeWho").textContent)}
+$("like").addEventListener("click",()=>{if(!ONAIR)return;SC.likes[ONAIR]=(SC.likes[ONAIR]||0)+1;saveSC();renderFame();
+  const b=$("like");b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),220);const f=document.createElement("span");f.className="fly";f.textContent="+"+RULES.like;b.appendChild(f);setTimeout(()=>f.remove(),1000)});
+setInterval(()=>{if(ONAIR&&prog&&!paused&&!document.hidden){SC.watch[ONAIR]=(SC.watch[ONAIR]||0)+5;saveSC();if(SC.watch[ONAIR]%60===0)renderFame()}},5000);
+function renderMarks(){
+  const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t);
+  return `<button class="knob close" type="button" data-close>Close</button><h3>Fame Meter mark sheet</h3>
+  <p class="rules">How the points are made: <b>opening points</b> to start the season, <b>+${RULES.like}</b> for every like while the character is on screen, <b>+${RULES.minute}</b> for every minute they are on screen while someone watches, <b>+${RULES.boost}</b> for every boost. Songs earn points for AIMTV itself. <span id="marksScope">These counts are from this browser; shared counts from every viewer switch on when the channel is hosted.</span></p>
+  <div class="tw"><table><thead><tr><th>#</th><th>Character</th><th>Opening</th><th>Likes</th><th>Watch time</th><th>Boosts</th><th>Total</th></tr></thead><tbody>${rows.map(([id,p],k)=>`<tr><td>${k+1}</td><td>${FNAME(id)}</td><td>${p.o}</td><td>${p.l}<small>+${p.l*RULES.like} pts</small></td><td>${p.m} min<small>+${p.m*RULES.minute} pts</small></td><td>${p.b}<small>+${p.b*RULES.boost} pts</small></td><td class="tot">${p.t}</td></tr>`).join("")}</tbody></table></div>`;
+}
+$("marksBtn").addEventListener("click",()=>{let d=$("marks");if(!d){d=document.createElement("dialog");d.id="marks";d.className="marks";d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-close]"))d.close()});document.body.appendChild(d)}d.innerHTML=renderMarks();d.showModal?d.showModal():d.setAttribute("open","")});
 
 /* ============ ARCHIVE (THIS DAY, THAT YEAR) ============ */
 const mini=c=>P[c]();
@@ -1112,7 +1200,7 @@ const HEROES=[
  {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (in development)"},
  {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (in development)"},
  {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
- {id:"tabla",n:"Tabla Nari",r:"Real name unknown",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast",job:"Music channel, Tabla Nari Live"},
+ {id:"tabla",n:"Tabla Nari",r:"Real name unknown",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast, so we don't know much about her",job:"Music channel, Tabla Nari Live"},
  {id:"baba",n:"Baba Black Sheep",r:"Almighty",q:"Omni-present. Divine guiding light.",b:"Everywhere",job:"Daily blessing bumper"},
  {id:"chaibot",n:"Chaibot",r:"Juhu Chaiwala's robot",q:"Ye chaibot accha chai banata hai. Aur fast bhi.",b:"The shadow entrance",job:"Co-host, Tomorrow Shop"}
 ];
