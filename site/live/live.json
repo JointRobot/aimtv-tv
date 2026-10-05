@@ -15,27 +15,27 @@
     ],
     [
      "hema",
-     "Old diplomacy. The Swiss President began a three day India visit, with trade and the India EFTA partnership on the table.",
+     "Old education. The government approved five centres of excellence for classical languages, including Marathi, Bengali, Assamese, Pali and Prakrit.",
      ""
     ],
     [
      "hema",
-     "Back then, deals took three days of meetings. Today, our assistants finish the treaty before the handshake.",
+     "Back then, languages needed a centre to be protected. Today, our assistants translate everything, and still mishear every wedding invitation.",
      ""
     ],
     [
      "hema",
-     "Old sport. India finished fourth at the Asian Games in Aichi Nagoya, with twenty one gold medals.",
+     "Old football. Brazil beat India four goals to nil in a friendly in Kolkata. The Blue Tigers faced a five time world champion.",
      ""
     ],
     [
      "hema",
-     "Fourth place, and everyone said it with pride. Today, the podium is a subscription tier.",
+     "Fifteen years later, football is played by sponsors, and the ball is a subscription. Nobody has won a friendly since.",
      ""
     ],
     [
      "hema",
-     "Ancient media. Avinash Mishra won season fifteen of Khatron Ke Khiladi. Fifteen years later, fear is streamed in ultra high definition.",
+     "Old weather. The monsoon began leaving Maharashtra, and Mumbai braced for a hot and humid week. Today, the humidity has a loyalty programme.",
      ""
     ],
     [
@@ -44,7 +44,7 @@
      ""
     ]
    ],
-   "clips": "live/tdty_20261005T0220_"
+   "clips": "live/tdty_20261005T0320_"
   },
   "meter": {
    "stamp": "Live · Shivajinagar",
@@ -56,17 +56,17 @@
     ],
     [
      "tchu",
-     "A passenger says the Swiss President is visiting. I asked if he wants a ride. She said he has a motorcade. I said mine has two dogs.",
+     "A passenger says Marathi now has a centre of excellence. I said my meter speaks it fluently: double fare, no discount. Work is warship.",
      ""
     ],
     [
      "tchu",
-     "Another passenger finished fourth in a fare dispute. Gold, silver, bronze, then me. Work is warship.",
+     "Humid again. The Dalmatian is sweating through his spots. Something is fishy with the Dalmatian. Brazil beat India four nil, and he asked for a rematch.",
      ""
     ],
     [
      "tchu",
-     "Sixth notice from Fa King Construction at Celeb Shauchalay. The Dalmatian ate the corner. Something is fishy with the Dalmatian. Who notices a notice?",
+     "Seventh notice from Fa King Construction at Celeb Shauchalay. Now laminated. Who notices a notice?",
      ""
     ],
     [
@@ -75,7 +75,7 @@
      ""
     ]
    ],
-   "clips": "live/meter_20261005T0220_"
+   "clips": "live/meter_20261005T0320_"
   },
   "travel": {
    "stamp": "Stomach Challo Travels",
@@ -179,21 +179,42 @@
     ]
    ],
    "clips": "live/ad1_20261005T0220_"
+  },
+  "psa": {
+   "stamp": "Road Cross · Public Service",
+   "lines": [
+    [
+     "mrst",
+     "Namaste. Sindhi Crawford here, Road Cross, since two thousand eight. The monsoon is leaving, but the puddles are not.",
+     ""
+    ],
+    [
+     "mrst",
+     "Hot and humid means slow walkers and quick drivers. Look both ways, then look again. A zebra crossing is a suggestion only if you are a zebra.",
+     ""
+    ],
+    [
+     "mrst",
+     "Don't take tension. We help you cross.",
+     ""
+    ]
+   ],
+   "clips": "live/psa_20261005T0320_"
   }
  },
  "ticker": [
   "ARCHIVED: 5 OCTOBER 2026",
-  "SWISS PRESIDENT BEGINS THREE DAY INDIA VISIT, TRADE AND EFTA PACT ON AGENDA",
-  "INDIA FINISHES FOURTH AT AICHI-NAGOYA ASIAN GAMES",
-  "AVINASH MISHRA WINS KHATRON KE KHILADI SEASON 15",
-  "INDIA AND CANADA OPEN FIFTH ROUND OF TRADE TALKS",
-  "FA COUGH SYRUP: NOW WITH FREE SIDE EFFECTS",
-  "TCHU TCHU: THE DALMATIAN WANTS A SWISS PASSPORT",
-  "FA KING CONSTRUCTION: SIXTH NOTICE AT CELEB SHAUCHALAY",
+  "EDUCATION MINISTRY APPROVES FIVE CENTRES OF EXCELLENCE FOR CLASSICAL LANGUAGES, MARATHI INCLUDED",
+  "BRAZIL BEAT INDIA 4-0 IN KOLKATA FRIENDLY",
+  "MONSOON RETREATS FROM MUMBAI, HOT AND HUMID WEEK AHEAD",
+  "SWISS PRESIDENT IN INDIA: TRADE TALKS ON TODAY'S AGENDA",
+  "FA KING CONSTRUCTION: SEVENTH NOTICE AT CELEB SHAUCHALAY",
+  "FA CARS: NOW WITH FREE ROOF, NO CAR",
+  "TCHU TCHU: THE DALMATIAN WANTS A CLASSICAL LANGUAGE",
   "JUHU CHAIWALA: CHAI RS 12 IN THE SHADOW, RS 900 IN THE SUN",
   "ROAD CROSS: DON'T TAKE TENSION, WE HELP YOU CROSS",
   "FAME METER: NO PUBLICITY, NO ACTION"
  ],
- "v": "20261005T0220",
- "updated": "2026-10-05T02:20:07Z"
+ "v": "20261005T0320",
+ "updated": "2026-10-05T03:20:15Z"
 }
