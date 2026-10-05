@@ -1,0 +1,8 @@
+/live/*
+  Cache-Control: no-store
+/music/*
+  Cache-Control: public, max-age=604800
+/vo/*
+  Cache-Control: public, max-age=86400
+/index.html
+  Cache-Control: no-cache

@@ -819,7 +819,13 @@ const PROGS=[
 ];
 const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1"];
 const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping"};
-const LIVE_ORDER=["ident","song","tdty","song","ad1","song","shop","song","meter","song","psa","song","travel","song","baba","song"];
+/* AIMTV Live: the programmes play in a fresh random order for every viewer (and every lap), each followed by a song */
+const LIVE_PROGS=["ident","tdty","ad1","shop","meter","psa","travel","baba"];
+let LIVE_ORDER=[];
+function shuffleLive(){const prev=LIVE_ORDER.length?LIVE_ORDER[LIVE_ORDER.length-2]:null;let a;
+  do{a=LIVE_PROGS.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}while(a.length>1&&a[0]===prev);
+  LIVE_ORDER=a.flatMap(x=>[x,"song"])}
+shuffleLive();
 
 const MUSIC={album:{title:"AIMTV Music",artist:"AIMTV artists",tag:"New releases",tracks:[{"t": "Midnight Tabs", "ar": "Bandre 3000", "id": "91f31754-6922-44d6-aff2-07be5f1e8fa4", "a": 1, "d": "3:28", "s": "Psychedelic hip-hop"}, {"t": "Swipe Into Love", "ar": "Beautiful", "id": "3de13e2b-6443-4c66-a2ad-ac6d86edb877", "a": 1, "d": "3:44", "s": "Psychedelic hip-hop"}, {"t": "LinkedIn to You", "ar": "Joint Robot", "id": "d84dc14f-5618-48e5-9ad5-ddcbd68fd62c", "a": 1, "d": "3:20", "s": "Psychedelic hip-hop"}, {"t": "Tender on Tinder", "ar": "Beautiful Stranger", "id": "9c6997dd-c95c-45a1-9bdb-56a728d07693", "a": 1, "d": "3:07", "s": "Psychedelic hip-hop"}]},fill:[]};
 
@@ -1072,7 +1078,7 @@ function nextLine(){
   line++;
   if(line>=prog.lines.length){
     if(CHANNELS[chIdx]==="music")return showProg(byId("song")); /* music channel: song after song */
-    if(CHANNELS[chIdx]==="live"){liveIdx=(liveIdx+1)%LIVE_ORDER.length;return switchTo(byId(LIVE_ORDER[liveIdx]),false)}
+    if(CHANNELS[chIdx]==="live"){liveIdx=(liveIdx+1)%LIVE_ORDER.length;if(liveIdx===0)shuffleLive();return switchTo(byId(LIVE_ORDER[liveIdx]),false)}
     line=0;
   }
   playLine();
@@ -1154,23 +1160,37 @@ const FNAME=id=>id==="aimtv"?"AIMTV (songs)":(W[id]||id);
 let SC={likes:{},watch:{},boosts:{}};
 try{const o=JSON.parse(localStorage.getItem("aimtv-score")||"null");if(o)SC=Object.assign(SC,o);else{const b=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}");SC.boosts=b}}catch(e){}
 let scSave=0;const saveSC=()=>{clearTimeout(scSave);scSave=setTimeout(()=>{try{localStorage.setItem("aimtv-score",JSON.stringify(SC))}catch(e){}},400)};
-const pts=id=>{const o=(FAME.find(f=>f[0]===id)||[0,0])[1],l=SC.likes[id]||0,m=Math.floor((SC.watch[id]||0)/60),b=SC.boosts[id]||0;return{o,l,m,b,t:o+l*RULES.like+m*RULES.minute+b*RULES.boost}};
+/* shared counts: when the page is served with the score API (Cloudflare), every viewer's likes, watch time and boosts add up */
+let SHARED=null,PEND={likes:{},watch:{},boosts:{}},flushT=0;
+const KEYMAP={like:"likes",watch:"watch",boost:"boosts"};
+const cnt=(k,id)=>SHARED?(SHARED[k][id]||0)+(PEND[k][id]||0):(SC[k][id]||0);
+function bump(kind,id,n){const k=KEYMAP[kind];SC[k][id]=(SC[k][id]||0)+n;saveSC();if(SHARED){PEND[k][id]=(PEND[k][id]||0)+n;if(!flushT||kind!=="watch"){clearTimeout(flushT);flushT=setTimeout(()=>{flushT=0;flushScore()},kind==="watch"?30000:1500)}}}
+function takePend(){const b=PEND;PEND={likes:{},watch:{},boosts:{}};return b}
+async function flushScore(){if(!SHARED)return;const body=takePend();if(!Object.values(body).some(m=>Object.keys(m).length))return;
+  try{const r=await fetch("/api/score",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw 0;SHARED=await r.json();renderFame()}
+  catch(e){for(const k in body)for(const id in body[k])PEND[k][id]=(PEND[k][id]||0)+body[k][id]}}
+async function loadShared(){if(!/^https?:$/.test(location.protocol)||document.body.classList.contains("bc"))return;
+  try{const r=await fetch("/api/score",{cache:"no-store"});const ct=r.headers.get("content-type")||"";if(!r.ok||!ct.includes("json"))return;const j=await r.json();if(!j.likes)return;
+    SHARED=j;const n=$("fameNote");if(n)n.textContent="Counted from every viewer.";renderFame()}catch(e){}}
+addEventListener("pagehide",()=>{if(!SHARED)return;const b=takePend();if(Object.values(b).some(m=>Object.keys(m).length)&&navigator.sendBeacon)navigator.sendBeacon("/api/score",new Blob([JSON.stringify(b)],{type:"application/json"}))});
+setTimeout(loadShared,800);setInterval(()=>{if(SHARED)loadShared()},90000);
+const pts=id=>{const o=(FAME.find(f=>f[0]===id)||[0,0])[1],l=cnt("likes",id),m=Math.floor(cnt("watch",id)/60),b=cnt("boosts",id);return{o,l,m,b,t:o+l*RULES.like+m*RULES.minute+b*RULES.boost}};
 const mini2=id=>id==="aimtv"?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#e8622c"/><text x="20" y="25" text-anchor="middle" font-family="Big Shoulders Display,sans-serif" font-weight="900" font-size="14" fill="#16110c">AI</text></svg>`:P[id]();
 function renderFame(){
   const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t).slice(0,8),top=rows[0][1].t||1;
   $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");
 }
-$("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;const id=b.dataset.boost;SC.boosts[id]=(SC.boosts[id]||0)+1;saveSC();renderFame()});
+$("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;bump("boost",b.dataset.boost,1);renderFame()});
 /* who gets credit right now: the speaking character, or AIMTV during songs */
 let ONAIR=null;
 function setOnAir(id){ONAIR=id;const b=$("like");if(!b)return;b.hidden=!id;$("likeWho").textContent=id?"Like "+(id==="aimtv"?"this song":FNAME(id)):"Like";b.setAttribute("aria-label",$("likeWho").textContent)}
-$("like").addEventListener("click",()=>{if(!ONAIR)return;SC.likes[ONAIR]=(SC.likes[ONAIR]||0)+1;saveSC();renderFame();
+$("like").addEventListener("click",()=>{if(!ONAIR)return;bump("like",ONAIR,1);renderFame();
   const b=$("like");b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),220);const f=document.createElement("span");f.className="fly";f.textContent="+"+RULES.like;b.appendChild(f);setTimeout(()=>f.remove(),1000)});
-setInterval(()=>{if(ONAIR&&prog&&!paused&&!document.hidden){SC.watch[ONAIR]=(SC.watch[ONAIR]||0)+5;saveSC();if(SC.watch[ONAIR]%60===0)renderFame()}},5000);
+setInterval(()=>{if(ONAIR&&prog&&!paused&&!document.hidden&&!document.body.classList.contains("bc")){bump("watch",ONAIR,5);if(cnt("watch",ONAIR)%60<5)renderFame()}},5000);
 function renderMarks(){
   const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t);
   return `<button class="knob close" type="button" data-close>Close</button><h3>Fame Meter mark sheet</h3>
-  <p class="rules">How the points are made: <b>opening points</b> to start the season, <b>+${RULES.like}</b> for every like while the character is on screen, <b>+${RULES.minute}</b> for every minute they are on screen while someone watches, <b>+${RULES.boost}</b> for every boost. Songs earn points for AIMTV itself. <span id="marksScope">These counts are from this browser; shared counts from every viewer switch on when the channel is hosted.</span></p>
+  <p class="rules">How the points are made: <b>opening points</b> to start the season, <b>+${RULES.like}</b> for every like while the character is on screen, <b>+${RULES.minute}</b> for every minute they are on screen while someone watches, <b>+${RULES.boost}</b> for every boost. Songs earn points for AIMTV itself. <span id="marksScope">${SHARED?"These counts add up every viewer of the channel.":"These counts are from this browser; shared counts from every viewer switch on where the channel is hosted."}</span></p>
   <div class="tw"><table><thead><tr><th>#</th><th>Character</th><th>Opening</th><th>Likes</th><th>Watch time</th><th>Boosts</th><th>Total</th></tr></thead><tbody>${rows.map(([id,p],k)=>`<tr><td>${k+1}</td><td>${FNAME(id)}</td><td>${p.o}</td><td>${p.l}<small>+${p.l*RULES.like} pts</small></td><td>${p.m} min<small>+${p.m*RULES.minute} pts</small></td><td>${p.b}<small>+${p.b*RULES.boost} pts</small></td><td class="tot">${p.t}</td></tr>`).join("")}</tbody></table></div>`;
 }
 $("marksBtn").addEventListener("click",()=>{let d=$("marks");if(!d){d=document.createElement("dialog");d.id="marks";d.className="marks";d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-close]"))d.close()});document.body.appendChild(d)}d.innerHTML=renderMarks();d.showModal?d.showModal():d.setAttribute("open","")});
@@ -1279,7 +1299,7 @@ try{const t=localStorage.getItem("aimtv-tab");if(t&&$("t-"+t))$("t-"+t).click()}
 const BROADCAST=/[?&]broadcast=1/.test(location.search);
 if(BROADCAST){document.body.classList.add("bc");paused=false;}
 renderClock();renderSched();renderFame();setInterval(()=>{renderClock();renderSched()},30000);
-liveIdx=2;showProg(byId(LIVE_ORDER[2]));
+liveIdx=0;showProg(byId(LIVE_ORDER[0]));
 setSoundUI();
 (function tryAutoplay(){let a=null;try{a=ctx()}catch(e){}
   if(a&&a.state==="running"){powerOn();return}
