@@ -15,27 +15,27 @@
     ],
     [
      "hema",
-     "Old education. The government approved five centres of excellence for classical languages, including Marathi, Bengali, Assamese, Pali and Prakrit.",
+     "Old sport. India finished fourth at the Asian Games in Aichi-Nagoya with eighty five medals, including gold in hockey and cricket.",
      ""
     ],
     [
      "hema",
-     "Back then, languages needed a centre to be protected. Today, our assistants translate everything, and still mishear every wedding invitation.",
+     "Today the medals are leased by the hour, and the podium has a surge price.",
      ""
     ],
     [
      "hema",
-     "Old football. Brazil beat India four goals to nil in a friendly in Kolkata. The Blue Tigers faced a five time world champion.",
+     "Old fuel. Brent crude stayed above one hundred dollars a barrel, yet petrol in Mumbai held steady at one hundred eleven rupees.",
      ""
     ],
     [
      "hema",
-     "Fifteen years later, football is played by sponsors, and the ball is a subscription. Nobody has won a friendly since.",
+     "Vintage gadget: the petrol pump. In 2041, we refuel with patience, and the queue is the fuel.",
      ""
     ],
     [
      "hema",
-     "Old weather. The monsoon began leaving Maharashtra, and Mumbai braced for a hot and humid week. Today, the humidity has a loyalty programme.",
+     "Old markets. Foreign investors sold Indian shares in September, the biggest monthly outflow in six months. Today, money leaves by itself and sends a postcard.",
      ""
     ],
     [
@@ -44,7 +44,7 @@
      ""
     ]
    ],
-   "clips": "live/tdty_20261005T0320_"
+   "clips": "live/tdty_20261005T0420_"
   },
   "meter": {
    "stamp": "Live · Shivajinagar",
@@ -56,17 +56,17 @@
     ],
     [
      "tchu",
-     "A passenger says Marathi now has a centre of excellence. I said my meter speaks it fluently: double fare, no discount. Work is warship.",
+     "A passenger says petrol is steady even though oil is above a hundred dollars. I said my meter is also steady: it only goes up. Work is warship.",
      ""
     ],
     [
      "tchu",
-     "Humid again. The Dalmatian is sweating through his spots. Something is fishy with the Dalmatian. Brazil beat India four nil, and he asked for a rematch.",
+     "India got eighty five medals at the Asian Games. The Dalmatian wants one for sitting still. Something is fishy with the Dalmatian.",
      ""
     ],
     [
      "tchu",
-     "Seventh notice from Fa King Construction at Celeb Shauchalay. Now laminated. Who notices a notice?",
+     "Eighth notice from Fa King Construction at Celeb Shauchalay. Now scented with lavender. Who notices a notice?",
      ""
     ],
     [
@@ -75,7 +75,7 @@
      ""
     ]
    ],
-   "clips": "live/meter_20261005T0320_"
+   "clips": "live/meter_20261005T0420_"
   },
   "travel": {
    "stamp": "Stomach Challo Travels",
@@ -200,21 +200,42 @@
     ]
    ],
    "clips": "live/psa_20261005T0320_"
+  },
+  "baba": {
+   "stamp": "Almighty Baba Black Sheep",
+   "lines": [
+    [
+     "baba",
+     "Baa.",
+     ""
+    ],
+    [
+     "baba",
+     "Baa baa. Today's blessing: may your chai be warm, your queue be short, and your notice be unread.",
+     ""
+    ],
+    [
+     "baba",
+     "Baa.",
+     ""
+    ]
+   ],
+   "clips": "live/baba_20261005T0420_"
   }
  },
  "ticker": [
   "ARCHIVED: 5 OCTOBER 2026",
-  "EDUCATION MINISTRY APPROVES FIVE CENTRES OF EXCELLENCE FOR CLASSICAL LANGUAGES, MARATHI INCLUDED",
-  "BRAZIL BEAT INDIA 4-0 IN KOLKATA FRIENDLY",
-  "MONSOON RETREATS FROM MUMBAI, HOT AND HUMID WEEK AHEAD",
-  "SWISS PRESIDENT IN INDIA: TRADE TALKS ON TODAY'S AGENDA",
-  "FA KING CONSTRUCTION: SEVENTH NOTICE AT CELEB SHAUCHALAY",
-  "FA CARS: NOW WITH FREE ROOF, NO CAR",
-  "TCHU TCHU: THE DALMATIAN WANTS A CLASSICAL LANGUAGE",
+  "INDIA FINISH FOURTH AT AICHI-NAGOYA ASIAN GAMES WITH 85 MEDALS, GOLD IN HOCKEY AND CRICKET",
+  "BRENT CRUDE ABOVE $100, MUMBAI PETROL HOLDS AT RS 111.21",
+  "FOREIGN INVESTORS SELL INDIAN STOCKS: SEPTEMBER OUTFLOW AT SIX-MONTH HIGH",
+  "SWISS PRESIDENT IN INDIA FOR THREE-DAY VISIT, EFTA SUMMIT ON 7 OCTOBER",
+  "FA KING CONSTRUCTION: EIGHTH NOTICE AT CELEB SHAUCHALAY, NOW SCENTED",
+  "FA WAKE UP: THE ALARM CLOCK THAT RINGS YOUR RELATIVES",
+  "BABA BLACK SHEEP: TODAY'S BLESSING IS BAA",
   "JUHU CHAIWALA: CHAI RS 12 IN THE SHADOW, RS 900 IN THE SUN",
   "ROAD CROSS: DON'T TAKE TENSION, WE HELP YOU CROSS",
   "FAME METER: NO PUBLICITY, NO ACTION"
  ],
- "v": "20261005T0320",
- "updated": "2026-10-05T03:20:15Z"
+ "v": "20261005T0420",
+ "updated": "2026-10-05T04:20:32Z"
 }
