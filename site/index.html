@@ -520,7 +520,6 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
         <div>
           <h2>Juhu Chaiwala's Tomorrow Shop</h2>
           <p class="lede">Companies announce what they are going to launch. At JC's stall it has already launched, been returned and gone on sale. Hosted by Juhu Chaiwala, The Spy with Chai, with his Chaibot, which makes chai "aur fast bhi".</p>
-          <p><span class="chip canon">Canon</span> JC, the Chaibot, CHAI CAM, the Rs 12 / Rs 900 two-entrance stall. <span class="chip proposed">Proposed</span> the show and Rama Tuta 2.0.</p>
           <div style="margin:16px 0"><button class="watch" data-watch="shop">Watch episode 1</button></div>
           <ul class="seg">
             <li><span>SEG 1</span><div><b>Unboxing from the Future.</b> JC opens a product that has been on the market for years.</div></li>
@@ -529,7 +528,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
           </ul>
         </div>
         <div class="card">
-          <div class="cat"><span>Episode 1 · Product under review</span><span class="chip proposed">Proposed</span></div>
+          <div class="cat"><span>Episode 1 · Product under review</span></div>
           <h4>Rama Tuta 2.0</h4>
           <p>A household robot that sweeps, mops, cooks and organises. Version 1.0 did every chore, which left the aunties of the building with nothing to gossip about. Version 2.0 shipped a patch: the robot now gossips itself, and reads the building's news at 7 pm.</p>
           <p><b>Unintended consequence:</b> the housing society elected it secretary. The meeting ended on time for the first time in the society's history.</p>
@@ -543,7 +542,6 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
         <div>
           <h2>Stomach Challo Travels</h2>
           <p class="lede">Sarla Seth films herself reviewing "so foreign" destinations in her American call-centre accent. Every destination turns out to be a taxi ride from Shivajinagar. Her mother, Bhenji Jumping, skateboards into every reel with a plate of dosas.</p>
-          <p><span class="chip canon">Canon</span> Sarla's American accent, her reels, the call centre, Bhenji sneaking into her reels every day. <span class="chip proposed">Proposed</span> the travel-show premise and "I love foreign".</p>
           <div style="margin:16px 0"><button class="watch" data-watch="travel">Watch episode 1</button></div>
         </div>
         <div class="grid" id="trips" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))"></div>
@@ -562,7 +560,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
     </div>
     <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast" hidden>
       <h2>The Cast of Celeb Shauchalay</h2>
-      <p class="lede">Quotes in each card come straight from the comic or the pitch deck. The AIMTV job under each one is new and waiting for the founder's sign-off.</p>
+      <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV.</p>
       <div class="castgrid" id="heroes"></div>
       <div class="subhead">Fa Corp and friends</div>
       <div class="castgrid" id="villains"></div>
@@ -572,7 +570,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       <div class="ask">
         <div>
           <h2>Ask the Cast</h2>
-          <p class="lede">Pick someone and ask them anything. Version 1 answers from a scripted phrasebook written in each character's voice; a live AI cast can plug in later.</p>
+          <p class="lede">Pick someone and ask them anything. Each of them answers in their own voice. Chai is always the safe topic.</p>
           <div class="picker" id="picker"></div>
           <form class="q" id="askform">
             <input id="askinput" type="text" autocomplete="off" placeholder="Ask Juhu Chaiwala something" aria-label="Your question">
@@ -586,9 +584,9 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
     <div class="pane" id="p-products" role="tabpanel" aria-labelledby="t-products" hidden>
       <h2>Future Product Archive</h2>
-      <p class="lede">Every invention found in the comic and deck, plus the network's proposals. Nothing moves from Proposed to Canon without the founder.</p>
+      <p class="lede">Every invention from the Celeb Shauchalay universe, and the problem each one was built to solve.</p>
       <div class="tablewrap"><table>
-        <thead><tr><th>Product</th><th>Status</th><th>Belongs to</th><th>What it does</th><th>The Indian problem it solves</th><th>Source</th></tr></thead>
+        <thead><tr><th>Product</th><th>Belongs to</th><th>What it does</th><th>The Indian problem it solves</th></tr></thead>
         <tbody id="products"></tbody>
       </table></div>
     </div>
@@ -596,7 +594,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
   <footer>
     <span>AIMTV · a We Think, You Thank network · Celeb Shauchalay universe</span>
-    <span>Prototype v1 · Earth 69 · Bombai, Hindia</span>
+    <span>Earth 69 · Bombai, Hindia</span>
   </footer>
 </div>
 
@@ -1346,7 +1344,7 @@ $("archive").innerHTML=ARCH.map(a=>`<article class="card"><div class="cat"><span
 
 /* ============ TRAVEL EPISODES ============ */
 const TRIPS=[["Ep 1","Lonavala","\"Basically Switzerland. With chikki.\"","2 hrs by taxi"],["Ep 2","Matheran","\"No cars allowed. So European.\"","Toy train, 1 Bhenji"],["Ep 3","Daman","\"It's literally a different territory, guys.\"","Passport not needed"],["Ep 4","Alibaug","\"The Maldives, but the ferry has samosas.\"","Ferry from Gateway"]];
-$("trips").innerHTML=TRIPS.map(t=>`<article class="card"><div class="cat"><span>${t[0]}</span><span class="chip proposed">Proposed</span></div><h4>${t[1]}</h4><p>${t[2]}</p><p class="src">${t[3]}</p></article>`).join("");
+$("trips").innerHTML=TRIPS.map(t=>`<article class="card"><div class="cat"><span>${t[0]}</span></div><h4>${t[1]}</h4><p>${t[2]}</p><p class="src">${t[3]}</p></article>`).join("");
 
 /* ============ CAST ============ */
 const HEROES=[
@@ -1356,8 +1354,8 @@ const HEROES=[
  {id:"animation",n:"Animation",r:"Tchu Tchu's dog",q:"A Marathi speaking dog that can move in & out of any media form. Digital, TV, Print, you name it.",b:"Mumbai",job:"Network mascot and continuity host"},
  {id:"lata",n:"Bhenji Jumping",r:"Lata Seth",q:"Skates like Tony Hawk & Bargains like your mother.",b:"Gujarat",job:"Recurring guest, crashes Travels"},
  {id:"sarla",n:"Stomach Challo",r:"Sarla Seth",q:"Her elastic stomach & her sensuousness, that can seduce even a robot.",b:"Gujarat",job:"Host, Stomach Challo Travels"},
- {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (in development)"},
- {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (in development)"},
+ {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (coming soon)"},
+ {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (coming soon)"},
  {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
  {id:"tabla",n:"Tabla Nari",r:"Fatima (probably)",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast, so we don't know much about her",job:"Music channel, Tabla Nari Live"},
  {id:"baba",n:"Baba Black Sheep",r:"Almighty",q:"Omni-present. Divine guiding light.",b:"Everywhere",job:"Daily blessing bumper"},
@@ -1368,13 +1366,13 @@ const VILLAINS=[
  {id:"gutter",n:"GutterFly",r:"Kamala",q:"Runs a brothel with a bank front called Vaishya Bank.",b:"Tamil Nadu",job:"Hostile guest; answers questions by spitting paan"},
  {id:"arnold",n:"Arnold Shivajinagar",r:"Inspector",q:"Really strong & evil cop, who is in bed with the evil Fa Corporation.",b:"Goa",job:"Issues on-air challans to the Celebs"}
 ];
-const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · Belongs to: ${c.b}</div><q>${c.q}</q><div class="role"><span class="chip proposed">Proposed</span> <b>On AIMTV:</b> ${c.job}</div></div></article>`;
+const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div></div></article>`;
 $("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
 $("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");
 
 /* ============ PRODUCTS ============ */
 const PRODUCTS=[
- ["Bio Data","canon","Founder's ad (CS1 Ep 4)","Turns digital data into bio matter, sold as a plant; the more you store, the more it grows.","Deforestation and running out of storage, together.","CS1 Episodes 1-4 synopsis"],
+ ["Bio Data","canon","Bio Data ad break","Turns digital data into bio matter, sold as a plant; the more you store, the more it grows.","Deforestation and running out of storage, together.","CS1 Episodes 1-4 synopsis"],
  ["RAMU 2.0","canon","Every household","The robot servant that replaced the household help.","People still live with their parents; only the servants changed.","CELEB-01 deck, p3"],
  ["The Polite Horn","canon","Fa Art (Fa Corp)","A car horn that shows and says 'Please Move' instead of making a sound.","Noise pollution and road rage on Bombai roads.","Founder's ad script, 15 Mar 2023"],
  ["Sign Language Act","canon","Fa Cares","Sign language becomes the one national language of Hindia from 1 January 2041, replacing all others.","Arguments over whose language is bigger.","Founder's ad script, 15 Mar 2023"],
@@ -1384,14 +1382,13 @@ const PRODUCTS=[
  ["Auto-door Padmini taxi","canon","Tchu Tchu","A black-and-yellow Padmini whose doors open on their own.","Drivers who need both hands for the chai.","Comic p16"],
  ["Road Cross","canon","Sindhi Crawford","An NGO that helps people cross the busy Bombai road.","Crossing a road where taxis now fly.","Comic p32; deck"],
  ["FA Karmachari 2.0","canon","Fa Corporation","Black worker robots with glowing eyes, pistols and umbrellas.","Fa Corp's labour problem. Not anyone else's.","Comic p101–150"],
- ["Fa Cough Syrup","canon","Fa Corporation","A Fa Corp consumer product.","Coughs caused by Fa King demolition dust (proposed joke).","Deck, Fa Darr card"],
+ ["Fa Cough Syrup","canon","Fa Corporation","A Fa Corp consumer product.","Coughs caused by Fa King demolition dust.","Deck, Fa Darr card"],
  ["Project Unearth","canon","Fa Corporation","Real estate offering unlimited space in space, at 50% GST, by destroying Earth.","Bombai has run out of land.","Deck, Ep 9"],
  ["Holographic building","canon","Fa Corporation","A decoy B Block the Celebs attack by mistake.","Hiding a call centre in plain sight.","Deck, Ep 8"],
  ["Rama Tuta 2.0","proposed","Tomorrow Shop","Household robot: cleaning, cooking, organising, and now gossip.","Domestic work, and what an Indian home does when it is automated.","Founder brief"],
- ["Gaurakshak Robot","question","Unknown","Not found in the comic or the deck.","Awaiting the founder's source material.","Founder brief"]
 ];
 const ST={canon:["canon","Canon"],proposed:["proposed","Proposed"],question:["question","Canon question"]};
-$("products").innerHTML=PRODUCTS.map(p=>`<tr><td><b>${p[0]}</b></td><td><span class="chip ${ST[p[1]][0]}">${ST[p[1]][1]}</span></td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td><td class="src">${p[5]}</td></tr>`).join("");
+$("products").innerHTML=PRODUCTS.map(p=>`<tr><td><b>${p[0]}</b></td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td></tr>`).join("");
 
 /* ============ ASK THE CAST ============ */
 const ASK={"jc": {"n": "Juhu Chaiwala", "sug": ["What does chai cost?", "Are you a spy?", "What is Fa Corp planning?"], "rules": [["chai|tea|price|cost|rupee", "Twelve rupees at the shadow entrance. Nine hundred at the sunny entrance. Same chai, different door."], ["spy|detective|secret|cam", "I only sell chai. And listen a little. And record a little."], ["fa|corp|unearth|plan|darr", "The blueprint is still being decoded. Give me time. Have some chai meanwhile."], ["robot|bot|tech|future|product", "Everything has already launched. I'm only telling you what happened after."]], "def": "Good question. The answer is on the sunny side. Nine hundred rupees."}, "sarla": {"n": "Stomach Challo", "sug": ["Where are you travelling next?", "Have you been abroad?", "What does your mom think?"], "rules": [["travel|trip|next|go|destination", "Next week? Matheran. No cars allowed. It's literally Europe, guys."], ["abroad|foreign|outside|country|passport", "I've been to Daman. That's, like, a whole different territory. I love foreign."], ["mom|mommy|bhenji|mother|lata", "She's literally in every reel. And she brings dosas. I'm not complaining. Okay, I'm complaining."], ["call|centre|center|job|work", "I work in a call centre. Hi, this is Sarla from, um, Ohio. How may I help you?"]], "def": "Oh my god, so random. Like and follow for the answer."}, "tchu": {"n": "Tchu Tchu", "sug": ["Where are you now?", "Tell me about your dogs", "Do you know Hema?"], "rules": [["where|now|location", "At the Shivajinagar signal. The meter's running, so get moving."], ["dog|dalmatian|animation", "Two dogs. Dalmatian from the Andamans, Animation from Mumbai. Something is fishy with the Dalmatian."], ["hema|madam|interview", "I drop Hema madam at interviews. Where she goes at night, I don't notice."], ["notice|poster|evict|fa king", "Who notices a notice?"]], "def": "JC, my brother, give this one a chai. Work is warship."}, "hema": {"n": "Hema", "sug": ["What's the news today?", "Where are you at night?", "Who is Fa Darr?"], "rules": [["news|today|record|archive", "Today's record is in the bulletin. Open This Day, That Year and read THE RECORD. The rest is a take."], ["night|malini|dance", "At night? I rest. Next question."], ["fa|darr|corp|ceo", "Fa Darr. Ex-priest, now CEO. I have a source. I won't name them."]], "def": "I need a source for that. Without one, I say nothing."}, "lata": {"n": "Bhenji Jumping", "sug": ["Are you hungry?", "Teach me to bargain", "Where is Sofa Seth?"], "rules": [["hungry|food|dosa|eat", "Kem cho! Want a dosa? Here comes the dosa. Eat, eat, eat!"], ["bargain|price|cheap|aloo|potato", "He said sixty? Give forty. Otherwise I'm leaving on my skateboard."], ["sofa|husband|seth", "Sofa Seth? He's doing karate."]], "def": "Eat first, then ask."}, "mrst": {"n": "Sindhi Crawford", "sug": ["Can you help me cross?", "Tell me about your mole", "What is Road Cross?"], "rules": [["cross|road|help", "Yes, babuji. Look left, look right, and look up. Don't take tension."], ["mole|til|bullet", "My mole stays in its place. Bullets don't stay in theirs."], ["ngo|road cross|work|since", "Road Cross. Helping people cross the road since 2008."]], "def": "Be safe, babuji."}, "animation": {"n": "Animation", "sug": ["What can you do?", "Which media do you like?", "Bark in Marathi"], "rules": [["do|power|can|jump", "I go anywhere. TV, print, phone. Today, your screen.", "मी कुठेही जातो. टीव्ही, प्रिंट, फोन. आज, तुमची स्क्रीन."], ["media|tv|print|digital|like", "Print is cool. TV is warm. Phones are crowded.", "प्रिंट थंड असतं. टीव्ही उबदार असतो. फोनमध्ये गर्दी असते."], ["bark|bhow|marathi", "Woof. That means namaskar.", "भू भू. म्हणजे नमस्कार."]], "def": "Meaning? Ask me again.", "defmr": "म्हणजे? परत विचारा."}};
