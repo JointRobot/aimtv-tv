@@ -1441,7 +1441,7 @@ try{const t=localStorage.getItem("aimtv-tab");if(t&&$("t-"+t))$("t-"+t).click()}
 /* ============ BOOT ============ */
 const BROADCAST=/[?&]broadcast=1/.test(location.search);
 if(BROADCAST){document.body.classList.add("bc");paused=false;
-  const SITE_URL=""; /* set to the website address once hosted */
+  const SITE_URL="aimtv.pages.dev";
   const bcUpd=()=>{try{const song=prog&&prog.song&&curSong;
     $("bcNp").innerHTML=song?`<small>\u266a Now playing</small>${curSong.t} \u00b7 ${curSong.s}`:`<small>On air</small>${prog&&prog.role?prog.role:"AIMTV"}`;
     const top=FAME.map(([id])=>[id,pts(id).t]).sort((a,b)=>b[1]-a[1]).slice(0,3);
