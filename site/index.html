@@ -1123,6 +1123,11 @@ function pickVoice(who){
 function showProg(p){
   if(LIVEQ){applyLive(LIVEQ,false);LIVEQ=null;p=byId(p.id)||p}
   if(p.vj){pickSong();VJNEXT=curSong;p.lines=vjLines(VJNEXT);if(soundOn)loadSong(VJNEXT).catch(()=>{})}
+  if(p.id==="baba"){ /* one short blessing per appearance, then out; a different proverb each time */
+    if(!p.all){p.all=p.lines.slice();p.deck=[]}
+    if(!p.deck.length){p.deck=p.all.map((_,i)=>i).sort(()=>Math.random()-.5);if(p.last!=null&&p.deck[p.deck.length-1]===p.last)p.deck.unshift(p.deck.pop())}
+    p.last=p.deck.pop();p.lines=[p.all[p.last]];
+  }
   prog=p;line=0;
   $("scene").innerHTML=SCENES[p.scene]();
   $("host").innerHTML=p.cast.map(c=>P[c]()).join("");
