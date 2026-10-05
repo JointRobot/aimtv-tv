@@ -804,9 +804,10 @@ const PROGS=[
   ["sarla", "Tchu Tchu uncle says it's two hours away. In 2041, two hours is basically international.", "", "ચૂ ચૂ અંકલ કહે છે બે કલાક દૂર છે. 2041માં બે કલાક એટલે બેઝિકલી ઇન્ટરનેશનલ."],
   ["sarla", "Like, share, follow. Stomach Challo. I love foreign.", "", "લાઇક, શેર, ફોલો. સ્ટમક ચલો. મને ફોરેન બહુ ગમે."]]},
  {id:"baba",ch:"Baba Ka Aashirwad",scene:"baba",cast:["baba"],stamp:"Daily blessing",role:"Almighty Baba Black Sheep · omni-present",lines:[
-  ["baba", "Baa.", "Baba Black Sheep has blessed this broadcast.", "बाबा ब्लैक शीप ने इस प्रसारण को आशीर्वाद दिया है।"],
-  ["baba", "Baa baa baa.", "You are either photogenic or sarvajnic.", "या तो आप फ़ोटोजेनिक हैं, या सार्वजनिक।"],
-  ["baba", "Baa baa.", "Baba will set everything right.", "बाबा सब ठीक कर देंगे।"]]},
+  ["baba", "You are either photogenic or sarvajanic.", "", "या तो आप फ़ोटोजेनिक हैं, या सार्वजनिक।"],
+  ["baba", "Music makes the people come together, because God is a DJ.", "", "संगीत लोगों को साथ लाता है, क्योंकि भगवान एक डीजे है।"],
+  ["baba", "Where there is wool, there is a way.", "", "जहाँ ऊन है, वहाँ राह है।"],
+  ["baba", "Be contemporary, or you will be temporary.", "", "कंटेम्पररी बनो, वरना टेम्पररी हो जाओगे।"]]},
  {id:"song",ch:"AIMTV Music",scene:"stage",cast:[],stamp:"Now playing",role:"AIMTV Music",music:true,song:true,lines:[["tabla","",""]]},
  {id:"music",ch:"AIMTV Music",scene:"tabla",cast:[],stamp:"New release",role:"Tabla Nari presents",music:true,album:true,lines:[
   ["tabla", "AIMTV Music. New releases from the AIMTV artists.", "", "এআইএমটিভি মিউজিক। এআইএমটিভিৰ শিল্পীসকলৰ নতুন গান।"],
@@ -960,7 +961,7 @@ let LIVEV="",LIVEQ=null,LIVEBASE="";
 function clipFor(p,i){return p.live?p.live+i:`p_${p.id}_${i}`}
 function applyLive(j,ticker){
   if(!j||!j.progs)return;
-  for(const id in j.progs){const p=byId(id),d=j.progs[id];if(!p||!d.lines||!d.lines.length)continue;
+  for(const id in j.progs){const p=byId(id),d=j.progs[id];if(!p||id==="baba"||!d.lines||!d.lines.length)continue;
     p.lines=d.lines.map(l=>[l[0],l[1],l[2]||"",l[3]||""]);if(d.stamp)p.stamp=d.stamp;p.live=LIVEBASE+d.clips}
   if(ticker!==false&&j.ticker&&j.ticker.length){TICK=j.ticker;document.getElementById("ticker").innerHTML=TICK.map(t=>`<span>${t}</span>`).join("")}
   LIVEV=j.v;const el=document.getElementById("liveStamp");if(el&&j.updated)el.textContent=new Date(j.updated).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false,day:"2-digit",month:"short"})+" IST";
@@ -1001,7 +1002,33 @@ function playClip(name,onend){
   loadClip(name).then(buf=>{if(AUD.tok!==tok)return;const a=ctx();const s=a.createBufferSource();s.buffer=buf;s.connect(a.destination);s.onended=()=>{if(AUD.tok===tok){AUD.src=null;onend&&onend(false)}};AUD.src=s;s.start()})
    .catch(()=>{if(AUD.tok===tok)onend&&onend(true)});
 }
-function hush(){if(synth)synth.cancel();stopClip()}
+/* Baba Black Sheep never speaks: he bleats (a sheep made in code), and his wisdom is in the subtitles */
+let BLEAT=[];
+function stopBleat(){BLEAT.forEach(n=>{try{n.stop()}catch(e){}});BLEAT=[]}
+function bleat(count,onend){
+  const a=ctx();if(!a){onend&&onend();return 0}
+  stopBleat();const out=a.createGain();out.gain.value=.55;out.connect(a.destination);
+  let t=a.currentTime+.05;
+  for(let k=0;k<count;k++){
+    const len=.55+Math.random()*.4,f0=360+Math.random()*90;
+    const o=a.createOscillator();o.type="sawtooth";
+    o.frequency.setValueAtTime(f0*1.06,t);o.frequency.linearRampToValueAtTime(f0,t+.12);o.frequency.linearRampToValueAtTime(f0*.9,t+len);
+    const lfo=a.createOscillator();lfo.frequency.value=19+Math.random()*6;
+    const lfoF=a.createGain();lfoF.gain.value=f0*.035;lfo.connect(lfoF);lfoF.connect(o.frequency);
+    const trem=a.createGain();trem.gain.value=.6;const lfoA=a.createGain();lfoA.gain.value=.4;lfo.connect(lfoA);lfoA.connect(trem.gain);
+    const env=a.createGain();env.gain.setValueAtTime(0,t);env.gain.linearRampToValueAtTime(1,t+.06);env.gain.setValueAtTime(1,t+len*.7);env.gain.exponentialRampToValueAtTime(.001,t+len);
+    const f1=a.createBiquadFilter();f1.type="bandpass";f1.frequency.value=620;f1.Q.value=4;
+    const f2=a.createBiquadFilter();f2.type="bandpass";f2.frequency.value=1850;f2.Q.value=7;
+    const g2=a.createGain();g2.gain.value=.7;const lp=a.createBiquadFilter();lp.type="lowpass";lp.frequency.value=3600;
+    o.connect(trem);trem.connect(f1);trem.connect(f2);f2.connect(g2);f1.connect(env);g2.connect(env);env.connect(lp);lp.connect(out);
+    o.start(t);lfo.start(t);o.stop(t+len+.05);lfo.stop(t+len+.05);BLEAT.push(o,lfo);
+    t+=len+.22+Math.random()*.2;
+  }
+  const total=(t-a.currentTime)*1000;
+  if(onend){const tk=BLEAT;setTimeout(()=>{if(BLEAT===tk)onend()},total)}
+  return total;
+}
+function hush(){if(synth)synth.cancel();stopClip();stopBleat()}
 function unlockAudio(){const a=ctx();if(!a)return;const b=a.createBuffer(1,1,22050);const s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start()}
 function pickVoice(who){
   const v=VOICE[who]||{};
@@ -1037,7 +1064,7 @@ function stopTalk(){clearInterval(talkT);talkT=null;$("host").querySelectorAll("
 
 /* subtitles: English line, the speaker's home-language line in yellow, then any English note.
    Greetings and a few words are set in their own script inside the English, for the Hinglish look. */
-const XW=[["Sat Sri Akal","ਸਤ ਸ੍ਰੀ ਅਕਾਲ","pa"],["Namaskara","ನಮಸ್ಕಾರ","kn"],["Namaskar","नमस्कार","mr"],["Namaste","नमस्ते","hi"],["Kem cho","કેમ છો","gu"],["Jhulelal","झूलेलाल","sd"],["sarvajnic","सार्वजनिक","hi"],["chai","चाय","hi"]];
+const XW=[["Sat Sri Akal","ਸਤ ਸ੍ਰੀ ਅਕਾਲ","pa"],["Namaskara","ನಮಸ್ಕಾರ","kn"],["Namaskar","नमस्कार","mr"],["Namaste","नमस्ते","hi"],["Kem cho","કેમ છો","gu"],["Jhulelal","झूलेलाल","sd"],["sarvajanic","सार्वजनिक","hi"],["sarvajnic","सार्वजनिक","hi"],["chai","चाय","hi"]];
 const GENRE_RG={"Psychedelic hip-hop":"চাইকেডেলিক হিপ-হপ"};
 const escH=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
 function fmtSub(t){let h=escH(t||"");for(const [w,x,l] of XW)h=h.replace(new RegExp("\\b"+w+"\\b","g"),`<span class="xw" lang="${l}" title="${w}">${x}</span>`);return h}
@@ -1059,6 +1086,12 @@ function playLine(){
   const dur=Math.max(2600,text.length*62);
   const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},120)};
   const clipName=clipFor(prog,line);
+  if(who==="baba"){                 /* bleats, then hold the line long enough to read it */
+    const t0=Date.now(),n=1+Math.floor(Math.random()*3);
+    const after=()=>{const left=dur-(Date.now()-t0);timer=setTimeout(advance,Math.max(400,left))};
+    if(soundOn)bleat(n,after);else after();
+    return;
+  }
   if(soundOn&&!prog.music&&useClips()){
     let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
     const safety=setTimeout(fin,dur+9000);

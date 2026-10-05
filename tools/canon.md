@@ -15,7 +15,7 @@ AIMTV is a television channel from **Earth 69**, city **Bombai, Hindia** (former
 - `sarla`: Stomach Challo, American-accent travel vlogger who has never left West India ("I love foreign"). Hosts **Stomach Challo Travels** (`travel`): a nearby place presented as a foreign trip.
 - `fadarr`: Fa Darr, ex-priest, CEO of Fa Corporation. Voices the sponsor spots (`ad1`): fictional products (Fa Cough Syrup, Fa Cars, Fa King Construction, Fa Call Centre), absurd side effects ("Side effects may include eviction."). Villain, but a comic one.
 - `mrst`: Sindhi Crawford (Mrs Takechandani), Road Cross NGO since 2008. Road-safety PSA (`psa`): "Don't take tension. We help you cross."
-- `baba`: Almighty Baba Black Sheep, the daily blessing (`baba`): speaks only "Baa" lines; the English subtitle carries one short blessing. Keep to 2 to 3 lines. Founder's lines to reuse: "You are either photogenic or sarvajnic."
+- `baba`: Almighty Baba Black Sheep. Founder-written only: the live desk never writes or replaces his lines. He never speaks; he bleats (sheep sound made in code) and his "profound statements" appear as subtitles.
 - Others who can speak if needed: `lata` (Bhenji Jumping, Gujarati aunty, skateboard and dosas), `devi` (Fullon Devi, stunt woman), `animation` (Marathi dog who jumps between media).
 - World facts: Fa King Construction is Fa Corp's demolition arm and keeps posting eviction notices at Celeb Shauchalay, the last chawl, in Shivajinagar. Project Unearth is "unlimited space in space". Fame Meter: "No publicity, no action."
 
@@ -35,7 +35,6 @@ The third field (English language note) is optional and usually empty.
 - `travel` (5 to 6 lines): Sarla's trip to a nearby place described as abroad.
 - `ad1` (4 lines): one fictional Fa Corp product.
 - `psa` (3 lines): one road-safety tip, tied to weather or news where relevant.
-- `baba` (2 to 3 lines).
 
 ## Ticker
 8 to 12 items, short, upper case. Mix: one dated line ("ARCHIVED: 5 OCTOBER 2026"), real headline fragments from today (neutral wording), and canon gags (Fa King demolition, chai prices, Road Cross, Fame Meter). Max about 90 characters each.

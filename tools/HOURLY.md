@@ -9,7 +9,7 @@ Goal: keep the channel live. Every two hours, replace the news bulletin (`tdty`)
    - `tdty`: 8 lines, new items (not the last bulletin's), stamp `Archived · <d> <Mon> 2026`.
    - `meter`: 5 lines, reacting to the same news from the taxi, stamp `Live · Shivajinagar`.
    - `shop`: JC's tech desk from the day's real tech news, stamp `Tech desk · <d> <Mon> 2026`.
-   - one rotating programme chosen by the IST hour: (hour // 2) mod 4 = 0 `travel`, 1 `ad1`, 2 `psa`, 3 `baba`. Format and length as in `tools/canon.md`.
+   - one rotating programme chosen by the IST hour: (hour // 2) mod 3 = 0 `travel`, 1 `ad1`, 2 `psa` (never `baba`: his lines are founder-written). Format and length as in `tools/canon.md`.
    - every line is `[speaker, English text, "", regional line]`: the fourth field is the line in the speaker's home language and script (see "Regional line" in `tools/canon.md`).
    - `ticker`: 8 to 12 items.
 4. Run `python3 tools/live_build.py draft.json`. It checks speakers and lengths, makes the voice clips and rewrites `site/live/live.json`. If it errors, fix the draft and rerun. If ffmpeg is missing flite, `apt-get install -y ffmpeg` (or report it).
