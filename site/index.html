@@ -418,6 +418,12 @@ body.bc .wrap,body.bc .main{display:block;margin:0;padding:0;max-width:none;widt
 body.bc .set{position:fixed;inset:0;border:0;border-radius:0;padding:0;background:#0b0806;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 body.bc .screen{width:calc((100vh - 112px) * 16 / 9);max-width:100vw;border-radius:0}
 body.bc .subs{width:calc((100vh - 112px) * 16 / 9);max-width:100vw;margin:0;height:112px;min-height:0;border:0;border-radius:0;background:#0b0806}
+body.bc .subs{box-sizing:border-box;position:fixed;left:0;bottom:0;width:calc(100vw - 372px);height:112px}
+#bcov{display:none}
+body.bc #bcov{display:flex;position:fixed;right:0;bottom:0;width:372px;height:112px;box-sizing:border-box;padding:8px 14px;flex-direction:column;justify-content:space-between;background:#120d09;border-left:2px solid #e8622c;color:#f3e9d2;font-family:"Big Shoulders Display",sans-serif;overflow:hidden}
+#bcov .np{font-size:19px;font-weight:800;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bcov .np small{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;color:#e8622c;text-transform:uppercase}
+#bcov .fm{font-size:14px;font-weight:600;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#d9caa8}#bcov .fm b{color:#e8622c;margin-right:3px}#bcov .fm span{margin-right:12px}
+#bcov .vt{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#16110c;background:#e8622c;padding:2px 8px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:flex-start;max-width:100%}
 body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .subs .l3{font-size:15px}
 </style>
 
@@ -451,6 +457,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
           <button class="power" id="power" type="button" hidden><span class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="#16110c" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg></span><b>Switch on AIMTV</b><small>Picture and sound</small></button>
         </div>
         <div class="subs" id="subs" aria-live="polite"><span class="l1" id="sub1"></span><span class="l2" id="sub2wrap"><span id="sub2"></span></span><span class="l3" id="sub3"></span></div>
+        <div id="bcov" aria-hidden="true"><div class="np" id="bcNp"></div><div class="fm" id="bcFm"></div><div class="vt" id="bcVt"></div></div>
         <div class="likebar" id="likebar" hidden><span class="lw">On screen <b id="likeName"></b></span><button class="likebtn" id="like" type="button" aria-label="Like"><b>♥</b><span id="likeWho">Like</span></button></div>
       </div>
       <div class="dock" id="dock">
@@ -1433,7 +1440,14 @@ try{const t=localStorage.getItem("aimtv-tab");if(t&&$("t-"+t))$("t-"+t).click()}
 
 /* ============ BOOT ============ */
 const BROADCAST=/[?&]broadcast=1/.test(location.search);
-if(BROADCAST){document.body.classList.add("bc");paused=false;}
+if(BROADCAST){document.body.classList.add("bc");paused=false;
+  const SITE_URL=""; /* set to the website address once hosted */
+  const bcUpd=()=>{try{const song=prog&&prog.song&&curSong;
+    $("bcNp").innerHTML=song?`<small>\u266a Now playing</small>${curSong.t} \u00b7 ${curSong.s}`:`<small>On air</small>${prog&&prog.role?prog.role:"AIMTV"}`;
+    const top=FAME.map(([id])=>[id,pts(id).t]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    $("bcFm").innerHTML="<b>FAME</b>"+top.map(([id,t],k)=>`<span>${k+1} ${FNAME(id).replace(" (songs)","").split(" ")[0]} ${t}</span>`).join("");
+    $("bcVt").textContent=SITE_URL?"Vote \u00b7 "+SITE_URL:"Vote \u00b7 link in description"}catch(e){}};
+  bcUpd();setInterval(bcUpd,2000)}
 setArchive("Archived · "+archLabel());renderClock();renderSched();renderFame();setInterval(()=>{renderClock();renderSched()},30000);
 liveIdx=0;showProg(byId(LIVE_ORDER[0]));
 setSoundUI();
