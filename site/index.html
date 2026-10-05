@@ -514,7 +514,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
     <div class="pane" id="p-music" role="tabpanel" aria-labelledby="t-music" hidden>
       <h2>AIMTV Music</h2>
-      <p class="lede">New releases by DoggedTributeBand395, played right here in the channel. Tabla Nari hosts. New songs are added as they are made.</p>
+      <p class="lede">New releases by the AIMTV artists (Joint Robot, Bandre 3000, Beautiful, Beautiful Stranger and more), played right here in the channel. Tabla Nari hosts. New songs are added as they are made.</p>
       <div style="margin-bottom:18px"><button class="watch" data-watch="music">Watch AIMTV Music</button></div>
       <div class="music-wrap">
         <div><h3 class="mh">Now in the playlist</h3><ol class="tracks" id="albumlist"></ol></div>
@@ -809,7 +809,7 @@ const PROGS=[
   ["baba", "Baa baa.", "Baba will set everything right.", "बाबा सब ठीक कर देंगे।"]]},
  {id:"song",ch:"AIMTV Music",scene:"stage",cast:[],stamp:"Now playing",role:"AIMTV Music",music:true,song:true,lines:[["tabla","",""]]},
  {id:"music",ch:"AIMTV Music",scene:"tabla",cast:[],stamp:"New release",role:"Tabla Nari presents",music:true,album:true,lines:[
-  ["tabla", "AIMTV Music. New releases from DoggedTributeBand395.", "", "এআইএমটিভি মিউজিক। DoggedTributeBand395ৰ নতুন গান।"],
+  ["tabla", "AIMTV Music. New releases from the AIMTV artists.", "", "এআইএমটিভি মিউজিক। এআইএমটিভিৰ শিল্পীসকলৰ নতুন গান।"],
   ["tabla", "Fresh songs, straight from the studio.", "", "ষ্টুডিঅ'ৰ পৰা পোনপটীয়াকৈ নতুন গান।"],
   ["tabla", "Every new track joins the channel as soon as it is made.", "", "প্ৰতিটো নতুন গান বনোৱাৰ লগে লগে চেনেলত যোগ হয়।"],
   ["tabla", "Now playing, right here on AIMTV.", "", "এতিয়া বাজি আছে, ইয়াতেই, এআইএমটিভিত।"]]},
@@ -821,7 +821,7 @@ const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1"]
 const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping"};
 const LIVE_ORDER=["ident","song","tdty","song","ad1","song","shop","song","meter","song","psa","song","travel","song","baba","song"];
 
-const MUSIC={album:{title:"AIMTV Music",artist:"DoggedTributeBand395",tag:"New releases",tracks:[{"t": "Midnight Tabs", "id": "91f31754-6922-44d6-aff2-07be5f1e8fa4", "a": 1, "d": "3:28", "s": "Psychedelic hip-hop"}, {"t": "Swipe Into Love", "id": "3de13e2b-6443-4c66-a2ad-ac6d86edb877", "a": 1, "d": "3:44", "s": "Psychedelic hip-hop"}, {"t": "LinkedIn to You", "id": "d84dc14f-5618-48e5-9ad5-ddcbd68fd62c", "a": 1, "d": "3:20", "s": "Psychedelic hip-hop"}, {"t": "Tender on Tinder", "id": "9c6997dd-c95c-45a1-9bdb-56a728d07693", "a": 1, "d": "3:07", "s": "Psychedelic hip-hop"}]},fill:[]};
+const MUSIC={album:{title:"AIMTV Music",artist:"AIMTV artists",tag:"New releases",tracks:[{"t": "Midnight Tabs", "ar": "Bandre 3000", "id": "91f31754-6922-44d6-aff2-07be5f1e8fa4", "a": 1, "d": "3:28", "s": "Psychedelic hip-hop"}, {"t": "Swipe Into Love", "ar": "Beautiful", "id": "3de13e2b-6443-4c66-a2ad-ac6d86edb877", "a": 1, "d": "3:44", "s": "Psychedelic hip-hop"}, {"t": "LinkedIn to You", "ar": "Joint Robot", "id": "d84dc14f-5618-48e5-9ad5-ddcbd68fd62c", "a": 1, "d": "3:20", "s": "Psychedelic hip-hop"}, {"t": "Tender on Tinder", "ar": "Beautiful Stranger", "id": "9c6997dd-c95c-45a1-9bdb-56a728d07693", "a": 1, "d": "3:07", "s": "Psychedelic hip-hop"}]},fill:[]};
 
 const SUNO=id=>"https://suno.com/song/"+id;
 function hashN(s){let x=0;for(const c of s)x=(x*31+c.codePointAt(0))>>>0;return x}
@@ -831,7 +831,7 @@ function cover(t,big){const n=hashN(t),hue=n%360,h2=(hue+40)%360,r=(n>>3)%3;
  return `<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" fill="${bg}"/><g opacity=".35">${[0,1,2,3].map(i=>`<circle cx="${(n>>i)%100}" cy="${(n>>(i+5))%100}" r="${12+i*6}" fill="${c2}"/>`).join("")}</g><g transform="rotate(${-10+(n%20)} 50 52)"><rect x="24" y="16" width="52" height="72" rx="8" fill="#f3e9d2" opacity=".35" transform="translate(-6 4)"/><rect x="24" y="16" width="52" height="72" rx="8" fill="${c1}"/><path d="M50 53C38 44 34 36 40 31C45 27 50 31 50 35C50 31 55 27 60 31C66 36 62 44 50 53Z" fill="#16110c"/>${swipe}</g>${big?`<text x="50" y="96" text-anchor="middle" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="9" fill="#f3e9d2" letter-spacing=".5">AIMTV MUSIC</text>`:""}</svg>`}
 let musicT=null,musicI=0;
 function albumCard(t,kicker,album,pos,total,now){
- return `${now?'<div class="lyr" id="lyr" aria-live="off"></div>':""}<div class="albumcard${now?" now":""}"><div class="cov">${cover(t.t,album)}</div><div class="meta"><span class="k">${kicker}</span><h5>${t.t}</h5><span class="s">${MUSIC.album.artist} · ${t.s} · ${t.d}</span><span class="dots">${Array.from({length:total},(_,i)=>`<i class="${i===pos?"on":""}"></i>`).join("")}</span></div>${now&&CHANNELS[chIdx]==="music"?`<span class="sctl"><button type="button" data-sc="prev" aria-label="Previous song">◀◀<span class="l"> Back</span></button><button type="button" class="pp" data-sc="pp" aria-label="${songPaused?"Play":"Pause"}">${songPaused?"▶<span class=\"l\"> Play</span>":"❚❚<span class=\"l\"> Pause</span>"}</button><button type="button" data-sc="next" aria-label="Next song"><span class="l">Next </span>▶▶</button></span>`:""}</div>`}
+ return `${now?'<div class="lyr" id="lyr" aria-live="off"></div>':""}<div class="albumcard${now?" now":""}"><div class="cov">${cover(t.t,album)}</div><div class="meta"><span class="k">${kicker}</span><h5>${t.t}</h5><span class="s">${t.ar||MUSIC.album.artist} · ${t.s} · ${t.d}</span><span class="dots">${Array.from({length:total},(_,i)=>`<i class="${i===pos?"on":""}"></i>`).join("")}</span></div>${now&&CHANNELS[chIdx]==="music"?`<span class="sctl"><button type="button" data-sc="prev" aria-label="Previous song">◀◀<span class="l"> Back</span></button><button type="button" class="pp" data-sc="pp" aria-label="${songPaused?"Play":"Pause"}">${songPaused?"▶<span class=\"l\"> Play</span>":"❚❚<span class=\"l\"> Pause</span>"}</button><button type="button" data-sc="next" aria-label="Next song"><span class="l">Next </span>▶▶</button></span>`:""}</div>`}
 function showCard(t,kicker,album,pos,total,now){let b=$("albumbox");if(!b){b=document.createElement("div");b.id="albumbox";$("screen").appendChild(b)}b.innerHTML=albumCard(t,kicker,album,pos,total,now)}
 function startAlbum(){stopAlbum();const A=MUSIC.album.tracks;const draw=()=>{const i=musicI%A.length;showCard(A[i],`AIMTV Music · New release · Track ${i+1} of ${A.length}`,true,i,A.length)};draw();
  musicT=setInterval(()=>{if(paused)return;musicI++;draw()},9000)}
@@ -859,7 +859,7 @@ function playSong(){
   const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
   showCard(t,"AIMTV Music · Now playing",isAlbum,n%12,Math.min(SONGS.length,12),true);lyrKey="";lyrSet("","♪ "+t.t+" ♪","",true);
   $("lowerName").textContent="AIMTV Music";
-  setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+MUSIC.album.artist,"");
+  setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"");
   const tok=++songTok;
   const done=()=>{if(tok!==songTok)return;stopSong();hush();stopTabla();line=prog.lines.length-1;nextLine()};songDone=done;
   const fallback=()=>{if(tok===songTok)songTimer=setTimeout(done,300)}; /* never air a stand-in tone */
