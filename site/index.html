@@ -944,18 +944,32 @@ function renderMusic(){const row=(t,i)=>`<li><span class="n">${i+1}</span><span 
 
 /* ============ SONG SLOTS (live channel: one programme, one song) ============ */
 const SONGS=[...MUSIC.album.tracks,...MUSIC.fill].filter(t=>t.a); /* only songs whose audio is in the channel */
-/* play queue: shuffled laps of SONGS appended as needed (new order every visit, no back-to-back repeat at lap joins) */
+/* play queue: every song plays once before any song comes back. Each new lap is a fresh shuffle whose first half-lap
+   holds only songs that were NOT among the most recent half-lap, so nothing returns "alternate" or soon after it played.
+   The queue is remembered (localStorage) so a page or stream restart carries on instead of reshuffling. */
 let QUEUE=[];
-function ensureQ(n){while(QUEUE.length<n&&SONGS.length){const lap=SONGS.slice();for(let i=lap.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[lap[i],lap[j]]=[lap[j],lap[i]]}
-  const last=QUEUE[QUEUE.length-1];if(lap.length>1&&lap[0]===last)[lap[0],lap[1]]=[lap[1],lap[0]];QUEUE.push(...lap)}}
+const QKEY="aimtv_songq_v2";
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function newLap(){const n=SONGS.length,k=Math.min(Math.floor(n/2),n-1);
+  const recent=new Set(QUEUE.slice(-k).map(t=>t.id));
+  const fresh=shuf(SONGS.filter(t=>!recent.has(t.id))),head=fresh.slice(0,k),rest=shuf([...fresh.slice(k),...SONGS.filter(t=>recent.has(t.id))]);
+  return [...head,...rest]}
+function ensureQ(n){while(QUEUE.length<n&&SONGS.length)QUEUE.push(...newLap())}
+function saveQ(){try{localStorage.setItem(QKEY,JSON.stringify({q:QUEUE.map(t=>t.id),i:songI}))}catch(e){}}
+function restoreQ(){try{const d=JSON.parse(localStorage.getItem(QKEY)||"null");if(!d||!Array.isArray(d.q))return;
+  const by=new Map(SONGS.map(t=>[t.id,t])),q=d.q.map(id=>by.get(id)).filter(Boolean);let i=Math.min(d.i|0,q.length);
+  /* songs added since (new releases) join the part of the lap still to come, at random places */
+  const seen=new Set(q.slice(Math.max(0,q.length-SONGS.length)).map(t=>t.id));
+  for(const t of SONGS)if(!seen.has(t.id)){const at=i+Math.floor(Math.random()*Math.max(1,q.length-i+1));q.splice(at,0,t)}
+  QUEUE=q;songI=i}catch(e){}}
 const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
-let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;
+let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;restoreQ();
 const SONG_IN=3.5,SONG_OUT=15,SONG_FADE=3;
 function songAudioPath(t){return "music/"+t.id.slice(0,8)+".mp3"}
 function loadSong(t){const k="song_"+t.id;if(!AUD.cache[k])AUD.cache[k]=fetch(songAudioPath(t)).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));return AUD.cache[k]}
 function pruneSongs(){const keep=new Set();[curSong,QUEUE[songI],QUEUE[songI+1]].forEach(t=>{if(t)keep.add("song_"+t.id)});for(const k of Object.keys(AUD.cache))if(k.startsWith("song_")&&!keep.has(k))delete AUD.cache[k]}
 function stopSong(){clearTimeout(songTimer);clearTimeout(vjPopT);stageStop();songTimer=null;lyrStop();if(AUD.src&&AUD.gain){try{AUD.src.stop()}catch(e){}}if(songPaused){songPaused=false;try{ctx().resume()}catch(e){}}if(AUD.gain){try{AUD.gain.disconnect()}catch(e){}AUD.gain=null}if(AUD.duck){try{AUD.duck.disconnect()}catch(e){}AUD.duck=null}}
-function pickSong(){ensureQ(songI+3);curSong=QUEUE[songI];songI++;const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});pruneSongs();return curSong}
+function pickSong(){if(songI>SONGS.length*2){QUEUE.splice(0,songI-SONGS.length);songI=SONGS.length}ensureQ(songI+3);curSong=QUEUE[songI];songI++;saveQ();const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});pruneSongs();return curSong}
 function playSong(){
   stopSong();hush();setOnAir("aimtv");
   const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
