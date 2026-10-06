@@ -974,7 +974,7 @@ function restoreQ(){try{const d=JSON.parse(localStorage.getItem(QKEY)||"null");i
   const by=new Map(SONGS.map(t=>[t.id,t])),q=d.q.map(id=>by.get(id)).filter(Boolean);let i=Math.min(d.i|0,q.length);
   /* songs added since (new releases) join the part of the lap still to come, at random places */
   const seen=new Set(q.slice(Math.max(0,q.length-SONGS.length)).map(t=>t.id));
-  for(const t of SONGS)if(!seen.has(t.id)){const at=i+Math.floor(Math.random()*Math.max(1,q.length-i+1));q.splice(at,0,t)}
+  {let k=0;for(const t of SONGS)if(!seen.has(t.id)){q.splice(i+k,0,t);k++}} /* new releases air next, in order */
   QUEUE=q;songI=i}catch(e){}}
 const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
 let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;restoreQ();
