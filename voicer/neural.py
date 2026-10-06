@@ -9,12 +9,9 @@ VOICES = "/opt/aimtv/voices"
 MODELS = {"arctic": "en_US-arctic-medium", "l2": "en_US-l2arctic-medium"}
 # who: (model, speaker id, pitch factor, tempo).  arctic: ksp 3, slp 12, aup 13, gka 17.  l2arctic Hindi: SVBI 2, TNI 9, ASI 10, RRBI 19
 CAST = {
- "hema": ("l2", 9, 1.00, 1.00), "sarla": ("l2", 9, 1.10, 1.06), "lata": ("arctic", 12, 0.97, 1.04),
- "mrst": ("arctic", 12, 1.05, 0.95), "devi": ("l2", 9, 0.93, 0.98), "tabla": ("arctic", 12, 1.00, 1.00),
- "jc": ("l2", 10, 1.00, 1.00), "tchu": ("arctic", 3, 0.95, 1.05), "animation": ("arctic", 17, 1.12, 1.08),
- "fadarr": ("l2", 19, 0.86, 0.92),
-}  # chaibot stays the robot voice; baba never speaks
-CASTV = "1"
+ "tabla": ("arctic", 12, 1.00, 1.00), "animation": ("arctic", 17, 1.12, 1.08), "fadarr": ("l2", 19, 0.86, 0.92),
+}  # English speakers only. Hema, JC, Tchu Tchu, Sarla, the aunties and Chaibot now speak Hindi+English with Kokoro clips made by tools/kokoro and committed to the repo; baba never speaks
+CASTV = "2"
 SAY = [("AIMTV", "A I M T V"), ("Tabla Nari", "Tubla Naari"), ("Bandre 3000", "Bandra three thousand"), ("Tchu Tchu", "Choo Choo"),
        ("Hema", "Hay-ma"), ("Juhu Chaiwala", "Joohoo Chai-waala"), ("Bombai", "Bombay"), ("Hindia", "Hindia"), ("Fa Corp", "Faa Corp"),
        ("Fa King", "Faa King"), ("Fa Cough", "Faa Cough"), ("Fa Darr", "Faa Dar"), ("Rama Tuta", "Raama Toota"), ("Shivajinagar", "Shivaji nagar"),

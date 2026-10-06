@@ -9,6 +9,9 @@ previous content. Old clips no longer referenced are deleted. Needs ffmpeg with 
 """
 import os, sys, json, re, subprocess, datetime
 from concurrent.futures import ThreadPoolExecutor
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "kokoro"))
+import kokoro_tts
+HINGLISH = set(kokoro_tts.KCAST)  # these speakers talk Hindi+English: subtitle = Roman Hinglish (field 2), speech and yellow line = the Devanagari version (field 4)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "site", "live")
 ALLOWED = {"tdty", "meter", "shop", "travel", "ad1", "psa"}  # baba is founder-written only
@@ -19,8 +22,12 @@ def say(t):
     for a, b in SAY: t = t.replace(a, b)
     return t
 
+KOK = None
 def clip(job):
-    path, who, text = job
+    path, who, text, dev = job
+    if who in HINGLISH and KOK:
+        try: kokoro_tts.speak(dev, who, path); return path
+        except Exception as e: print("kokoro failed, using flite:", path, e, file=sys.stderr)
     voice, k, tempo = CAST[who]
     txt = path + ".txt"; open(txt, "w").write(say(text))
     t = tempo / k; chain = ["asetrate=%d" % int(16000 * k), "aresample=22050"]
@@ -35,7 +42,10 @@ def clip(job):
     return path
 
 def main(draft_path):
+    global KOK
     draft = json.load(open(draft_path))
+    KOK = kokoro_tts.available()
+    if not KOK: print("WARNING: Kokoro not available, Hindi voices fall back to the flite English voice", file=sys.stderr)
     os.makedirs(OUT, exist_ok=True)
     lj = os.path.join(OUT, "live.json")
     live = json.load(open(lj)) if os.path.exists(lj) else {"progs": {}}
@@ -55,11 +65,14 @@ def main(draft_path):
             if who not in CAST: raise SystemExit("unknown speaker: " + who)
             if not text or len(text) > 260: raise SystemExit("%s line %d: empty or over 260 chars" % (pid, i))
             if re.search(r"https?://|www\.", text): raise SystemExit("%s line %d: no links in speech" % (pid, i))
+            if who in HINGLISH and not re.search("[\u0900-\u097f]", rg): raise SystemExit("%s line %d: %s speaks Hindi+English, field 4 must be the Devanagari version" % (pid, i, who))
             clean.append([who, text, en, rg])
-            jobs.append((os.path.join(OUT, "%s_%s_%d.mp3" % (pid, ver, i)), who, text))
+            jobs.append((os.path.join(OUT, "%s_%s_%d.mp3" % (pid, ver, i)), who, text, rg))
         live["progs"][pid] = {"stamp": p.get("stamp", ""), "lines": clean, "clips": "live/%s_%s_" % (pid, ver)}
     if jobs:
-        with ThreadPoolExecutor(4) as ex: list(ex.map(clip, jobs))
+        for j in jobs:
+            if j[1] in HINGLISH: clip(j)  # Kokoro one at a time
+        with ThreadPoolExecutor(4) as ex: list(ex.map(clip, [j for j in jobs if j[1] not in HINGLISH]))
     if draft.get("ticker"):
         live["ticker"] = [re.sub(r"\s+", " ", str(x)).strip().upper() for x in draft["ticker"] if str(x).strip()][:14]
     live["v"] = ver; live["updated"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
