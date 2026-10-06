@@ -949,11 +949,11 @@ let musicT=null,musicI=0;
 function albumCard(t,kicker,album,pos,total,now){
  return `${now?'<div class="lyr" id="lyr" aria-live="off"></div>':""}<div class="albumcard${now?" now":""}"><div class="cov">${cover(t.t,album)}</div><div class="meta"><span class="k">${kicker}</span><h5>${t.t}</h5><span class="s">${t.ar||MUSIC.album.artist} · ${t.s} · ${t.d}</span><span class="dots">${Array.from({length:total},(_,i)=>`<i class="${i===pos?"on":""}"></i>`).join("")}</span></div>${now&&CHANNELS[chIdx]==="music"?`<span class="sctl"><button type="button" data-sc="prev" aria-label="Previous song">◀◀<span class="l"> Back</span></button><button type="button" class="pp" data-sc="pp" aria-label="${songPaused?"Play":"Pause"}">${songPaused?"▶<span class=\"l\"> Play</span>":"❚❚<span class=\"l\"> Pause</span>"}</button><button type="button" data-sc="next" aria-label="Next song"><span class="l">Next </span>▶▶</button></span>`:""}</div>`}
 function showCard(t,kicker,album,pos,total,now){let b=$("albumbox");if(!b){b=document.createElement("div");b.id="albumbox";$("screen").appendChild(b)}b.innerHTML=albumCard(t,kicker,album,pos,total,now)}
-function startAlbum(){stopAlbum();const A=MUSIC.album.tracks;const draw=()=>{const i=musicI%A.length;showCard(A[i],`AIMTV Music · New release · Track ${i+1} of ${A.length}`,true,i,A.length)};draw();
+function startAlbum(){stopAlbum();const A=MUSIC.album.tracks.slice().reverse();const draw=()=>{const i=musicI%A.length;showCard(A[i],`AIMTV Music · New release · Track ${i+1} of ${A.length}`,true,i,A.length)};draw();
  musicT=setInterval(()=>{if(paused)return;musicI++;draw()},9000)}
 function stopAlbum(){clearInterval(musicT);musicT=null;const b=$("albumbox");if(b)b.remove()}
 function renderMusic(){const row=(t,i)=>`<li><span class="n">${i+1}</span><span class="c">${cover(t.t)}</span><span class="ti"><b>${t.t}</b><small>${t.s} · ${t.d}</small></span><button class="pl" data-song="${t.id}">Play</button></li>`;
- $("albumlist").innerHTML=MUSIC.album.tracks.map(row).join("");$("filllist").innerHTML=MUSIC.fill.map(row).join("");
+ $("albumlist").innerHTML=MUSIC.album.tracks.slice().reverse().map(row).join("");$("filllist").innerHTML=MUSIC.fill.map(row).join("");
  document.querySelectorAll("#albumlist [data-song]").forEach(b=>b.addEventListener("click",()=>{const t=SONGS.find(t=>t.id===b.dataset.song);if(!t)return;ensureQ(songI);QUEUE.splice(songI,0,t);curSong=null;tune(CHANNELS.indexOf("music"));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}))}
 
 /* ============ SONG SLOTS (live channel: one programme, one song) ============ */
@@ -964,17 +964,25 @@ const SONGS=[...MUSIC.album.tracks,...MUSIC.fill].filter(t=>t.a); /* only songs 
 let QUEUE=[];
 const QKEY="aimtv_songq_v2";
 function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function newLap(){const n=SONGS.length,k=Math.min(Math.floor(n/2),n-1);
+/* NEW MUSIC FIRST, THEN BALANCE (founder rule, 6 Oct 2026): songs this viewer has not heard before (newest releases, newest first, up to 8)
+   open the next lap; after that every song airs exactly once per lap in shuffled order, so all songs get equal play over time. */
+const SKEY="aimtv_seen_v1";
+let SEEN=new Set();try{SEEN=new Set(JSON.parse(localStorage.getItem(SKEY)||"[]"))}catch(e){}
+function saveSeen(){try{localStorage.setItem(SKEY,JSON.stringify([...SEEN]))}catch(e){}}
+function markSeen(){SONGS.forEach(t=>SEEN.add(t.id));saveSeen()}
+function unseenNewestFirst(){return SONGS.filter(t=>!SEEN.has(t.id)).reverse()}  /* SONGS is oldest to newest */
+function newLap(){const fresh0=unseenNewestFirst().slice(0,8),skip=new Set(fresh0.map(t=>t.id));markSeen();
+  const pool=SONGS.filter(t=>!skip.has(t.id)),n=pool.length,k=Math.min(Math.floor(n/2),n-1);
   const recent=new Set(QUEUE.slice(-k).map(t=>t.id));
-  const fresh=shuf(SONGS.filter(t=>!recent.has(t.id))),head=fresh.slice(0,k),rest=shuf([...fresh.slice(k),...SONGS.filter(t=>recent.has(t.id))]);
-  return [...head,...rest]}
+  const fresh=shuf(pool.filter(t=>!recent.has(t.id))),head=fresh.slice(0,k),rest=shuf([...fresh.slice(k),...pool.filter(t=>recent.has(t.id))]);
+  return [...fresh0,...head,...rest]}
 function ensureQ(n){while(QUEUE.length<n&&SONGS.length)QUEUE.push(...newLap())}
 function saveQ(){try{localStorage.setItem(QKEY,JSON.stringify({q:QUEUE.map(t=>t.id),i:songI}))}catch(e){}}
 function restoreQ(){try{const d=JSON.parse(localStorage.getItem(QKEY)||"null");if(!d||!Array.isArray(d.q))return;
   const by=new Map(SONGS.map(t=>[t.id,t])),q=d.q.map(id=>by.get(id)).filter(Boolean);let i=Math.min(d.i|0,q.length);
   /* songs added since (new releases) join the part of the lap still to come, at random places */
   const seen=new Set(q.slice(Math.max(0,q.length-SONGS.length)).map(t=>t.id));
-  {let k=0;for(const t of SONGS)if(!seen.has(t.id)){q.splice(i+k,0,t);k++}} /* new releases air next, in order */
+  {let k=0;for(const t of SONGS.slice().reverse())if(!seen.has(t.id)){q.splice(i+k,0,t);k++}markSeen()} /* new releases air next, newest first */
   QUEUE=q;songI=i}catch(e){}}
 const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
 let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;restoreQ();
