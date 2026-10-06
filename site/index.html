@@ -1374,19 +1374,20 @@ $("chans").addEventListener("click",e=>{const b=e.target.closest("button");if(b)
 $("prev").onclick=()=>tune(chIdx-1);$("next").onclick=()=>tune(chIdx+1);
 let wantSound=true,unlocked=false;
 function setSoundUI(){const b=$("sound");b.setAttribute("aria-pressed",String(wantSound));b.textContent=wantSound?"Sound on":"Sound off"}
-function powerOn(){if(unlocked)return;unlocked=true;ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;setTimeout(warmAhead,0);if(prog&&!prog.music&&prog.id!=="baba")prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
+let powerAt=0;function powerOn(){if(unlocked)return;unlocked=true;powerAt=Date.now();ctx();unlockAudio();loadVoices();$("power").hidden=true;soundOn=wantSound;setTimeout(warmAhead,0);if(prog&&!prog.music&&prog.id!=="baba")prog.lines.forEach((l,i)=>loadClip(clipFor(prog,i)).catch(()=>{}));playLine()}
 $("sound").onclick=()=>{if(!unlocked)return;wantSound=!wantSound;soundOn=wantSound;setSoundUI();if(soundOn){ctx();unlockAudio()}else hush();playLine()};
-$("power").onclick=()=>{powerOn();switchTo(prog)};
+$("power").onclick=()=>{const first=!unlocked;powerOn();if(!first)switchTo(prog)};
 document.addEventListener("pointerdown",powerOn,{capture:true});
 document.addEventListener("keydown",e=>{if(e.key!=="Tab")powerOn()},{capture:true});
 $("cc").onclick=e=>{ccOn=!ccOn;e.currentTarget.setAttribute("aria-pressed",ccOn);$("sub2wrap").hidden=!(ccOn&&$("sub2").textContent);$("sub3").hidden=!(ccOn&&$("sub3").textContent)};
 function pauseUI(p){const b=$("pause");b.setAttribute("aria-pressed",p);b.textContent=p?"Play":"Pause";$("paused").hidden=!p}
 function togglePause(){
+  if(Date.now()-powerAt<900)return;
   if(!unlocked){powerOn();return}  /* first tap on the screen = switch the TV on */
   if(prog&&prog.song&&curSong){songPlayPause();pauseUI(songPaused);return}  /* a song resumes exactly where it stopped */
   paused=!paused;pauseUI(paused);if(paused){clearTimeout(timer);stopTalk();stopSong();hush()}else playLine()}
 $("pause").onclick=togglePause;
-$("screen").addEventListener("click",e=>{if(document.body.classList.contains("bc"))return;if(e.target.closest("button,a,input,[data-sc]"))return;togglePause()});
+$("screen").addEventListener("click",e=>{if(document.body.classList.contains("bc"))return;if(Date.now()-powerAt<900)return; /* the tap that switched the TV on must not also pause it */if(e.target.closest("button,a,input,[data-sc]"))return;togglePause()});
 $("screen").style.cursor="pointer";$("screen").title="Click to pause or play";
 document.addEventListener("keydown",e=>{if(e.code!=="Space"||e.repeat)return;const t=e.target;if(t&&t.closest&&t.closest("input,textarea,button,a,select,[contenteditable]"))return;e.preventDefault();togglePause()});
 document.querySelectorAll("[data-watch]").forEach(b=>b.addEventListener("click",()=>{tune(CHANNELS.indexOf(b.dataset.watch));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}));
