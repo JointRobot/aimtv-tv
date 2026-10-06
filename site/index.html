@@ -1045,8 +1045,8 @@ function vjPop(t,tok){if(tok!==songTok||songPaused||!AUD.duck)return;const l=vjP
   setTimeout(()=>{if(tok!==songTok)return;sideVoice(l[4],l[1],()=>{clearInterval(tk);if(pip){pip.classList.remove("live");const sv=pip.querySelector("svg");sv&&(sv.classList.remove("talk"),sv.style.removeProperty("--o"),sv.style.removeProperty("--w"))}
     if(tok!==songTok||!AUD.duck)return;const n2=ctx().currentTime;AUD.duck.gain.cancelScheduledValues(n2);AUD.duck.gain.setValueAtTime(AUD.duck.gain.value,n2);AUD.duck.gain.linearRampToValueAtTime(1,n2+.8);
     setOnAir("aimtv");setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"")})},700)}
-const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1"];
-const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping"};
+const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1","dosa","makeover","stunt","mhanje","baba"];
+const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping",dosa:"Dosa Khayega?",makeover:"Chupp Kudiye",stunt:"Stunt Double",mhanje:"Mhanje",baba:"Baba Ka Aashirwad"};
 /* AIMTV Live: the programmes play in a fresh random order for every viewer (and every lap), each followed by a song */
 const LIVE_PROGS=["ident","tdty","ad1","shop","meter","psa","travel","baba","dosa","makeover","stunt","mhanje"];
 let LIVE_ORDER=[];const FOUNDER_ADS=["ad_horn","ad_sign","ad_bio"];
