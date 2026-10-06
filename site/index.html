@@ -163,8 +163,12 @@ body.bc .likebar{display:none!important}
 @keyframes tick{to{transform:translateX(-100%)}}
 @media (prefers-reduced-motion:reduce){.ticker .run{animation:none;padding-left:16px}}
 .paused-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-display);font-weight:900;font-size:clamp(18px,3vw,34px);letter-spacing:.2em;color:var(--paper);background:rgba(0,0,0,.6);padding:6px 18px}
-.mouth{transform-box:fill-box;transform-origin:center;transition:transform .06s}
-.talk .mouth{transform:scaleY(2.2)}
+.mouth{transform-box:fill-box;transform-origin:50% 40%;transform:scale(calc(1 + var(--w,0)*.16),calc(1 + var(--o,0)*1.7))}
+.mouth.rig{transform:scaleX(calc(1 + var(--w,0)*.16))}
+.mouth.rig .m-cav{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(var(--o,0))}
+.mouth.rig .m-low{transform:translateY(calc(var(--o,0)*5.2px))}
+.brows{transform:translateY(calc(var(--o,0)*-1.3px) );transform-box:fill-box}
+.mouth.rig .m-up{transform:translateY(calc(var(--o,0)*-.9px))}
 .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 
@@ -635,13 +639,17 @@ function face(o){
 <linearGradient id="${id}n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(s,-52)}"/><stop offset=".45" stop-color="${shade(s,-24)}"/><stop offset="1" stop-color="${shade(s,-14)}"/></linearGradient>
 <clipPath id="${id}l"><path d="M74 109Q79 101 84 100.4Q89 101 94 109Q88.4 114.6 84 114.6Q79.6 114.6 74 109Z"/></clipPath>
 <clipPath id="${id}r"><path d="M106 109Q111 101 116 100.4Q121 101 126 109Q120.4 114.6 116 114.6Q111.6 114.6 106 109Z"/></clipPath>
+<clipPath id="${id}hd"><path d="M${100-w} 104C${100-w} 70 ${100-w*.6} 58 100 58C${100+w*.6} 58 ${100+w} 70 ${100+w} 104C${100+w} 132 ${100+w*.62} 154 100 157C${100-w*.62} 154 ${100-w} 132 ${100-w} 104Z"/></clipPath>
+<clipPath id="${id}bd"><path d="M16 240C20 190 54 172 100 172C146 172 180 190 184 240Z"/></clipPath>
+<clipPath id="${id}nk"><path d="M85 136V172Q100 186 115 172V136Z"/></clipPath>
+<clipPath id="${id}cv"><path d="M${100-mw+.8} 138Q100 ${138+17} ${100+mw-.8} 138Z"/></clipPath>
 </defs>`;
   /* ---- body, neck ---- */
   const body=`<path d="M16 240C20 190 54 172 100 172C146 172 180 190 184 240Z" fill="url(#${id}b)" ${ink}/>
-<path d="M26 226C34 198 58 182 88 177" stroke="rgba(255,255,255,.2)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-<path d="M150 180C168 190 178 208 180 236" stroke="rgba(0,0,0,.22)" stroke-width="7" fill="none" stroke-linecap="round"/>
-<path d="M44 238C50 214 66 200 88 192M156 238C150 214 136 202 118 194" stroke="${shade(o.outfit,-44)}" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/>`;
-  const neck=`<path d="M85 136V172Q100 186 115 172V136Z" fill="url(#${id}n)" ${ink}/><ellipse cx="100" cy="156" rx="21" ry="9" fill="#000" opacity=".2"/>`;
+<g clip-path="url(#${id}bd)"><path d="M28 228C36 200 58 184 88 179" stroke="rgba(255,255,255,.2)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M150 184C164 192 172 208 174 238" stroke="rgba(0,0,0,.2)" stroke-width="9" fill="none" stroke-linecap="round"/>
+<path d="M44 238C50 214 66 200 88 192M156 238C150 214 136 202 118 194" stroke="${shade(o.outfit,-44)}" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/></g>`;
+  const neck=`<path d="M85 136V172Q100 186 115 172V136Z" fill="url(#${id}n)" ${ink}/><g clip-path="url(#${id}nk)"><ellipse cx="100" cy="153" rx="20" ry="10" fill="#000" opacity=".26"/><path d="M85 136H92V176H85ZM108 136H115V176H108Z" fill="#000" opacity=".06"/></g>`;
   /* ---- head ---- */
   const ear=x=>`<ellipse cx="${x}" cy="112" rx="7" ry="10.5" fill="${s}" ${ink}/><path d="M${x+(x<100?1.5:-1.5)} 106Q${x+(x<100?-3:3)} 112 ${x+(x<100?1.5:-1.5)} 118" stroke="${lo}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
   const headPath=`M${100-w} 104C${100-w} 70 ${100-w*.6} 58 100 58C${100+w*.6} 58 ${100+w} 70 ${100+w} 104C${100+w} 132 ${100+w*.62} 154 100 157C${100-w*.62} 154 ${100-w} 132 ${100-w} 104Z`;
@@ -659,9 +667,13 @@ ${o.lash!==false?`<path d="M${x+flick*10} 107.4l${flick*4.2} -3.4M${x+flick*9.4}
 ${A.includes("wing")?`<path d="M${x+flick*10} 109.4l${flick*7} -6" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>`:""}`;
   const eyes=`<g class="eyes">${eyeAt(84,"l",-1)}${eyeAt(116,"r",1)}</g>`;
   const bc=o.brow||shade(H,-8),bt=o.bt||3.2;
-  const brows=`<path d="M71.5 99.4Q79 ${92.6-up} 94.5 96.6L94 99.6Q80 ${96-up} 72 102Z" fill="${bc}" stroke="${bc}" stroke-width="${bt-2}" stroke-linejoin="round"/><path d="M128.5 99.4Q121 ${92.6-up} 105.5 96.6L106 99.6Q120 ${96-up} 128 102Z" fill="${bc}" stroke="${bc}" stroke-width="${bt-2}" stroke-linejoin="round"/>`;
+  const brows=`<g class="brows"><path d="M71.5 99.4Q79 ${92.6-up} 94.5 96.6L94 99.6Q80 ${96-up} 72 102Z" fill="${bc}" stroke="${bc}" stroke-width="${bt-2}" stroke-linejoin="round"/><path d="M128.5 99.4Q121 ${92.6-up} 105.5 96.6L106 99.6Q120 ${96-up} 128 102Z" fill="${bc}" stroke="${bc}" stroke-width="${bt-2}" stroke-linejoin="round"/></g>`;
   const nose=`<path d="M104.4 111Q108.4 121 105.4 126.6" stroke="#000" stroke-opacity=".09" stroke-width="4.4" fill="none" stroke-linecap="round"/><path d="M99.6 111Q95.4 122.6 97.8 126.4Q100 129 103.6 127.6Q105.6 126.6 105.8 124.8" stroke="${shade(s,-46)}" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M96.4 126.8q1.8 1.8 3.8.4" stroke="${shade(s,-60)}" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="99" cy="119" rx="1.9" ry="5" fill="#fff" opacity=".14"/>`;
-  const mouth=`<g class="mouth"><path d="M${100-mw} 138Q${100-mw*.5} 134.2 100 135.8Q${100+mw*.5} 134.2 ${100+mw} 138Q100 140 ${100-mw} 138Z" fill="${shade(lip,-14)}"/><path d="M${100-mw} 138Q100 148.4 ${100+mw} 138Q100 139.8 ${100-mw} 138Z" fill="${lip}"/><path d="M${100-mw} 138Q100 140.4 ${100+mw} 138" stroke="${shade(lip,-50)}" stroke-width="1.4" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="142" rx="${mw*.32}" ry="1" fill="#fff" opacity=".3"/></g>`;
+  const mouthF=lip=>`<g class="mouth rig"><g class="m-cav"><path d="M${100-mw+.8} 138Q100 155 ${100+mw-.8} 138Z" fill="#2c0a0e"/><g clip-path="url(#${id}cv)"><path d="M${100-mw*.74} 138Q100 142.6 ${100+mw*.74} 138Z" fill="#f6efe4"/><ellipse cx="100" cy="146.6" rx="${mw*.5}" ry="3.4" fill="#c4545c"/></g></g>
+<g class="m-up"><path d="M${100-mw} 138Q${100-mw*.5} 134 100 135.6Q${100+mw*.5} 134 ${100+mw} 138Q${100+mw*.45} 139.4 100 139Q${100-mw*.45} 139.4 ${100-mw} 138Z" fill="${shade(lip,-14)}"/></g>
+<g class="m-low"><path d="M${100-mw} 138Q${100-mw*.4} 139.6 100 139.2Q${100+mw*.4} 139.6 ${100+mw} 138Q${100+mw*.55} 148.2 100 148.8Q${100-mw*.55} 148.2 ${100-mw} 138Z" fill="${lip}"/><ellipse cx="100" cy="143.6" rx="${mw*.3}" ry="1" fill="#fff" opacity=".28"/></g>
+<path d="M${100-mw-.6} 137.6Q100 140.6 ${100+mw+.6} 137.6" stroke="${shade(lip,-56)}" stroke-width="1.3" fill="none" stroke-linecap="round"/></g>`;
+  const mouth=mouthF(lip);
   /* ---- hair ---- */
   const HI=`stroke="${shade(H,hl+22)}" stroke-opacity=".42" stroke-width="1.5" fill="none" stroke-linecap="round"`;
   const HF=`fill="url(#${id}h)" ${ink}`;
@@ -674,7 +686,7 @@ ${A.includes("wing")?`<path d="M${x+flick*10} 109.4l${flick*7} -6" stroke="${INK
     case"mohawk":front=`<path d="M62 100C62 84 70 74 80 70L120 70C130 74 138 84 138 100C126 86 74 86 62 100Z" fill="${shade(s,-34)}" opacity=".85"/><g ${HF}><path d="M82 74C78 38 92 22 100 14C108 22 122 38 118 74Z"/></g>`;strands=`<path d="M92 66C90 46 94 32 100 24M100 66C100 46 102 34 104 26M108 66C110 50 110 40 108 30" ${HI}/><path d="M66 94C68 88 72 84 76 82M70 98C72 92 76 88 80 86" stroke="${shade(s,-52)}" stroke-width="1.4" opacity=".5" fill="none"/>`;break;
     case"bouffant":front=`<g ${HF}><path d="M54 114C42 50 80 30 100 30C124 30 158 50 146 114C142 84 122 70 100 72C80 70 60 84 54 114Z"/><ellipse cx="100" cy="46" rx="38" ry="22"/></g>`;strands=`<path d="M70 52C84 36 116 36 130 52M62 70C70 56 86 52 100 52M138 70C130 56 114 52 100 52M64 96C66 84 74 76 84 72" ${HI}/>`;break;
     case"longsilver":back=`<g fill="url(#${id}h)" ${ink}><path d="M54 100C46 150 50 200 62 230L138 230C150 200 154 150 146 100Z"/></g><path d="M62 130C60 160 62 190 68 214M140 130C142 160 140 190 134 214" stroke="${shade(H,-30)}" stroke-opacity=".5" stroke-width="2" fill="none"/>`;front=`<g ${HF}><path d="M60 110C54 64 80 54 100 54C124 54 150 64 142 110C136 84 112 72 92 74C78 78 66 92 60 110Z"/></g>`;strands=`<path d="M70 84C80 68 104 62 124 68M62 100C66 84 76 76 88 74" stroke="#aeb7c4" stroke-opacity=".6" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;break;
-    case"undercut":front=`<path d="M60 104C60 84 66 70 78 64L82 104Z" fill="${shade(s,-34)}" opacity=".9"/><g ${HF}><path d="M74 70C80 40 128 34 142 64C148 80 146 96 142 112C132 90 112 78 74 70Z"/></g>`;strands=`<path d="M84 62C100 46 126 46 138 62M92 72C108 58 128 62 140 76" ${HI}/><path d="M62 98l6 -4M62 90l6 -4M64 106l5 -3" stroke="${shade(s,-60)}" stroke-width="1.2" opacity=".5"/>`;break;
+    case"undercut":front=`<path d="M58 106C56 84 66 68 82 62C78 78 78 94 84 108Z" fill="${shade(s,-30)}" opacity=".8" clip-path="url(#${id}hd)"/><g ${HF}><path d="M74 70C80 40 128 34 142 64C148 80 146 96 142 112C132 90 112 78 74 70Z"/></g>`;strands=`<path d="M84 62C100 46 126 46 138 62M92 72C108 58 128 62 140 76" ${HI}/><path d="M62 98l6 -4M62 90l6 -4M64 106l5 -3" stroke="${shade(s,-60)}" stroke-width="1.2" opacity=".5"/>`;break;
     case"hood":back=`<path d="M42 132C36 68 66 42 100 42C134 42 164 68 158 132L172 212L28 212Z" fill="${o.hoodc}" ${ink}/><path d="M58 120C56 80 76 58 100 58C124 58 144 80 142 120C136 98 64 98 58 120Z" fill="${o.hoodin||"#e0488a"}" opacity=".95"/>`;front=`<path d="M58 112C56 70 80 56 100 56C120 56 144 70 142 112C134 74 66 74 58 112Z" fill="${o.hoodc}" ${ink}/><path d="M62 72Q100 50 138 72" stroke="${shade(o.hoodc,-26)}" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M52 150C50 116 54 96 60 84M148 150C150 116 146 96 140 84" stroke="${shade(o.hoodc,30)}" stroke-opacity=".35" stroke-width="2.4" fill="none"/>`;break;
     case"gajrabun":back=`<g ${HF}><circle cx="100" cy="58" r="25"/></g><g fill="#f8f3e4" stroke="#c9bf9a" stroke-width="1">${Array.from({length:9},(_,i)=>`<circle cx="${70+i*7.5}" cy="${42+Math.abs(4-i)*2.4}" r="3.8"/>`).join("")}</g><path d="M82 56C92 46 110 46 118 56" ${HI}/>`;front=`<g ${HF}><path d="M56 112C52 70 80 58 100 58C120 58 148 70 144 112C136 84 112 74 100 76C88 74 64 84 56 112Z"/></g><path d="M100 59V77" stroke="${lo}" stroke-width="1.8"/>`;strands=`<path d="M62 100C66 82 82 70 100 70M138 100C134 82 118 70 100 70" ${HI}/>`;break;
     case"crew":front=`<g ${HF}><path d="M60 100C58 66 82 56 100 56C120 56 142 66 140 100C130 80 70 80 60 100Z"/></g>`;strands=`<path d="M70 76C80 64 120 64 130 76M64 92C72 80 128 80 136 92" ${HI}/>`;break;
@@ -682,7 +694,7 @@ ${A.includes("wing")?`<path d="M${x+flick*10} 109.4l${flick*7} -6" stroke="${INK
   /* ---- accessories ---- */
   let acc="",extra="";
   if(A.includes("sunglasses"))acc+=`<path d="M66 100H97V113Q93 123 82 123Q68 123 66 111ZM103 100H134V111Q132 123 118 123Q107 123 103 113Z" fill="#0d0b0a" ${ink}/><path d="M97 104H103" stroke="${INK}" stroke-width="3"/><path d="M72 104L88 102M108 104L124 102" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>`;
-  if(A.includes("stubble"))acc+=`<path d="M64 120C66 152 84 160 100 160C116 160 134 152 136 120C128 140 116 146 100 146C84 146 72 140 64 120Z" fill="#000" opacity=".16"/>`;
+  if(A.includes("stubble"))acc+=`<path d="M64 120C66 152 84 160 100 160C116 160 134 152 136 120C128 140 116 146 100 146C84 146 72 140 64 120Z" fill="#000" opacity=".16" clip-path="url(#${id}hd)"/>`;
   if(A.includes("handlebar"))acc+=`<path d="M100 129C90 124 78 126 72 134C67 129 68 119 76 120C86 122 94 123 100 126C106 123 114 122 124 120C132 119 133 129 128 134C122 126 110 124 100 129Z" fill="#150f0c" ${ink}/><path d="M80 126C88 124 94 126 98 128M120 126C112 124 106 126 102 128" stroke="#4a3a30" stroke-width="1.2" fill="none" opacity=".7"/>`;
   if(A.includes("beard"))acc+=`<path d="M60 116C62 152 82 164 100 164C118 164 138 152 140 116C132 134 118 130 100 130C82 130 68 134 60 116Z" fill="#1c1411" ${ink}/><path d="M72 140C84 150 116 150 128 140M82 152C92 158 108 158 118 152" stroke="#4a3a30" stroke-width="1.3" fill="none" opacity=".6"/><path d="M90 136Q100 132 110 136" stroke="${shade(s,-34)}" stroke-width="2" fill="none"/>`;
   if(A.includes("bindi"))acc+=`<circle cx="100" cy="93" r="3.6" fill="#c4161c" stroke="#7a0c10" stroke-width=".8"/><circle cx="99" cy="92" r="1" fill="#fff" opacity=".5"/>`;
@@ -704,7 +716,7 @@ ${A.includes("wing")?`<path d="M${x+flick*10} 109.4l${flick*7} -6" stroke="${INK
   if(A.includes("scarf"))extra+=`<path d="M56 180C78 196 122 196 144 180L156 198C122 218 78 218 44 198Z" fill="#efe3c6" ${ink}/><path d="M64 190L58 204M80 196L76 210M120 196L124 210M136 190L142 204" stroke="#c9b98a" stroke-width="2"/>`;
   if(A.includes("paan"))acc+=`<path d="M92 142Q100 146 110 142L112 152Q104 150 96 154Z" fill="#a11a1e" opacity=".55"/><circle cx="108" cy="146" r="1.4" fill="#e03a3a"/>`;
   const hideMouth=A.includes("mask");
-  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${o.label||""}">${defs}${o.pre||""}${back}${body}${o.collar||""}${extra}${neck}${head}${hideMouth?`<rect class="mouth" x="96" y="140" width="8" height="1" fill="#1d2a2c"/>`:mouth}${eyes}${brows}${nose}${front}${strands}${acc}${o.post||""}</svg>`;
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${o.label||""}">${defs}${o.pre||""}${back}${body}${o.collar||""}${extra}${neck}${head}${hideMouth?`<rect class="mouth" x="96" y="140" width="8" height="1" fill="#1d2a2c"/>`:A.includes("beard")?"":mouth}${eyes}${brows}${nose}${front}${strands}${acc}${A.includes("beard")?mouthF("#9a524a"):""}${o.post||""}</svg>`;
 }
 function chaibot(){const id="cb"+(++_fid);return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chaibot">
 <defs><linearGradient id="${id}m" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6f777c"/><stop offset=".3" stop-color="#c3cacd"/><stop offset=".6" stop-color="#9aa1a6"/><stop offset="1" stop-color="#5f676c"/></linearGradient><radialGradient id="${id}h" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#e6ebee"/><stop offset=".6" stop-color="#b3babe"/><stop offset="1" stop-color="#6f777c"/></radialGradient></defs>
@@ -896,14 +908,14 @@ function showPip(on){let b=$("pip");if(!on){if(b)b.remove();$("screen").classLis
   $("screen").classList.add("vjsong")}
 /* her voice over a playing song: own source node, never touches the song */
 function sideVoice(key,text,onend){let done=false;const fin=()=>{if(done)return;done=true;onend&&onend()};
-  if(useClips()){loadClip(key).then(buf=>{const a=ctx(),s2=a.createBufferSource();s2.buffer=buf;s2.connect(a.destination);s2.onended=fin;s2.start()}).catch(()=>{if(synth){const u=new SpeechSynthesisUtterance(text);u.onend=fin;u.onerror=fin;synth.speak(u)}setTimeout(fin,Math.max(2600,text.length*62))})}
+  if(useClips()){loadClip(key).then(buf=>{const a=ctx(),s2=a.createBufferSource();s2.buffer=buf;s2.connect(vbus()||a.destination);lipVoice(buf);s2.onended=fin;s2.start()}).catch(()=>{if(synth){const u=new SpeechSynthesisUtterance(text);u.onend=fin;u.onerror=fin;synth.speak(u)}setTimeout(fin,Math.max(2600,text.length*62))})}
   else if(synth){const u=new SpeechSynthesisUtterance(text);const v=pickVoice("tabla");if(v){u.voice=v;u.lang=v.lang}u.onend=fin;u.onerror=fin;synth.speak(u);setTimeout(fin,text.length*80+4000)}
   else setTimeout(fin,Math.max(2600,text.length*62))}
 function vjPop(t,tok){if(tok!==songTok||songPaused||!AUD.duck)return;const l=vjPopLine(t),pip=$("pip");const a=ctx(),d=AUD.duck.gain,now=a.currentTime;
   d.cancelScheduledValues(now);d.setValueAtTime(d.value,now);d.linearRampToValueAtTime(.22,now+.5);
-  setOnAir("tabla");if(pip){pip.classList.add("live");const sv=pip.querySelector("svg");var tk=setInterval(()=>sv&&sv.classList.toggle("talk"),150)}
+  setOnAir("tabla");if(pip){pip.classList.add("live");const sv=pip.querySelector("svg");var tk=0;sv&&sv.classList.add("talk")}
   setSubs(l[1],l[3],"");["dha","dhin","ta"].forEach((k,i)=>setTimeout(()=>{if(tok===songTok&&soundOn)stroke(k,.8)},120+i*170));
-  setTimeout(()=>{if(tok!==songTok)return;sideVoice(l[4],l[1],()=>{clearInterval(tk);if(pip){pip.classList.remove("live");const sv=pip.querySelector("svg");sv&&sv.classList.remove("talk")}
+  setTimeout(()=>{if(tok!==songTok)return;sideVoice(l[4],l[1],()=>{clearInterval(tk);if(pip){pip.classList.remove("live");const sv=pip.querySelector("svg");sv&&(sv.classList.remove("talk"),sv.style.removeProperty("--o"),sv.style.removeProperty("--w"))}
     if(tok!==songTok||!AUD.duck)return;const n2=ctx().currentTime;AUD.duck.gain.cancelScheduledValues(n2);AUD.duck.gain.setValueAtTime(AUD.duck.gain.value,n2);AUD.duck.gain.linearRampToValueAtTime(1,n2+.8);
     setOnAir("aimtv");setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"")})},700)}
 const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1"];
@@ -1134,7 +1146,7 @@ function loadClip(name){
 function stopClip(){AUD.tok=null;if(AUD.src){try{AUD.src.onended=null;AUD.src.stop()}catch(e){}AUD.src=null}}
 function playClip(name,onend){
   stopClip();const tok={};AUD.tok=tok;
-  loadClip(name).then(buf=>{if(AUD.tok!==tok)return;const a=ctx();const s=a.createBufferSource();s.buffer=buf;s.connect(a.destination);s.onended=()=>{if(AUD.tok===tok){AUD.src=null;onend&&onend(false)}};AUD.src=s;s.start()})
+  loadClip(name).then(buf=>{if(AUD.tok!==tok)return;const a=ctx();const s=a.createBufferSource();s.buffer=buf;s.connect(vbus()||a.destination);lipVoice(buf);s.onended=()=>{if(AUD.tok===tok){AUD.src=null;onend&&onend(false)}};AUD.src=s;s.start()})
    .catch(()=>{if(AUD.tok===tok)onend&&onend(true)});
 }
 /* Baba Black Sheep never speaks: he bleats (a sheep made in code), and his wisdom is in the subtitles */
@@ -1202,7 +1214,23 @@ function setTalker(who){
   $("lowerName").textContent=prog.album?"AIMTV Music":(W[who]||who);
   return $("host").querySelectorAll("svg")[idx<0?0:idx];
 }
-function stopTalk(){clearInterval(talkT);talkT=null;$("host").querySelectorAll("svg").forEach(s=>s.classList.remove("talk"))}
+function stopTalk(){clearInterval(talkT);talkT=null;$("host").querySelectorAll("svg").forEach(s=>{s.classList.remove("talk");s.style.removeProperty("--o");s.style.removeProperty("--w")})}
+/* LIP SYNC: the voice runs through an analyser; mouth opening follows loudness, mouth width follows the spectrum (wide for ee/s, round for oo/oh).
+   Voices without a clip (browser speech, bleats) fall back to a smooth syllable rhythm instead of an on/off flap. */
+const LIP={ac:null,inn:null,an:null,td:null,fd:null,until:0,o:0,w:0};
+function vbus(){const a=ctx();if(!a)return null;if(!LIP.inn||LIP.ac!==a){LIP.ac=a;LIP.inn=a.createGain();LIP.an=a.createAnalyser();LIP.an.fftSize=512;LIP.an.smoothingTimeConstant=.3;LIP.td=new Uint8Array(512);LIP.fd=new Uint8Array(256);LIP.inn.connect(LIP.an);LIP.inn.connect(a.destination)}return LIP.inn}
+function lipVoice(buf){LIP.until=performance.now()+(buf&&buf.duration?buf.duration*1000+250:0)}
+function lipFrame(now){
+  const sv=document.querySelectorAll("#host svg.talk, #pip svg.talk");
+  if(sv.length){let tgt,wt;
+    if(LIP.an&&now<LIP.until){LIP.an.getByteTimeDomainData(LIP.td);let e=0;for(let i=0;i<512;i++){const v=(LIP.td[i]-128)/128;e+=v*v}const rms=Math.sqrt(e/512);
+      LIP.an.getByteFrequencyData(LIP.fd);let lo=0,mi=0,hi=0;for(let i=2;i<8;i++)lo+=LIP.fd[i];for(let i=8;i<26;i++)mi+=LIP.fd[i];for(let i=26;i<70;i++)hi+=LIP.fd[i];
+      const tot=lo+mi+hi+1;tgt=Math.max(0,Math.min(1,(rms-.014)*3.4));wt=Math.max(-1,Math.min(1,((hi/tot-.5)*5-(lo/tot-.2)*4)))}
+    else{const t=now/1000;tgt=.3+.5*Math.abs(Math.sin(t*8.3+1.6*Math.sin(t*2.9)));wt=Math.sin(t*5.1)*.6}
+    LIP.o+=(tgt-LIP.o)*(tgt>LIP.o?.6:.32);LIP.w+=(wt-LIP.w)*.35;
+    const o=LIP.o.toFixed(3),w=LIP.w.toFixed(3);sv.forEach(s=>{s.style.setProperty("--o",o);s.style.setProperty("--w",w)})}
+  requestAnimationFrame(lipFrame)}
+requestAnimationFrame(lipFrame);
 
 /* subtitles: English line, the speaker's home-language line in yellow, then any English note.
    Greetings and a few words are set in their own script inside the English, for the Hinglish look. */
@@ -1225,7 +1253,7 @@ function playLine(){
   if(fx&&soundOn)sfx(fx);
   const el=setTalker(who);
   setSubs(text,rg,en);
-  if(!(prog.music&&soundOn))talkT=setInterval(()=>el&&el.classList.toggle("talk"),130+Math.random()*60);
+  if(!(prog.music&&soundOn)){el&&el.classList.add("talk");talkT=1}
   const dur=Math.max(2600,text.length*62);
   const advance=()=>{if(lt!==lineTok)return;stopTalk();timer=setTimeout(()=>{if(lt===lineTok)nextLine()},120)};
   const clipName=clipFor(prog,line);
