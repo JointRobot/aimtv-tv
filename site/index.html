@@ -1302,7 +1302,7 @@ function showProg(p){
   }
   prog=p;line=0;
   $("scene").innerHTML=SCENES[p.scene]();
-  const shotOf=c=>{const n=SHOTN[c]==null?Math.floor(Math.random()*4):SHOTN[c]+1;SHOTN[c]=n;const seq=p.cast.length===1?["","shot-c","shot-f","shot-w","shot-m2","shot-f"]:["","shot-w","shot-f"];return seq[n%seq.length]};
+  const shotOf=c=>{const n=SHOTN[c]==null?Math.floor(Math.random()*4):SHOTN[c]+1;SHOTN[c]=n;const seq=p.cast.length===1?["","shot-c","shot-m2","shot-c"]:[""];return seq[n%seq.length]};
   const shots=p.cast.map(shotOf);
   $("host").innerHTML=p.cast.map((c,i)=>{if(shots[i]==="shot-f"){const f=fullOf(c);if(f)return f;shots[i]="shot-m2"}return P[c]()}).join("");
   const svgs=$("host").querySelectorAll("svg");
