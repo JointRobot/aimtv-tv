@@ -121,8 +121,9 @@ body.bc .sctl{display:none!important}
 .screen .scene,.screen .host,.screen canvas{position:absolute;inset:0;width:100%;height:100%}
 .screen .scene svg{width:100%;height:100%;display:block}
 .screen .host{display:flex;align-items:flex-end;justify-content:center;gap:4%;padding:0 6% calc(5.07cqw + 2px);box-sizing:border-box}
-.screen .host svg{position:relative;height:78%;width:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5));transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,.7,.3,1),filter .45s}
+.screen .host svg{position:relative;height:78%;width:auto;filter:drop-shadow(2.5px 0 0 #f4ecda) drop-shadow(-2.5px 0 0 #f4ecda) drop-shadow(0 2.5px 0 #f4ecda) drop-shadow(0 -2.5px 0 #f4ecda) drop-shadow(0 10px 12px rgba(0,0,0,.5));transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,.7,.3,1),filter .45s}
 .screen .host svg.solo{height:82%}
+.screen .host svg.shot-c{height:112%}.screen .host svg.shot-w{height:60%}.screen .host svg.solo.shot-w{height:62%}.screen .host svg.shot-m2{height:96%}
 .screen .host svg.dim{z-index:1;transform:scale(.76);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 .screen .host svg.lead{z-index:2;transform:scale(1.06);filter:drop-shadow(0 14px 22px rgba(0,0,0,.6))}
 @media (prefers-reduced-motion:reduce){.screen .host svg{transition:none}}
@@ -632,13 +633,13 @@ let _fid=0;
    o = {skin, hair, style, outfit, collar, acc[], pre, post, fw (face width), eye, lip, mw, browUp, lash, hl, label} */
 function face(o){
   const id="c"+(++_fid),s=o.skin,H=o.hair||"#17110f",eye=o.eye||"#35210f",w=o.fw||40,mw=o.mw||9,lip=o.lip||"#7a3a32",up=o.browUp?3:0;
-  const A=o.acc||[],lo=shade(s,-28),hi=shade(s,20),ink=`stroke="${INK}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
+  const A=o.acc||[],lo=shade(s,-28),hi=shade(s,20),ink=`stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
   const hl=o.hl==null?34:o.hl;
   const defs=`<defs>
-<radialGradient id="${id}s" cx=".4" cy=".34" r=".8"><stop offset="0" stop-color="${hi}"/><stop offset=".55" stop-color="${s}"/><stop offset="1" stop-color="${lo}"/></radialGradient>
-<linearGradient id="${id}b" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="${shade(o.outfit,30)}"/><stop offset=".5" stop-color="${o.outfit}"/><stop offset="1" stop-color="${shade(o.outfit,-38)}"/></linearGradient>
-<linearGradient id="${id}h" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="${shade(H,hl)}"/><stop offset=".45" stop-color="${H}"/><stop offset="1" stop-color="${shade(H,-14)}"/></linearGradient>
-<linearGradient id="${id}n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(s,-52)}"/><stop offset=".45" stop-color="${shade(s,-24)}"/><stop offset="1" stop-color="${shade(s,-14)}"/></linearGradient>
+<linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${s}"/><stop offset=".84" stop-color="${s}"/><stop offset=".84" stop-color="${shade(s,-24)}"/><stop offset="1" stop-color="${shade(s,-26)}"/></linearGradient>
+<linearGradient id="${id}b" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="${o.outfit}"/><stop offset=".64" stop-color="${o.outfit}"/><stop offset=".64" stop-color="${shade(o.outfit,-34)}"/><stop offset="1" stop-color="${shade(o.outfit,-34)}"/></linearGradient>
+<linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${H}"/><stop offset=".6" stop-color="${H}"/><stop offset=".6" stop-color="${shade(H,-16)}"/><stop offset="1" stop-color="${shade(H,-16)}"/></linearGradient>
+<linearGradient id="${id}n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${shade(s,-40)}"/><stop offset=".5" stop-color="${shade(s,-40)}"/><stop offset=".5" stop-color="${shade(s,-22)}"/><stop offset="1" stop-color="${shade(s,-22)}"/></linearGradient>
 <clipPath id="${id}l"><path d="M74 109Q79 101 84 100.4Q89 101 94 109Q88.4 114.6 84 114.6Q79.6 114.6 74 109Z"/></clipPath>
 <clipPath id="${id}r"><path d="M106 109Q111 101 116 100.4Q121 101 126 109Q120.4 114.6 116 114.6Q111.6 114.6 106 109Z"/></clipPath>
 <clipPath id="${id}hd"><path d="M${100-w} 104C${100-w} 70 ${100-w*.6} 58 100 58C${100+w*.6} 58 ${100+w} 70 ${100+w} 104C${100+w} 132 ${100+w*.62} 154 100 157C${100-w*.62} 154 ${100-w} 132 ${100-w} 104Z"/></clipPath>
@@ -804,6 +805,52 @@ const P={
   chaibot, animation:dog, baba:sheep, fadarr:helmet
 };
 
+
+/* ---- sticker doodles: each character carries their own little motifs in the top corners (flat colour, ink outline) ---- */
+const DK=(d,f,w)=>`<path d="${d}" fill="${f}" stroke="${INK}" stroke-width="${w||2.6}" stroke-linejoin="round" stroke-linecap="round"/>`;
+const DD={
+ star:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 -12L3.6 -4L12 -3.4L5.6 2.4L7.4 11L0 6.6L-7.4 11L-5.6 2.4L-12 -3.4L-3.6 -4Z",c,2.4)}</g>`,
+ bolt:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M3 -14L-8 3H-1L-4 14L8 -3H1Z",c,2.4)}</g>`,
+ heart:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 11C-14 1 -12 -10 -5 -10C-2 -10 0 -7 0 -6C0 -7 2 -10 5 -10C12 -10 14 1 0 11Z",c,2.4)}</g>`,
+ note:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-3 9V-10L9 -13V6" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M-3 9V-10L9 -13V6" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="-6" cy="10" rx="5" ry="4" fill="${c}" stroke="${INK}" stroke-width="2.2"/><ellipse cx="6" cy="7" rx="5" ry="4" fill="${c}" stroke="${INK}" stroke-width="2.2"/></g>`,
+ paw:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 -2C7 -2 10 5 8 9C6 12 2 9 0 9C-2 9 -6 12 -8 9C-10 5 -7 -2 0 -2Z",c,2.2)}<circle cx="-9" cy="-6" r="3.4" fill="${c}" stroke="${INK}" stroke-width="2"/><circle cx="-3" cy="-11" r="3.4" fill="${c}" stroke="${INK}" stroke-width="2"/><circle cx="4" cy="-11" r="3.4" fill="${c}" stroke="${INK}" stroke-width="2"/><circle cx="10" cy="-6" r="3.4" fill="${c}" stroke="${INK}" stroke-width="2"/></g>`,
+ bone:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(-30)">${DK("M-10 -3A4.6 4.6 0 1 1 -6 -5H6A4.6 4.6 0 1 1 10 -3A4.6 4.6 0 1 1 6 5H-6A4.6 4.6 0 1 1 -10 3A4.6 4.6 0 1 1 -10 -3Z",c,2.2)}</g>`,
+ gear:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M-3 -12H3L4 -8L8 -9.5L11 -6L9.5 -2L13 0V3L9.5 4L11 8L8 11L4 9.5L3 13H-3L-4 9.5L-8 11L-11 8L-9.5 4L-13 3V0L-9.5 -2L-11 -6L-8 -9.5L-4 -8Z",c,2.2)}<circle r="4" fill="#fff" stroke="${INK}" stroke-width="2.2"/></g>`,
+ pin:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 14C-10 2 -10 -4 -10 -6A10 10 0 0 1 10 -6C10 -4 10 2 0 14Z",c,2.4)}<circle cy="-6" r="3.6" fill="#fff" stroke="${INK}" stroke-width="2.2"/></g>`,
+ spiral:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0C3 -1 3 3 0 3C-5 3 -5 -4 1 -6C8 -7 10 2 5 8C-2 13 -12 9 -12 -1C-12 -11 -2 -15 6 -13" fill="none" stroke="${INK}" stroke-width="5.4" stroke-linecap="round"/><path d="M0 0C3 -1 3 3 0 3C-5 3 -5 -4 1 -6C8 -7 10 2 5 8C-2 13 -12 9 -12 -1C-12 -11 -2 -15 6 -13" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/></g>`,
+ tri:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 -12L12 10H-12Z",c,2.6)}<path d="M-4 5H4L0 -3Z" fill="#fff"/></g>`,
+ stripes:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(-12)"><rect x="-13" y="-9" width="26" height="18" rx="2" fill="#f4ecda" stroke="${INK}" stroke-width="2.4"/><path d="M-7 -9V9M0 -9V9M7 -9V9" stroke="${INK}" stroke-width="3.4"/></g>`,
+ cross:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M-4 -12H4V-4H12V4H4V12H-4V4H-12V-4H-4Z",c,2.4)}</g>`,
+ scissors:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(-35)"><path d="M-2 -2L12 -12M2 -2L-12 -12" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M-2 -2L12 -12M2 -2L-12 -12" stroke="#d8dde4" stroke-width="2.2" stroke-linecap="round"/><circle cx="-4" cy="6" r="5" fill="none" stroke="${INK}" stroke-width="4.4"/><circle cx="-4" cy="6" r="5" fill="none" stroke="${c}" stroke-width="2"/><circle cx="4" cy="6" r="5" fill="none" stroke="${INK}" stroke-width="4.4"/><circle cx="4" cy="6" r="5" fill="none" stroke="${c}" stroke-width="2"/></g>`,
+ burst:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M0 -13L3 -6L10 -10L8 -2L15 0L8 3L11 10L3 7L0 14L-3 7L-10 11L-8 3L-15 0L-8 -2L-10 -10L-3 -6Z",c,2.2)}</g>`,
+ cup:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M-9 -5H9L7 11H-7Z",c,2.4)}<path d="M9 -2Q16 -2 14 4Q12 7 8 6" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M-3 -9Q-6 -13 -3 -16M3 -9Q0 -13 3 -16" fill="none" stroke="#f4ecda" stroke-width="2.2" stroke-linecap="round"/></g>`,
+ cal:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-11" y="-10" width="22" height="22" rx="3" fill="#f4ecda" stroke="${INK}" stroke-width="2.4"/><path d="M-11 -10H11V-3H-11Z" fill="${c}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M-4 -13V-8M4 -13V-8" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M-6 3H6M-6 7H2" stroke="${INK}" stroke-width="2" stroke-linecap="round"/></g>`,
+ meter:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-13" y="-9" width="26" height="18" rx="4" fill="#26222c" stroke="${INK}" stroke-width="2.4"/><rect x="-9" y="-5" width="18" height="8" rx="1.5" fill="${c}"/><path d="M-6 -3H5" stroke="${INK}" stroke-width="2"/><circle cx="-6" cy="6" r="1.4" fill="#e0488a"/><circle cx="0" cy="6" r="1.4" fill="#f4ecda"/></g>`,
+ chili:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s}) rotate(40)">${DK("M-3 -10C4 -10 8 -4 6 4C5 9 2 12 -3 14C-1 8 -6 0 -3 -10Z",c,2.4)}<path d="M-3 -10Q-2 -14 2 -14" fill="none" stroke="#2f8a52" stroke-width="3.4" stroke-linecap="round"/></g>`,
+ coin:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><circle r="11" fill="${c}" stroke="${INK}" stroke-width="2.6"/><circle r="7" fill="none" stroke="${INK}" stroke-width="1.6" opacity=".6"/><path d="M-3 -4H4M-3 0H4M-3 -4Q5 -4 4 -1.6Q3 0.4 -3 0L3 7" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/></g>`,
+ diya:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})">${DK("M-11 2Q-9 12 0 12Q9 12 11 2Z",c,2.4)}<path d="M0 -1Q-6 -8 0 -16Q6 -8 0 -1Z" fill="#ffe27a" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/></g>`,
+ spark:(x,y,s,c)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -12V12M-12 0H12" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><path d="M0 -12V12M-12 0H12" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/></g>`
+};
+/* [doodle, x, y, size, colour] per character: top corners, clear of the figure */
+const DOOD={
+ hema:[["cal",22,112,1.1,"#6b3fa8"],["bolt",178,112,1,"#e8c830"],["star",180,150,.6,"#e8c830"]],
+ jc:[["cup",22,112,1.05,"#e8a840"],["spark",178,112,.95,"#e8c830"],["star",20,150,.6,"#f1eadc"]],
+ chaibot:[["gear",22,100,1.1,"#c9ced6"],["spark",20,142,.7,"#3be0ff"],["star",180,112,.7,"#e8c830"]],
+ tchu:[["meter",22,112,1.15,"#e8c830"],["bolt",178,112,1,"#e8c830"],["star",180,150,.6,"#f4ecda"]],
+ animation:[["paw",22,114,1.1,"#e8c830"],["bone",180,116,.95,"#f4ecda"],["burst",20,152,.65,"#e0488a"]],
+ sarla:[["pin",178,100,1.1,"#e0488a"],["heart",180,136,.95,"#e0488a"],["star",174,168,.6,"#7fd6f0"]],
+ lata:[["chili",22,112,1.1,"#d8302a"],["coin",178,124,.95,"#e8c830"],["heart",20,150,.6,"#e0488a"]],
+ mrst:[["cross",22,116,1.1,"#d8302a"],["stripes",178,116,1.1,"#f4ecda"],["star",20,152,.6,"#e8c830"]],
+ fadarr:[["tri",22,116,1.15,"#c4252a"],["coin",178,116,.95,"#e8c830"],["spark",20,152,.6,"#e0488a"]],
+ baba:[["diya",18,100,1.0,"#d98a3a"],["star",184,98,.8,"#ffe27a"],["spark",184,140,.6,"#ffe27a"]],
+ tabla:[["note",22,106,1.1,"#e0488a"],["spiral",178,106,1,"#3be0ff"],["star",20,150,.6,"#e8c830"]],
+ dimpy:[["scissors",22,106,1.2,"#e0488a"],["heart",22,146,.9,"#e0488a"],["star",24,176,.6,"#e8c830"]],
+ devi:[["bolt",22,112,1.15,"#2c6ff0"],["burst",178,112,1,"#e8c830"],["star",20,152,.6,"#d8302a"]]
+};
+/* shine: a hard cel highlight on the hair of the human busts */
+const SHINE=`<path d="M72 74Q86 62 106 62" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="4.4" stroke-linecap="round"/>`;
+Object.keys(DOOD).forEach(k=>{const f=P[k];if(!f)return;const human=!["chaibot","animation","baba","fadarr","sarla"].includes(k);
+  P[k]=()=>f().replace(/<\/svg>\s*$/,(human?SHINE:"")+DOOD[k].map(d=>DD[d[0]](d[1],d[2],d[3],d[4])).join("")+"</svg>")});
 /* ============ SCENES ============ */
 const statue=(x,s,c)=>`<g transform="translate(${x} 0) scale(${s})" fill="${c}"><path d="M-40 900L-28 520L28 520L40 900Z"/><path d="M-60 560L-30 380L30 380L60 560Z"/><circle cx="0" cy="330" r="46"/><path d="M-30 296L0 230L30 296Z"/><path d="M30 400L120 300L134 312L52 430Z"/><rect x="112" y="250" width="40" height="66" rx="16"/><path d="M-30 420L-110 560L-92 572L-20 470Z"/><path d="M40 700Q160 640 150 520" stroke="${c}" stroke-width="16" fill="none"/></g>`;
 const chawl=(c,w)=>`<g fill="${c}"><rect x="420" y="520" width="760" height="380"/><path d="M560 520L640 440L720 520Z M720 520L800 430L880 520Z M880 520L960 440L1040 520Z"/>${Array.from({length:24},(_,i)=>`<rect x="${450+(i%12)*60}" y="${560+Math.floor(i/12)*110}" width="30" height="46" fill="${w}"/>`).join("")}<path d="M430 640H1170M430 750H1170" stroke="${w}" stroke-width="3" opacity=".5"/></g>`;
@@ -1161,7 +1208,7 @@ setTimeout(pollLive,1500);setInterval(pollLive,180000);
 
 /* ============ PLAYER ============ */
 const $=id=>document.getElementById(id);
-let chIdx=0,prog=null,line=0,liveIdx=0,timer=null,talkT=null,paused=false,soundOn=false,ccOn=true,voices=[];
+const SHOTN={};let chIdx=0,prog=null,line=0,liveIdx=0,timer=null,talkT=null,paused=false,soundOn=false,ccOn=true,voices=[];
 const synth=("speechSynthesis" in window)?window.speechSynthesis:null;
 function loadVoices(){if(synth)voices=synth.getVoices()}
 if(synth){loadVoices();synth.onvoiceschanged=loadVoices}
@@ -1226,6 +1273,9 @@ function showProg(p){
   $("host").innerHTML=p.cast.map(c=>P[c]()).join("");
   const svgs=$("host").querySelectorAll("svg");
   if(svgs.length===1)svgs[0].classList.add("solo");
+  /* camera: a character who comes back gets a different magnification each time (medium, close-up, wide). Pairs stay medium/wide so nobody overlaps. */
+  svgs.forEach((sv,i)=>{const c=p.cast[i],n=SHOTN[c]=(c in SHOTN?SHOTN[c]+1:Math.floor(Math.random()*4));
+    const seq=svgs.length===1?["","shot-c","shot-w","shot-m2"]:["","shot-w"];sv.classList.add(...[seq[n%seq.length]].filter(Boolean))});
   $("stamp").textContent=p.stamp;
   $("lowerRole").textContent=p.role;
   const chId=CHANNELS[chIdx];
