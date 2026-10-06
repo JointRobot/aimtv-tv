@@ -329,6 +329,11 @@ dialog.marks::backdrop{background:rgba(5,3,2,.7)}
 .tabarr{position:absolute;top:0;bottom:1px;width:34px;z-index:2;border:0;cursor:pointer;color:var(--brass);font:700 26px/1 var(--f-display);opacity:0;pointer-events:none;transition:opacity .25s}
 .tabarr.l{left:0;background:linear-gradient(90deg,var(--ink,#120d18) 40%,transparent)}.tabarr.r{right:0;background:linear-gradient(270deg,var(--ink,#120d18) 40%,transparent)}
 .tabarr.on{opacity:1;pointer-events:auto}.tabarr:hover{color:var(--paper)}
+.tabrow{display:flex;align-items:flex-end;gap:12px}.tabrow .tabwrap{flex:1;min-width:0}
+.tabk{flex:none;padding:0 0 12px;font:600 11px/1 var(--f-mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);opacity:.7;min-width:74px}
+.tabrow.world{margin-top:2px}.tabrow.world .tabs{flex:1;border-bottom:1px solid var(--line)}
+.tabrow.world .tabs button{font-size:15px;padding:8px 14px 6px}
+@media (max-width:640px){.tabrow{flex-direction:column;align-items:stretch;gap:0}.tabk{padding:8px 0 0;min-width:0}}
 .tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:thin}
 .tabs button{flex:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px 8px;font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
 .tabs button[aria-selected="true"]{color:var(--paper);border-bottom-color:var(--brass)}
@@ -541,16 +546,19 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
   </a>
 
   <section class="guide">
+    <div class="tabrow"><span class="tabk">Shows</span>
     <div class="tabwrap" id="tabwrap"><button class="tabarr l" id="tabL" aria-label="Scroll tabs left" tabindex="-1">‹</button><div class="tabs" role="tablist" id="tabs">
       <button role="tab" aria-selected="true" data-tab="tdty" id="t-tdty">This Day, That Year</button>
       <button role="tab" aria-selected="false" data-tab="shop" id="t-shop">Tomorrow Shop</button>
       <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">Stomach Challo Travels</button>
       <button role="tab" aria-selected="false" data-tab="music" id="t-music">AIMTV Music</button>
       <button role="tab" aria-selected="false" data-tab="shows" id="t-shows">All Shows</button>
+    </div><button class="tabarr r" id="tabR" aria-label="Scroll tabs right" tabindex="-1">›</button></div></div>
+    <div class="tabrow world"><span class="tabk">The world</span><div class="tabs" role="tablist" id="tabs2">
       <button role="tab" aria-selected="false" data-tab="cast" id="t-cast">The Cast</button>
       <button role="tab" aria-selected="false" data-tab="ask" id="t-ask">Ask the Cast</button>
       <button role="tab" aria-selected="false" data-tab="products" id="t-products">Future Products</button>
-    </div><button class="tabarr r" id="tabR" aria-label="Scroll tabs right" tabindex="-1">›</button></div>
+    </div></div>
 
     <div class="pane" id="p-tdty" role="tabpanel" aria-labelledby="t-tdty">
       <h2 id="archH">Archived: 4 October 2026</h2>
@@ -1775,8 +1783,8 @@ renderPicker();
   const dt=Math.min(64,n-last);last=n;pos=Math.max(0,Math.min(m,(Math.abs(pos-t.scrollLeft)>2?t.scrollLeft:pos)+dir*dt*0.022));
   if(pos>=m){dir=-1;hold=n+1500}else if(pos<=0){dir=1;hold=n+1500}t.scrollLeft=pos}
  requestAnimationFrame(step);addEventListener("resize",edges);setTimeout(edges,300)})();
-$("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;
-  document.querySelectorAll("#tabs [data-tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});
+document.querySelector(".guide").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;
+  document.querySelectorAll(".guide [role=tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});
   try{localStorage.setItem("aimtv-tab",b.dataset.tab)}catch(err){}});
 try{const t=localStorage.getItem("aimtv-tab");if(t&&$("t-"+t))$("t-"+t).click()}catch(e){}
 
