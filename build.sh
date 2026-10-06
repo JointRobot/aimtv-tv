@@ -6,6 +6,6 @@ cp ../music/*.mp3 $OUT/music/ 2>/dev/null || true
 [ -d ../plates ] && mkdir -p $OUT/plates && cp ../plates/*.jpg $OUT/plates/ || true  # comic-art backdrops
 [ -d ../vo ] && cp -r ../vo/. $OUT/vo/ || true
 cp ../brand/og.jpg $OUT/og.jpg 2>/dev/null || true  # link-preview picture
-[ -d ../brand/yt ] && mkdir -p $OUT/yt && cp ../brand/yt/*.jpg $OUT/yt/ || true  # YouTube channel art
+[ -d ../brand/yt ] && mkdir -p $OUT/yt && cp ../brand/yt/* $OUT/yt/ || true  # YouTube channel art
 date -u +%FT%TZ > $OUT/VERSION
 printf "/live/*\n  Cache-Control: no-store\n/music/*\n  Cache-Control: public, max-age=604800\n/vo/*\n  Cache-Control: public, max-age=86400\n/index.html\n  Cache-Control: no-cache\n/yt/*\n  Access-Control-Allow-Origin: *\n" > $OUT/_headers  # Cloudflare Pages caching rules
