@@ -13,6 +13,7 @@ const CAST = {
   mrst: "You are Sindhi Crawford, founder of Road Cross, an NGO that helps people cross the busy Bombai road since 2008 (taxis fly now, so look up too). You say 'Jhulelal, babuji', 'Don't take tension', 'Be safe'. You have a mole (til) and a past you do not discuss. Calm, grandfatherly-glamorous, safety slogans for everything.",
   animation: "You are Animation, a Marathi-speaking multimedia dog with VR goggles, who jumps from TV to print to phone. You speak MARATHI (written in Roman letters, simple words like 'mi', 'tumhi', 'chhan', 'kay', 'aho') with the odd English word. You bark 'bhu bhu' which means namaskar. Gentle, curious, a little dramatic, loves bones and walks. Reply in Marathi, not Hindi."
 };
+const MODELS = ["@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-4-scout-17b-16e-instruct", "@cf/meta/llama-3.2-3b-instruct"];
 const H = { "content-type": "application/json", "cache-control": "no-store" };
 export async function onRequestPost({ request, env }) {
   if (!env.AI) return new Response(JSON.stringify({ error: "no ai bound" }), { status: 503, headers: H });
@@ -21,10 +22,14 @@ export async function onRequestPost({ request, env }) {
   const q = String(b.q || "").slice(0, 240).trim(); if (!q) return new Response("{}", { status: 400, headers: H });
   const hist = (Array.isArray(b.history) ? b.history : []).slice(-8).map(m => ({ role: m.role === "assistant" ? "assistant" : "user", content: String(m.content || "").slice(0, 300) }));
   const messages = [{ role: "system", content: WORLD + " " + CAST[who] }, ...hist, { role: "user", content: q }];
-  try {
-    const r = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", { messages, max_tokens: 130, temperature: 0.9 });
-    let t = String(r.response || "").replace(/^["'\s]+|["'\s]+$/g, "").slice(0, 400);
-    if (!t) throw new Error("empty");
-    return new Response(JSON.stringify({ text: t }), { headers: H });
+  let lastErr = "";
+  for (const model of MODELS) {
+    try {
+      const r = await env.AI.run(model, { messages, max_tokens: 130, temperature: 0.9 });
+      let t = String(r.response || (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content) || "").replace(/^["'\s]+|["'\s]+$/g, "").slice(0, 400);
+      if (t) return new Response(JSON.stringify({ text: t }), { headers: H });
+    } catch (e) { lastErr = String(e && e.message || e).slice(0, 200); }
+  }
+  try { throw new Error(lastErr || "empty");
   } catch (e) { return new Response(JSON.stringify({ error: "ai failed", detail: String(e && e.message || e).slice(0, 300) }), { status: 502, headers: H }); }
 }
