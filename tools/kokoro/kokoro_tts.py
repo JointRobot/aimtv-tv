@@ -16,6 +16,7 @@ KCAST = {
     "jc": ("hm_omega", 1.0, 1.0, ""), "tchu": ("hm_omega", 0.96, 0.9, ""),
     "sarla": ("hf_alpha", 1.05, 1.1, ""),
     "chaibot": ("hm_psi", 1.2, 1.18, "aecho=0.8:0.6:12:0.4"),
+    "animation": ("hm_psi", 1.08, 1.08, ""),  # Marathi dog: Marathi (Devanagari) text read by the Hindi voice engine
 }
 _S = {}
 

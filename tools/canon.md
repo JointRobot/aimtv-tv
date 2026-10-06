@@ -27,7 +27,8 @@ Hard limit: stories of violence, lynching, riots, deaths, disasters or communal 
 
 ## Line format (every spoken line is `[speaker, subtitle, "", devanagari]`)
 - **Hinglish speakers** (`hema, tchu, jc, chaibot, lata, mrst, devi, sarla`): field 2 is the subtitle in Roman Hinglish (what a viewer reads in white, e.g. "Aaj ka product: the Dot Butler. Aapka agent, aapka phone, aapka chai budget."). Field 4 is the SAME line in Devanagari, which is what the voice speaks and what shows in yellow: Hindi words in Devanagari, English words spelled the way they sound in Devanagari ("डॉट बटलर", "फ़ा किंग कंस्ट्रक्शन", "हू नोटिसेस अ नोटिस?"). Field 4 is required and must contain Devanagari. Write numbers as words in Devanagari ("पंद्रह साल", "दो हज़ार इकतालीस"). Short sentences: the voice sounds best with one idea per sentence.
-- **English speakers** (`fadarr`, `animation`): field 2 English, field 4 their home-language line as before (Animation: Marathi; Fa Darr: leave field 4 empty for now).
+- **Animation speaks MARATHI (founder rule, 6 Oct 2026): he is a Marathi-speaking dog and never speaks English on air.** Field 2 is the English subtitle (white); field 4 is the same line in Marathi (Devanagari), which the voice speaks and which shows in yellow. Use natural Marathi (not Hindi): e.g. "आहे", "मी ... करतो", "म्हणजे". Voice: Kokoro `animation` (hm_psi). Keep his lines short (one or two sentences).
+- **English speakers** (`fadarr`): field 2 English, field 4 their home-language line (Fa Darr: leave field 4 empty for now).
 - The third field (note) is optional and usually empty.
 
 ## Programme formats (lines per bulletin; keep each programme 5 to 8 lines unless stated)
