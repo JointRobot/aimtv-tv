@@ -404,6 +404,21 @@ form.q input::placeholder{color:#7d705c}
 .msg.me .bub{justify-self:end;background:#2b2017;border-radius:10px 4px 10px 10px}
 
 /* Products table */
+.pgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:0 0 26px}
+.pcard{display:flex;flex-direction:column;text-align:left;background:var(--panel,#14161c);border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:0;color:inherit;font:inherit}
+.pcard.has{cursor:pointer}.pcard.has:hover{border-color:#8bd04f}
+.pcard img,.pcard .ph{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.pcard .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:repeating-linear-gradient(135deg,#1b1e26 0 10px,#171a21 10px 20px);text-align:center;padding:10px}
+.pcard .ph small{color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.pcard>span{padding:9px 11px}.pcard>span small{display:block;color:var(--dim);font-size:12px;margin-top:2px}
+.pview{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.86);overflow:auto;padding:16px}
+.pview[hidden]{display:none}
+.pbox{max-width:1100px;margin:0 auto;background:#0d0f14;border:1px solid var(--line);border-radius:12px;padding:12px;position:relative}
+.pbox img{width:100%;height:auto;display:block;border-radius:8px}
+.px{position:absolute;right:8px;top:8px;width:36px;height:36px;border-radius:50%;border:0;background:#000b;color:#fff;font-size:22px;cursor:pointer}
+.ptabs{display:flex;gap:8px;margin:10px 0}.ptabs button{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:none;color:inherit;cursor:pointer}.ptabs button[aria-pressed=true]{background:#8bd04f;color:#000;border-color:#8bd04f}
+.ptxt{padding:6px 6px 2px}.ptxt p{margin:6px 0}.ptxt .src{color:var(--dim);font-size:12px}
+h3.reg{margin:6px 0 10px}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
 table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -609,6 +624,9 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
     <div class="pane" id="p-products" role="tabpanel" aria-labelledby="t-products" hidden>
       <h2>Future Product Archive</h2>
       <p class="lede">Every invention from the Celeb Shauchalay universe, and the problem each one was built to solve.</p>
+      <div class="pgal" id="pgal"></div>
+      <div class="pview" id="pview" hidden></div>
+      <h3 class="reg">Full register</h3>
       <div class="tablewrap"><table>
         <thead><tr><th>Product</th><th>Belongs to</th><th>What it does</th><th>The Indian problem it solves</th></tr></thead>
         <tbody id="products"></tbody>
@@ -1581,8 +1599,18 @@ const PRODUCTS=[
  ["Fa Cough Syrup","canon","Fa Corporation","A Fa Corp consumer product.","Coughs caused by Fa King demolition dust.","Deck, Fa Darr card"],
  ["Project Unearth","canon","Fa Corporation","Real estate offering unlimited space in space, at 50% GST, by destroying Earth.","Bombai has run out of land.","Deck, Ep 9"],
  ["Holographic building","canon","Fa Corporation","A decoy B Block the Celebs attack by mistake.","Hiding a call centre in plain sight.","Deck, Ep 8"],
+ ["Gaurakshak","canon","Fa Corporation","The robot that polices your plate. Detects, intercepts, interrogates and re-educates. 8 ft, 1.2 ton, 12 abuse languages, pan-spit module, permanent stamp ink. Fictional satire.","Everyone's dinner, and everyone's business.","Founder's product sheet, Oct 2026"],
  ["Rama Tuta 2.0","proposed","Tomorrow Shop","Household robot: cleaning, cooking, organising, and now gossip.","Domestic work, and what an Indian home does when it is automated.","Founder brief"],
 ];
+const SHEETS={"Bio Data":["biodata","biodata-xray"],"Gaurakshak":["gaurakshak","gaurakshak-360"]};
+const SHEETALT={"biodata":"Product board","biodata-xray":"X-ray and specs","gaurakshak":"Ad poster","gaurakshak-360":"360 degree sheet"};
+$("pgal").innerHTML=PRODUCTS.map((p,i)=>{const s=SHEETS[p[0]];return `<button type="button" class="pcard ${s?"has":"soon"}" data-i="${i}">${s?`<img loading="lazy" src="products/${s[0]}-t.webp" alt="${p[0]} product sheet">`:`<div class="ph"><b>${p[0].replace(/</g,"&lt;")}</b><small>Sheet in design</small></div>`}<span><b>${p[0]}</b><small>${p[2]}</small></span></button>`}).join("");
+let pv=null;
+function openSheet(i,k){const p=PRODUCTS[i],s=SHEETS[p[0]];if(!s)return;pv={i,k:k||0};
+  const v=$("pview");v.innerHTML=`<div class="pbox"><button class="px" aria-label="Close">×</button><img src="products/${s[pv.k]}.webp" alt="${p[0]} ${SHEETALT[s[pv.k]]||""}">${s.length>1?`<div class="ptabs">${s.map((n,j)=>`<button data-k="${j}" aria-pressed="${j===pv.k}">${SHEETALT[n]||n}</button>`).join("")}</div>`:""}<div class="ptxt"><h3>${p[0]}</h3><p><b>Belongs to:</b> ${p[2]}</p><p>${p[3]}</p><p><b>The Indian problem it solves:</b> ${p[4]}</p><p class="src">Fictional satire. Not a real product. Source: ${p[5]}</p></div></div>`;v.hidden=false}
+$("pgal").addEventListener("click",e=>{const b=e.target.closest(".pcard.has");if(b)openSheet(+b.dataset.i)});
+$("pview").addEventListener("click",e=>{if(e.target.id==="pview"||e.target.closest(".px"))$("pview").hidden=true;const t=e.target.closest("[data-k]");if(t)openSheet(pv.i,+t.dataset.k)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("pview").hidden=true});
 const ST={canon:["canon","Canon"],proposed:["proposed","Proposed"],question:["question","Canon question"]};
 $("products").innerHTML=PRODUCTS.map(p=>`<tr><td><b>${p[0]}</b></td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td></tr>`).join("");
 
