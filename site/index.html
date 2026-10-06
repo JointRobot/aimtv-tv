@@ -404,6 +404,10 @@ form.q input::placeholder{color:#7d705c}
 .msg.me .bub{justify-self:end;background:#2b2017;border-radius:10px 4px 10px 10px}
 
 /* Products table */
+.eplink{cursor:pointer;position:relative}.eplink:hover,.eplink:focus-visible{border-color:#e0b04a;outline:0}
+.eplink .wt{display:inline-block;margin-top:8px;font:600 12px/1 var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;color:#e0b04a}
+.shw{margin:0 0 28px}.shw h3{margin:0 0 4px}.shw>p{color:var(--dim);margin:0 0 12px;max-width:68ch}
+.shw .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .pgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:0 0 26px}
 .pcard{display:flex;flex-direction:column;text-align:left;background:var(--panel,#14161c);border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:0;color:inherit;font:inherit}
 .pcard.has{cursor:pointer}.pcard.has:hover{border-color:#8bd04f}
@@ -542,6 +546,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       <button role="tab" aria-selected="false" data-tab="shop" id="t-shop">Tomorrow Shop</button>
       <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">Stomach Challo Travels</button>
       <button role="tab" aria-selected="false" data-tab="music" id="t-music">AIMTV Music</button>
+      <button role="tab" aria-selected="false" data-tab="shows" id="t-shows">All Shows</button>
       <button role="tab" aria-selected="false" data-tab="cast" id="t-cast">The Cast</button>
       <button role="tab" aria-selected="false" data-tab="ask" id="t-ask">Ask the Cast</button>
       <button role="tab" aria-selected="false" data-tab="products" id="t-products">Future Products</button>
@@ -566,7 +571,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
             <li><span>SEG 3</span><div><b>Shadow Price / Sunny Price.</b> Same product, two entrances, two prices.</div></li>
           </ul>
         </div>
-        <div class="card">
+        <div class="card eplink" tabindex="0" data-ch="shop" data-ep="shop">
           <div class="cat"><span>Episode 1 · Product under review</span></div>
           <h4>Rama Tuta 2.0</h4>
           <p>A household robot that sweeps, mops, cooks and organises. Version 1.0 did every chore, which left the aunties of the building with nothing to gossip about. Version 2.0 shipped a patch: the robot now gossips itself, and reads the building's news at 7 pm.</p>
@@ -597,6 +602,12 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
         <div hidden><ol class="tracks" id="filllist"></ol></div>
       </div>
     </div>
+    <div class="pane" id="p-shows" role="tabpanel" aria-labelledby="t-shows" hidden>
+      <h2>All Shows</h2>
+      <p class="lede">Every show AIMTV has aired, kept in the archive. Click any episode to watch it on its own channel. New episodes are added here as they air.</p>
+      <div id="showarch"></div>
+    </div>
+
     <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast" hidden>
       <h2>The Cast of Celeb Shauchalay</h2>
       <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV.</p>
@@ -1008,6 +1019,29 @@ const PROGS=[
   ["animation", "Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Tyala kalala nahi. Mhanun mi punha bhunkalo.", "", "एक माणूस म्हणाला, कुत्रा काय करतो? मी म्हणालो, भू भू. त्याला कळलं नाही. म्हणून मी पुन्हा भुंकलो."],
   ["animation", "Goshta sampli. Bhu bhu mhanje namaskar. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे नमस्कार. पुन्हा भेटू."]
  ]},
+ {id:"travel2",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 2 · Matheran",role:"Stomach Challo Travels",lines:[
+  ["sarla", "Hi guys! Stomach Challo Travels, episode two. Aaj Matheran. Yahan koi gaadi allowed nahi hai. So European.", "", "हाय गाइज़! स्टमक चलो ट्रैवल्स, एपिसोड टू। आज माथेरान। यहाँ कोई गाड़ी अलाउड नहीं है। सो यूरोपियन।"],
+  ["sarla", "Toy train se upar gaye. Itni slow chalti hai, ki reel ke liye time hi time.", "", "टॉय ट्रेन से ऊपर गए। इतनी स्लो चलती है, कि रील के लिए टाइम ही टाइम।"],
+  ["lata", "Kem cho! Sarla baby, ghode pe baithegi? Mandi se sasta hai. Forty rupees!", "", "केम छो! सरला बेबी, घोड़े पे बैठेगी? मंडी से सस्ता है। फ़ोर्टी रुपीज़!"],
+  ["sarla", "Mummy, ghoda mera content hai. Aap please peeche chaliye. Sorry guys.", "", "मम्मी, घोड़ा मेरा कंटेंट है। आप प्लीज़ पीछे चलिए। सॉरी गाइज़।"],
+  ["sarla", "Tchu Tchu uncle ne taxi neeche hi roki. Unka meter chalta raha. Neeche.", "", "टचू टचू अंकल ने टैक्सी नीचे ही रोकी। उनका मीटर चलता रहा। नीचे।"],
+  ["sarla", "Like karo, share karo, follow karo. Stomach Challo. Mujhe foreign bahut pasand hai.", "", "लाइक करो, शेयर करो, फ़ॉलो करो। स्टमक चलो। मुझे फ़ॉरिन बहुत पसंद है।"]
+ ]},
+ {id:"travel3",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 3 · Daman",role:"Stomach Challo Travels",lines:[
+  ["sarla", "Hi guys! Aaj Daman. It's literally a different territory. Passport nahi chahiye, par feel poora passport wala.", "", "हाय गाइज़! आज दमन। इट्स लिटरली अ डिफ़रेंट टेरिटरी। पासपोर्ट नहीं चाहिए, पर फ़ील पूरा पासपोर्ट वाला।"],
+  ["sarla", "Yahan ka beach, like, bilkul Goa jaisa. Bas Goa nahi hai. Mummy ne yeh bola. Phir maine bola, mummy, shh.", "", "यहाँ का बीच, लाइक, बिल्कुल गोवा जैसा। बस गोवा नहीं है। मम्मी ने यह बोला। फिर मैंने बोला, मम्मी, श्श।"],
+  ["lata", "Kem cho! Sarla, tiffin mein dosa laayi hoon. Teen hi hain, tu diet pe hai.", "", "केम छो! सरला, टिफ़िन में डोसा लायी हूँ। तीन ही हैं, तू डाइट पे है।"],
+  ["sarla", "Foreign trip mein dosa. Content ka kya hoga. Guys, ignore this part.", "", "फ़ॉरिन ट्रिप में डोसा। कंटेंट का क्या होगा। गाइज़, इस पार्ट को इग्नोर करो।"],
+  ["sarla", "Mummy ne shirt ka bargain kiya. Do sau ka shirt, chaalees mein. Ab hum shirt ke saath foreign hain.", "", "मम्मी ने शर्ट का बार्गेन किया। दो सौ का शर्ट, चालीस में। अब हम शर्ट के साथ फ़ॉरिन हैं।"],
+  ["sarla", "Like karo, share karo, follow karo. Stomach Challo. Mujhe foreign bahut pasand hai.", "", "लाइक करो, शेयर करो, फ़ॉलो करो। स्टमक चलो। मुझे फ़ॉरिन बहुत पसंद है।"]
+ ]},
+ {id:"travel4",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 4 · Alibaug",role:"Stomach Challo Travels",lines:[
+  ["sarla", "Hi guys! Aaj Alibaug. The Maldives, but the ferry has samosas.", "", "हाय गाइज़! आज अलीबाग। द मालदीव्स, बट द फ़ेरी हैज़ समोसाज़।"],
+  ["sarla", "Gateway se ferry li. Ferry mein samosa, chai, aur ek uncle jo bol raha tha, meri video mat banao. Maine banai.", "", "गेटवे से फ़ेरी ली। फ़ेरी में समोसा, चाय, और एक अंकल जो बोल रहा था, मेरी वीडियो मत बनाओ। मैंने बनाई।"],
+  ["lata", "Kem cho! Sarla baby, samosa khayegi? Do le. Teen hi hain, aaj diet.", "", "केम छो! सरला बेबी, समोसा खायेगी? दो ले। तीन ही हैं, आज डाइट।"],
+  ["sarla", "Water so blue. Ya shayad ferry ka paint. Doesn't matter, filter laga diya.", "", "वॉटर सो ब्लू। या शायद फ़ेरी का पेंट। डसन्ट मैटर, फ़िल्टर लगा दिया।"],
+  ["sarla", "Like karo, share karo, follow karo. Stomach Challo. Mujhe foreign bahut pasand hai.", "", "लाइक करो, शेयर करो, फ़ॉलो करो। स्टमक चलो। मुझे फ़ॉरिन बहुत पसंद है।"]
+ ]},
  {id:"baba",ch:"Baba Ka Aashirwad",scene:"baba",cast:["baba"],stamp:"Daily blessing",role:"Almighty · omni-present",lines:[
   ["baba", "You are either photogenic or sarvajanic.", "", "या तो आप फ़ोटोजेनिक हैं, या सार्वजनिक।"],
   ["baba", "Music makes the people come together, because God is a DJ.", "", "संगीत लोगों को साथ लाता है, क्योंकि भगवान एक डीजे है।"],
@@ -1416,6 +1450,7 @@ function nextLine(){
     if(CHANNELS[chIdx]==="tablanari")return showProg(byId(prog.vj?"song":"tablanari")); /* VJ intro, song, VJ intro... */
     if(CHANNELS[chIdx]==="ad1"){const R=["ad1","ad_horn","ad_sign","ad_bio"];return switchTo(byId(R[(R.indexOf(prog.id)+1)%R.length]),false)} /* teleshopping: every Fa Corp spot in turn */
     if(CHANNELS[chIdx]==="live"){liveIdx=(liveIdx+1)%LIVE_ORDER.length;if(liveIdx===0)shuffleLive();return switchTo(byId(LIVE_ORDER[liveIdx]),false)}
+    const E=EPS[CHANNELS[chIdx]];if(E&&E.length>1)return switchTo(byId(E[(E.indexOf(prog.id)+1)%E.length]),false); /* a channel with an archive plays its episodes in turn */
     line=0;
   }
   playLine();
@@ -1558,7 +1593,28 @@ $("archive").innerHTML=ARCH.map(a=>`<article class="card"><div class="cat"><span
 
 /* ============ TRAVEL EPISODES ============ */
 const TRIPS=[["Ep 1","Lonavala","\"Basically Switzerland. With chikki.\"","2 hrs by taxi"],["Ep 2","Matheran","\"No cars allowed. So European.\"","Toy train, 1 Bhenji"],["Ep 3","Daman","\"It's literally a different territory, guys.\"","Passport not needed"],["Ep 4","Alibaug","\"The Maldives, but the ferry has samosas.\"","Ferry from Gateway"]];
-$("trips").innerHTML=TRIPS.map(t=>`<article class="card"><div class="cat"><span>${t[0]}</span></div><h4>${t[1]}</h4><p>${t[2]}</p><p class="src">${t[3]}</p></article>`).join("");
+$("trips").innerHTML=TRIPS.map((t,i)=>`<article class="card eplink" tabindex="0" data-ch="travel" data-ep="${i?"travel"+(i+1):"travel"}"><div class="cat"><span>${t[0]}</span></div><h4>${t[1]}</h4><p>${t[2]}</p><p class="src">${t[3]}</p><span class="wt">&#9654; Watch</span></article>`).join("");
+/* ============ ALL SHOWS (archive): add a program id to a show's list and it appears here and on its channel ============ */
+const SHOWARCH=[
+ {ch:"tdty",n:"This Day, That Year",d:"Hema opens the archive, fifteen years back.",eps:["tdty"]},
+ {ch:"shop",n:"Tomorrow Shop",d:"Juhu Chaiwala reviews products that already launched.",eps:["shop"]},
+ {ch:"travel",n:"Stomach Challo Travels",d:"So foreign. Not really.",eps:["travel","travel2","travel3","travel4"]},
+ {ch:"meter",n:"Meter Down",d:"Tchu Tchu, live from the taxi.",eps:["meter"]},
+ {ch:"dosa",n:"Dosa Khayega?",d:"Bhenji Jumping on food and bargains.",eps:["dosa"]},
+ {ch:"makeover",n:"Chupp Kudiye",d:"Talwaar Kameez, from Dimpy Beauty Salon.",eps:["makeover"]},
+ {ch:"stunt",n:"Stunt Double",d:"Fullon Devi takes the fall so the hero doesn't.",eps:["stunt"]},
+ {ch:"mhanje",n:"Mhanje",d:"A Marathi interlude from Animation, the dog.",eps:["mhanje"]},
+ {ch:"baba",n:"Baba Ka Aashirwad",d:"The daily blessing.",eps:["baba"]},
+ {ch:"ad1",n:"Fa Corp Teleshopping",d:"Paid programming, in the public interest.",eps:["ad1","ad_horn","ad_sign","ad_bio"]}
+];
+const ETITLE={tdty:"Tonight's bulletin",shop:"Rama Tuta 2.0",meter:"Live from Shivajinagar",dosa:"Aloo for forty",makeover:"A new husband, 20% off",stunt:"Taxi to rickshaw, one take",mhanje:"Bhu bhu means namaskar",baba:"The daily blessing",ad1:"A message from Fa Corp",ad_horn:"The Polite Horn",ad_sign:"Sign Language Act",ad_bio:"Bio Data"};
+const EPS={};SHOWARCH.forEach(s=>{if(s.eps.length>1)EPS[s.ch]=s.eps});
+$("showarch").innerHTML=SHOWARCH.map(s=>`<section class="shw"><h3>${s.n}</h3><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}"><div class="cat"><span>${s.eps.length>1?"Ep "+(i+1):"Episode"}</span></div><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></article>`:""}).join("")}</div></section>`).join("");
+function watchEp(ch,id){const i=CHANNELS.indexOf(ch);if(i<0||!byId(id))return;chIdx=i;
+  document.querySelectorAll("#chans button").forEach((b,k)=>b.setAttribute("aria-current",k===i?"true":"false"));
+  switchTo(byId(id));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-ep]");if(c)watchEp(c.dataset.ch,c.dataset.ep)});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const c=e.target.closest&&e.target.closest("[data-ep]");if(c)watchEp(c.dataset.ch,c.dataset.ep)});
 
 /* ============ CAST ============ */
 const HEROES=[
