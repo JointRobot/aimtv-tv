@@ -26,5 +26,5 @@ export async function onRequestPost({ request, env }) {
     let t = String(r.response || "").replace(/^["'\s]+|["'\s]+$/g, "").slice(0, 400);
     if (!t) throw new Error("empty");
     return new Response(JSON.stringify({ text: t }), { headers: H });
-  } catch (e) { return new Response(JSON.stringify({ error: "ai failed" }), { status: 502, headers: H }); }
+  } catch (e) { return new Response(JSON.stringify({ error: "ai failed", detail: String(e && e.message || e).slice(0, 300) }), { status: 502, headers: H }); }
 }
