@@ -405,6 +405,15 @@ th{font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.12
 td b{font-family:var(--f-display);font-size:18px;letter-spacing:.02em;font-weight:700}
 tr:last-child td{border-bottom:0}
 
+.ytcard{display:flex;gap:18px;align-items:center;margin:22px 0 4px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--paper)}
+.ytcard:hover{border-color:var(--brass)}
+.ytcard img{width:min(320px,42%);height:auto!important;aspect-ratio:16/9;object-fit:cover;border-radius:4px;display:block;flex:none}
+.ytcard .yt-k{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--saffron);text-transform:uppercase}
+.ytcard .yt-t{font-family:var(--f-display);font-weight:900;font-size:26px;letter-spacing:.04em;text-transform:uppercase;margin:4px 0 6px;line-height:1.1}
+.ytcard .yt-d{color:var(--dim);font-size:14px;margin:0 0 10px}
+.ytcard .yt-b{display:inline-block;background:var(--padmini);color:#1a120b;border-radius:4px;padding:6px 14px;font-family:var(--f-display);font-weight:900;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:560px){.ytcard{flex-direction:column;align-items:stretch}.ytcard img{width:100%}}
+body.bc .ytcard{display:none}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--dim);letter-spacing:.06em}
 @media (max-width:560px){
   .wrap{padding-inline:16px}
@@ -500,6 +509,11 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       </div>
     </aside>
   </div>
+
+  <a class="ytcard" href="https://youtu.be/sxLxHHFjo_c" target="_blank" rel="noopener" aria-label="Watch AIMTV live on YouTube">
+    <img src="yt/thumbnail.jpg" alt="AIMTV Live 24/7 on YouTube" loading="lazy">
+    <div><div class="yt-k">Also streaming 24/7</div><div class="yt-t">Watch AIMTV live on YouTube</div><p class="yt-d">Same channel, same cast, on the big screen. Subscribe and join the live chat.</p><span class="yt-b">Open on YouTube</span></div>
+  </a>
 
   <section class="guide">
     <div class="tabwrap" id="tabwrap"><button class="tabarr l" id="tabL" aria-label="Scroll tabs left" tabindex="-1">‹</button><div class="tabs" role="tablist" id="tabs">
