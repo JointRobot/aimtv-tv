@@ -123,7 +123,7 @@ body.bc .sctl{display:none!important}
 .screen .host{display:flex;align-items:flex-end;justify-content:center;gap:4%;padding:0 6% calc(5.07cqw + 2px);box-sizing:border-box}
 .screen .host svg{position:relative;height:78%;width:auto;filter:drop-shadow(2.5px 0 0 #f4ecda) drop-shadow(-2.5px 0 0 #f4ecda) drop-shadow(0 2.5px 0 #f4ecda) drop-shadow(0 -2.5px 0 #f4ecda) drop-shadow(0 10px 12px rgba(0,0,0,.5));transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,.7,.3,1),filter .45s}
 .screen .host svg.solo{height:82%}
-.screen .host svg.shot-c{height:112%}.screen .host svg.shot-w{height:60%}.screen .host svg.solo.shot-w{height:62%}.screen .host svg.shot-m2{height:96%}
+.screen .host svg.shot-c{height:112%}.screen .host svg.shot-w{height:60%}.screen .host svg.solo.shot-w{height:62%}.screen .host svg.shot-m2{height:96%}.screen .host svg.shot-f{height:88%}.screen .host svg.solo.shot-f{height:88%}
 .screen .host svg.dim{z-index:1;transform:scale(.76);filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 .screen .host svg.lead{z-index:2;transform:scale(1.06);filter:drop-shadow(0 14px 22px rgba(0,0,0,.6))}
 @media (prefers-reduced-motion:reduce){.screen .host svg{transition:none}}
@@ -851,6 +851,38 @@ const DOOD={
 const SHINE=`<path d="M72 74Q86 62 106 62" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="4.4" stroke-linecap="round"/>`;
 Object.keys(DOOD).forEach(k=>{const f=P[k];if(!f)return;const human=!["chaibot","animation","baba","fadarr","sarla"].includes(k);
   P[k]=()=>f().replace(/<\/svg>\s*$/,(human?SHINE:"")+DOOD[k].map(d=>DD[d[0]](d[1],d[2],d[3],d[4])).join("")+"</svg>")});
+
+/* ---- full-length figures: the bust above, plus arms, torso and legs drawn under the same hand. Used for the full shot. ---- */
+const FCFG={
+ hema:{top:"#2e3326",bot:"#3d3f30",shoe:"#1a110c",skin:SK.hema,kind:"trousers"},
+ jc:{top:"#b3302a",bot:"#e8e0cc",shoe:"#8a5a3b",skin:SK.jc,kind:"trousers"},
+ tchu:{top:"#55602c",bot:"#3a3f2a",shoe:"#26222c",skin:SK.tchu,kind:"trousers"},
+ sarla:{top:"#f6f3ee",bot:"#9bb6d6",shoe:"#e0488a",skin:SK.sarla,kind:"trousers",suit:1},
+ lata:{top:"#b82a36",bot:"#b82a36",shoe:"#e0b030",skin:SK.lata,kind:"sari"},
+ mrst:{top:"#2f8a52",bot:"#2f8a52",shoe:"#d6a32e",skin:SK.mrst,kind:"sari"},
+ dimpy:{top:"#e3b23c",bot:"#a02a8a",shoe:"#c8962e",skin:SK.dimpy,kind:"kurta"},
+ devi:{top:"#d8a12a",bot:"#26262a",shoe:"#26262a",skin:SK.devi,kind:"trousers"},
+ fadarr:{top:"#26222c",bot:"#26222c",shoe:"#0e0c12",skin:"#17110f",kind:"trousers"},
+ animation:{top:"#f4f1ec",bot:"#7a5fd0",shoe:"#e8c830",skin:"#17110f",kind:"trousers",dog:1},
+ tabla:{top:"#1f7f86",bot:"#2a2030",shoe:"#1a110c",skin:SK.tabla,kind:"booth"}
+};
+function lowerBody(c){const t=c.top,td=shade(t,-34),b=c.bot,bd=shade(b,-30),I=`stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+  const ex=c.kind==="kurta"?366:326;
+  const L=c.dog?38:16,R=c.dog?162:184,Li=c.dog?60:46,Ri=c.dog?140:154;
+  let s=`<g id="lowr">`+(c.dog?`<path d="M56 214Q40 224 ${L} 244V${ex}H${R}V244Q160 224 144 214Z" fill="${t}"/><path d="M122 218Q150 224 ${R} 244V${ex}H116Z" fill="${td}"/>`:`<rect x="16" y="236" width="168" height="${ex-236}" fill="${t}"/><path d="M124 236H184V${ex}H112Z" fill="${td}"/>`);
+  if(c.kind==="trousers")s+=`<path d="M48 322H152V338H48Z" fill="${b}" ${I}/><path d="M48 338L96 338L94 390H52Z" fill="${b}" ${I}/><path d="M104 338H152L148 390H106Z" fill="${b}" ${I}/><path d="M126 338H152L148 390H126Z" fill="${bd}"/><path d="M104 338H152L148 390H106Z" fill="none" ${I}/><path d="M48 326H152" stroke="${INK}" stroke-width="3"/><rect x="92" y="323" width="16" height="10" rx="2" fill="#d8a838" stroke="${INK}" stroke-width="1.8"/><path d="M44 388H99Q104 398 92 399H44Q38 394 44 388Z" fill="${c.shoe}" ${I}/><path d="M101 388H156Q162 394 156 399H108Q96 398 101 388Z" fill="${c.shoe}" ${I}/>`;
+  if(c.kind==="sari")s+=`<path d="M40 322H160L192 394H8Z" fill="${b}" ${I}/><path d="M128 322H160L192 394H134Z" fill="${bd}"/><path d="M40 322H160L192 394H8Z" fill="none" ${I}/><path d="M74 328L58 392M100 328V392M126 328L142 392" stroke="${INK}" stroke-width="2" opacity=".5"/><path d="M10 386Q100 372 190 386" stroke="#d8a838" stroke-width="7" fill="none"/><path d="M10 386Q100 372 190 386" stroke="${INK}" stroke-width="1.6" fill="none" stroke-dasharray="4 5"/><path d="M60 394Q74 400 86 394M114 394Q126 400 140 394" stroke="${INK}" stroke-width="3" fill="none"/>`;
+  if(c.kind==="kurta")s+=`<path d="M36 366H164V380L158 392H42L36 380Z" fill="${t}" ${I}/><path d="M100 340V366" stroke="${INK}" stroke-width="3"/><path d="M50 366V392H96V366M104 366V392H150V366" fill="${b}" ${I}/><path d="M126 366H150V392H126Z" fill="${bd}"/><path d="M42 388H99Q104 398 92 399H44Q38 394 42 388Z" fill="${c.shoe}" ${I}/><path d="M101 388H158Q162 394 156 399H108Q96 398 101 388Z" fill="${c.shoe}" ${I}/>`;
+  if(c.kind==="booth")s+=`<rect x="0" y="236" width="200" height="164" fill="#3a2630" ${I}/><rect x="0" y="236" width="200" height="164" fill="none" stroke="${INK}" stroke-width="3"/><path d="M0 262H200" stroke="#e0488a" stroke-width="5"/><circle cx="50" cy="326" r="30" fill="#1a110c" stroke="${INK}" stroke-width="3"/><circle cx="50" cy="326" r="14" fill="#2a2030" stroke="#8a5a48" stroke-width="2"/><circle cx="150" cy="326" r="30" fill="#1a110c" stroke="${INK}" stroke-width="3"/><circle cx="150" cy="326" r="14" fill="#2a2030" stroke="#8a5a48" stroke-width="2"/><path d="M96 290H104M96 306H104M96 322H104M96 338H104" stroke="#3be0ff" stroke-width="3" stroke-linecap="round"/>`;
+  else s+=`<path d="M${L} 240Q${L-8} 290 ${L-4} ${ex}" fill="none" ${I}/><path d="M${R} 240Q${R+8} 290 ${R+4} ${ex}" fill="none" ${I}/><path d="M${Li} 240Q${Li+4} 290 ${Li-2} ${ex}" fill="none" ${I}/><path d="M${Ri} 240Q${Ri-4} 290 ${Ri+2} ${ex}" fill="none" ${I}/><path d="M${L-4} ${ex}H${Li}M${Ri} ${ex}H${R+4}" stroke="${INK}" stroke-width="3"/><circle cx="${(L+Li)/2-1}" cy="${ex+14}" r="13" fill="${c.skin}" stroke="${INK}" stroke-width="3"/><circle cx="${(R+Ri)/2+1}" cy="${ex+14}" r="13" fill="${c.skin}" stroke="${INK}" stroke-width="3"/>`;
+  if(c.suit)s+=`<g transform="translate(150 344) scale(.8)"><path d="M18 2h22v12" fill="none" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M18 2h22v12" fill="none" stroke="#8a8f96" stroke-width="2.4"/><rect x="2" y="12" width="56" height="54" rx="7" fill="#e7a04a" stroke="${INK}" stroke-width="2.6"/><path d="M16 12v54M44 12v54" stroke="#b86f22" stroke-width="3"/><circle cx="30" cy="36" r="9" fill="#3a7bd5" stroke="${INK}" stroke-width="1.6"/></g><circle cx="171" cy="${ex+14}" r="13" fill="${c.skin}" stroke="${INK}" stroke-width="3"/>`;
+  return s+"</g>"}
+function fullOf(k){const f=P[k];if(!f)return null;let s=f();
+  if(k==="sarla"){const a=s.indexOf('<g transform="translate(126 192)">'),b=s.indexOf('<path d="M30 238L20 168"');if(a>0&&b>a)s=s.slice(0,a)+s.slice(b)}
+  if(FCFG[k]){s=s.replace('viewBox="0 0 200 240"','viewBox="0 0 200 400"').replace(/<\/svg>\s*$/,lowerBody(FCFG[k])+"</svg>");return s}
+  if(k==="chaibot")return s.replace('viewBox="0 0 200 240"','viewBox="0 0 200 330"').replace(/<\/svg>\s*$/,`<rect x="64" y="232" width="20" height="56" fill="#9aa0a8" stroke="${INK}" stroke-width="3"/><rect x="116" y="232" width="20" height="56" fill="#9aa0a8" stroke="${INK}" stroke-width="3"/><circle cx="74" cy="300" r="22" fill="#26222c" stroke="${INK}" stroke-width="3"/><circle cx="74" cy="300" r="9" fill="#e0b030" stroke="${INK}" stroke-width="2"/><circle cx="126" cy="300" r="22" fill="#26222c" stroke="${INK}" stroke-width="3"/><circle cx="126" cy="300" r="9" fill="#e0b030" stroke="${INK}" stroke-width="2"/></svg>`);
+  if(k==="baba")return s.replace('viewBox="0 0 200 240"','viewBox="0 0 200 300"').replace(/<\/svg>\s*$/,`<g stroke="${INK}" stroke-width="3" stroke-linejoin="round"><path d="M50 228H72V282H50Z" fill="#26222c"/><path d="M128 228H150V282H128Z" fill="#26222c"/><path d="M46 282H76V296H46Z" fill="#d8a838"/><path d="M124 282H154V296H124Z" fill="#d8a838"/></g></svg>`);
+  return null}
 /* ============ SCENES ============ */
 const statue=(x,s,c)=>`<g transform="translate(${x} 0) scale(${s})" fill="${c}"><path d="M-40 900L-28 520L28 520L40 900Z"/><path d="M-60 560L-30 380L30 380L60 560Z"/><circle cx="0" cy="330" r="46"/><path d="M-30 296L0 230L30 296Z"/><path d="M30 400L120 300L134 312L52 430Z"/><rect x="112" y="250" width="40" height="66" rx="16"/><path d="M-30 420L-110 560L-92 572L-20 470Z"/><path d="M40 700Q160 640 150 520" stroke="${c}" stroke-width="16" fill="none"/></g>`;
 const chawl=(c,w)=>`<g fill="${c}"><rect x="420" y="520" width="760" height="380"/><path d="M560 520L640 440L720 520Z M720 520L800 430L880 520Z M880 520L960 440L1040 520Z"/>${Array.from({length:24},(_,i)=>`<rect x="${450+(i%12)*60}" y="${560+Math.floor(i/12)*110}" width="30" height="46" fill="${w}"/>`).join("")}<path d="M430 640H1170M430 750H1170" stroke="${w}" stroke-width="3" opacity=".5"/></g>`;
@@ -1270,12 +1302,13 @@ function showProg(p){
   }
   prog=p;line=0;
   $("scene").innerHTML=SCENES[p.scene]();
-  $("host").innerHTML=p.cast.map(c=>P[c]()).join("");
+  const shotOf=c=>{const n=SHOTN[c]==null?Math.floor(Math.random()*4):SHOTN[c]+1;SHOTN[c]=n;const seq=p.cast.length===1?["","shot-c","shot-f","shot-w","shot-m2","shot-f"]:["","shot-w","shot-f"];return seq[n%seq.length]};
+  const shots=p.cast.map(shotOf);
+  $("host").innerHTML=p.cast.map((c,i)=>{if(shots[i]==="shot-f"){const f=fullOf(c);if(f)return f;shots[i]="shot-m2"}return P[c]()}).join("");
   const svgs=$("host").querySelectorAll("svg");
   if(svgs.length===1)svgs[0].classList.add("solo");
   /* camera: a character who comes back gets a different magnification each time (medium, close-up, wide). Pairs stay medium/wide so nobody overlaps. */
-  svgs.forEach((sv,i)=>{const c=p.cast[i],n=SHOTN[c]=(c in SHOTN?SHOTN[c]+1:Math.floor(Math.random()*4));
-    const seq=svgs.length===1?["","shot-c","shot-w","shot-m2"]:["","shot-w"];sv.classList.add(...[seq[n%seq.length]].filter(Boolean))});
+  svgs.forEach((sv,i)=>{if(shots[i])sv.classList.add(shots[i])});
   $("stamp").textContent=p.stamp;
   $("lowerRole").textContent=p.role;
   const chId=CHANNELS[chIdx];
