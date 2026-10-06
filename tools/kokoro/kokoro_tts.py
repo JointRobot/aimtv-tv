@@ -14,7 +14,7 @@ KCAST = {
     "hema": ("hf_alpha", 1.0, 1.0, ""), "devi": ("hf_alpha", 1.1, 0.94, ""),
     "lata": ("hf_beta", 1.0, 1.0, ""), "mrst": ("hf_beta", 0.9, 1.03, ""),
     "jc": ("hm_omega", 1.0, 1.0, ""), "tchu": ("hm_omega", 0.96, 0.9, ""),
-    "sarla": ("af_heart", 1.05, 1.04, ""),
+    "sarla": ("hf_alpha", 1.05, 1.1, ""),
     "chaibot": ("hm_psi", 1.2, 1.18, "aecho=0.8:0.6:12:0.4"),
 }
 _S = {}
