@@ -20,3 +20,7 @@ The stream's browser has no Indian voices, so `voicer/neural.py` (Piper, Indian-
 `site/vo/manifest.json` and `site/live/live.json` and serves `/opt/aimtv/serve` = site + neural clips. Casting is the `CAST` table in neural.py.
 After changing speech in the receiver, run `python3 mk_manifest.py` (in the folder above) before build.sh. One-time server install: python venv at
 /opt/aimtv/tts with `piper-tts`, voices en_US-arctic-medium and en_US-l2arctic-medium in /opt/aimtv/voices, `apt install rsync`.
+
+## Ask the Cast (real chat)
+`functions/api/chat.js` answers in character through Cloudflare Workers AI (free tier). One-time: Pages project → Settings → Functions → Bindings → add **Workers AI**, variable name `AI`.
+Without it the page falls back to built-in replies that never repeat.
