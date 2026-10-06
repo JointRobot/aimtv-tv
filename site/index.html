@@ -1105,7 +1105,7 @@ const AUD={cache:{},src:null,tok:null,mode:null};
 const touch=window.matchMedia&&window.matchMedia("(pointer:coarse)").matches;
 function useClips(){return AUD.mode!=="tts"||!synth}
 function loadClip(name){
-  if(!AUD.cache[name])AUD.cache[name]=fetch(name.includes("/")?name+".mp3":`vo/${name}.mp3`).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));
+  if(!AUD.cache[name])AUD.cache[name]=fetch((name.includes("/")?name+".mp3":`vo/${name}.mp3`)+"?v=20261006b").then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));
   return AUD.cache[name];
 }
 function stopClip(){AUD.tok=null;if(AUD.src){try{AUD.src.onended=null;AUD.src.stop()}catch(e){}AUD.src=null}}

@@ -3,7 +3,7 @@
 /music/*
   Cache-Control: public, max-age=604800
 /vo/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=0, must-revalidate
 /index.html
   Cache-Control: no-cache
 /yt/*
