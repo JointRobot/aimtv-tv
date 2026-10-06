@@ -47,18 +47,22 @@ def _load():
         _S["v"] = np.load(_fetch(VOICES)); _S["vocab"] = json.load(open(os.path.join(HERE, "vocab.json")))
     return _S
 
-def phonemes(text):
-    r = subprocess.run([ESP, "-v", "hi", "-q", "--ipa=3", "--sep=", "-b", "1", text], capture_output=True, text=True, env=_env(), check=True)
-    return " ".join(r.stdout.replace("_", "").split())
+def phonemes(text, lang="hi"):
+    r = subprocess.run([ESP, "-v", lang, "-q", "--ipa=3", "--sep=", "-b", "1", text], capture_output=True, text=True, env=_env(), check=True)
+    import re; return " ".join(re.sub(r"\([a-z]{2,3}\)", "", r.stdout.replace("_", "").replace("\u200d", "")).split())
 
-def _wave(text, voice, speed):
-    S = _load(); ids = [S["vocab"][c] for c in phonemes(text) if c in S["vocab"]][:510]
+def _wave(text, voice, speed, lang="hi"):
+    S = _load(); ids = [S["vocab"][c] for c in phonemes(text, lang) if c in S["vocab"]][:510]
     style = S["v"][voice][len(ids)].astype(np.float32)
     return S["s"].run(None, {"tokens": np.array([[0] + ids + [0]], dtype=np.int64), "style": style, "speed": np.array([speed], dtype=np.float32)})[0].squeeze()
 
+# English-speaking cast (English text, not Devanagari): who: (kokoro voice, speed, pitch factor, extra ffmpeg filter)
+KEN = {"tabla": ("af_heart", 0.97, 0.98, "")}
+
 def speak(text, who, out, bitrate="40k"):
-    voice, speed, k, fx = KCAST[who]
-    a = _wave(text, voice, speed)
+    lang = "hi"  # the bundled espeak only has Hindi; it reads Roman English words through its own English dictionary
+    voice, speed, k, fx = (KEN if who in KEN else KCAST)[who]
+    a = _wave(text, voice, speed, lang)
     wav = tempfile.mktemp(suffix=".wav")
     with wave.open(wav, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes((np.clip(a, -1, 1) * 32767).astype(np.int16).tobytes())
