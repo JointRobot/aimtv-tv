@@ -631,14 +631,6 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
   </div>
 
   <section class="guide">
-    <div class="tabrow"><span class="tabk">Shows</span>
-    <div class="tabwrap" id="tabwrap"><button class="tabarr l" id="tabL" aria-label="Scroll tabs left" tabindex="-1">‹</button><div class="tabs" role="tablist" id="tabs">
-      <button role="tab" aria-selected="true" data-tab="shows" id="t-shows">All Shows</button>
-      <button role="tab" aria-selected="false" data-tab="tdty" id="t-tdty">This Day, That Year</button>
-      <button role="tab" aria-selected="false" data-tab="shop" id="t-shop">Tomorrow Shop</button>
-      <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">I ♥ Foreign</button>
-      <button role="tab" aria-selected="false" data-tab="music" id="t-music">AIMTV Music</button>
-    </div><button class="tabarr r" id="tabR" aria-label="Scroll tabs right" tabindex="-1">›</button></div></div>
 
     <div class="pane" id="p-tdty" role="tabpanel" aria-labelledby="t-tdty" hidden>
       <h2 id="archH">Archived: 4 October 2026</h2>
@@ -1804,8 +1796,8 @@ const SHOWOF={dalmatian:"mhanje",hema:"tdty",jc:"shop",chaibot:"shop",sarla:"tra
 function thumb(s,id,i,lbl){const t=TH[s.ch]||{bg:["studio_window"]},pr=t.prod&&t.prod[id];
  const bg=pr?`url(products/${pr[0]}-t.webp)`:`url(plates/${t.bg[i%t.bg.length]}.jpg)`,pos=pr?pr[1]:["50% 50%","15% 60%","85% 40%","50% 85%"][i%4];
  return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div>${t.fig2?`<div class="thf thf2" aria-hidden="true">${P[t.fig2]()}</div>`:""}<span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
-function drawShows(){$("showarch").innerHTML=""+SHOWARCH.filter(s=>s.ch===selShow).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("")}
-function goShow(ch){selShow=ch;drawWho();drawShows();$("t-shows").click();try{$("whofilter").querySelector("[aria-pressed=true]").scrollIntoView({inline:"center",block:"nearest"})}catch(e){}const el=$("shw-"+ch);if(!el)return;
+function drawShows(){$("showarch").innerHTML=""+SHOWARCH.filter(s=>s.ch===selShow).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("");showExtras()}
+function goShow(ch){selShow=ch;drawWho();drawShows();try{$("whofilter").querySelector("[aria-pressed=true]").scrollIntoView({inline:"center",block:"nearest"})}catch(e){}const el=$("shw-"+ch);if(!el)return;
   el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});el.classList.remove("hl");void el.offsetWidth;el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),3200)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-goshow]");if(b)goShow(b.dataset.goshow)});
 /* top-10 charts: opening points + 10 per show started / song played, counted from every viewer when the score API is on */
@@ -1825,6 +1817,9 @@ function renderCharts(){try{
   $("topSongs").innerHTML=so.map(([t,v],k)=>`<li><span class="rk">${k+1}</span><button class="rowplay" type="button" data-pc="${k}" aria-label="Play ${t.t} and the chart below it on CH 2">&#9654;</button><span class="nm"><b>${t.t}</b><small>${t.ar||MUSIC.album.artist}</small><span class="bar"><i style="width:${Math.round(v/m2*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("")}catch(e){}}
 $("topShows").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
 renderCharts();
+/* each show's own extras (the This Day archive, Tomorrow Shop products, the travel diary) sit under its episodes when that show is picked */
+const EXTRA={tdty:"p-tdty",shop:"p-shop",travel:"p-travel"};
+function showExtras(){const host=$("p-shows");Object.entries(EXTRA).forEach(([ch,id])=>{const e=$(id);if(!e)return;if(e.parentNode!==host)host.appendChild(e);e.hidden=selShow!==ch})}
 function drawWho(){$("whofilter").innerHTML=SHOWARCH.map(s=>`<button type="button" data-sel="${s.ch}" aria-pressed="${s.ch===selShow}" aria-label="${s.n}">${logo(s.ch)}<span>with ${s.who}</span></button>`).join("")}
 $("whofilter").addEventListener("click",e=>{const b=e.target.closest("[data-sel]");if(!b)return;selShow=b.dataset.sel;drawWho();drawShows()});
 $("showarch").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
