@@ -1,7 +1,7 @@
 // AIMTV Fame Meter: shared counts from every viewer (Cloudflare Pages Function + D1, binding name "DB").
 // GET  /api/score -> {likes:{id:n}, watch:{id:seconds}, boosts:{id:n}}
 // POST /api/score  body {likes:{id:n}, watch:{id:seconds}, boosts:{id:n}}  (small batches; capped per request)
-const IDS = new Set(["hema","jc","chaibot","tchu","animation","sarla","lata","mrst","fadarr","baba","tabla","dimpy","devi","aimtv"]);
+const IDS = new Set(["hema","jc","chaibot","tchu","animation","sarla","lata","mrst","fadarr","baba","tabla","dimpy","devi","aimtv","dalmatian","gutter","arnold"]);
 const CAP = { likes: 5, watch: 120, boosts: 5, plays: 3 };
 const PLAYID = /^(show|song):[a-z0-9_]{1,24}$/;
 const KINDS = Object.keys(CAP);

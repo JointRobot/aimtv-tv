@@ -392,6 +392,13 @@ dialog.marks::backdrop{background:rgba(5,3,2,.7)}
 .seg li span{font-family:var(--f-mono);font-size:11px;color:var(--brass);letter-spacing:.06em}
 
 /* Cast */
+.castlay{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.castside{position:sticky;top:12px}.castside .famebox{margin:0}.castside .famebox .fame{grid-template-columns:1fr}
+@media (max-width:1100px){.castlay{grid-template-columns:minmax(0,1fr)}.castside{position:static}.castside .famebox .fame{grid-template-columns:1fr 1fr}}
+.lastrow:not(.charts){grid-template-columns:minmax(0,1fr)}
+.vote{position:absolute;top:8px;left:8px;z-index:2;display:flex;align-items:center;gap:5px;font:600 11px/1 var(--f-mono);color:#fff;background:rgba(20,10,20,.72);border:1px solid rgba(255,61,127,.55);border-radius:999px;padding:5px 9px;cursor:pointer;backdrop-filter:blur(3px)}
+.vote i{font-style:normal;color:#ff3d7f;font-size:13px;line-height:1}.vote:hover,.vote:focus-visible{background:#ff3d7f;outline:0}.vote:hover i,.vote:focus-visible i{color:#fff}
+.vote.pop{animation:vpop .5s}@keyframes vpop{40%{transform:scale(1.25)}}
 .castgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .who{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
 .who .pic{background:radial-gradient(circle at 50% 80%,#3b2450,#1d1520 70%);height:170px;display:flex;justify-content:center;align-items:flex-end}
@@ -704,11 +711,13 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
     </div></div>
 
     <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast">
+      <div class="castlay"><div class="castmain">
       <h2>The Cast of Celeb Shauchalay</h2>
-      <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV.</p>
+      <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV. Tap the heart on a character to vote: every vote adds points on the Fame Meter.</p>
       <div class="castgrid" id="heroes"></div>
       <div class="subhead">Fa Corp and friends</div>
       <div class="castgrid" id="villains"></div>
+      </div><aside class="castside" id="castside"></aside></div>
     </div>
 
     <div class="pane" id="p-ask" role="tabpanel" aria-labelledby="t-ask" hidden>
@@ -1715,8 +1724,8 @@ renderMusic();
    Points: opening points + 10 per like (given while they are on screen) + 1 per minute on screen while watched + 5 per boost.
    Songs credit AIMTV itself. Counts live in this browser until a shared counter is switched on at hosting. */
 const RULES={like:10,minute:1,boost:5};
-const FAME=[["hema",72],["dimpy",70],["tchu",70],["lata",68],["jc",68],["mrst",66],["sarla",66],["baba",64],["aimtv",62],["tabla",62],["animation",60],["devi",58],["fadarr",54],["chaibot",50]];
-const FNAME=id=>id==="aimtv"?"AIMTV (songs)":(W[id]||id);
+const FAME=[["hema",72],["dimpy",70],["tchu",70],["lata",68],["jc",68],["mrst",66],["sarla",66],["baba",64],["aimtv",62],["tabla",62],["animation",60],["devi",58],["fadarr",54],["chaibot",50],["dalmatian",52],["gutter",48],["arnold",46]];
+const FNAME=id=>id==="aimtv"?"AIMTV (songs)":(W[id]||{gutter:"GutterFly",arnold:"Arnold Shivajinagar"}[id]||id);
 let SC={likes:{},watch:{},boosts:{},plays:{}};
 try{const o=JSON.parse(localStorage.getItem("aimtv-score")||"null");if(o)SC=Object.assign(SC,o);else{const b=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}");SC.boosts=b}}catch(e){}
 let scSave=0;const saveSC=()=>{clearTimeout(scSave);scSave=setTimeout(()=>{try{localStorage.setItem("aimtv-score",JSON.stringify(SC))}catch(e){}},400)};
@@ -1737,8 +1746,8 @@ setTimeout(loadShared,800);setInterval(()=>{if(SHARED)loadShared()},90000);
 const pts=id=>{const o=(FAME.find(f=>f[0]===id)||[0,0])[1],l=cnt("likes",id),m=Math.floor(cnt("watch",id)/60),b=cnt("boosts",id);return{o,l,m,b,t:o+l*RULES.like+m*RULES.minute+b*RULES.boost}};
 const mini2=id=>id==="aimtv"?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#e8622c"/><text x="20" y="25" text-anchor="middle" font-family="Big Shoulders Display,sans-serif" font-weight="900" font-size="14" fill="#16110c">AI</text></svg>`:P[id]();
 function renderFame(){
-  const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t).slice(0,8),top=rows[0][1].t||1;
-  $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");if(typeof renderCharts==="function")try{renderCharts()}catch(e){}
+  const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t).slice(0,10),top=rows[0][1].t||1;
+  $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");if(typeof renderCharts==="function")try{renderCharts()}catch(e){}if(typeof updVotes==="function")updVotes();
 }
 $("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;bump("boost",b.dataset.boost,1);renderFame()});
 /* who gets credit right now: the speaking character, or AIMTV during songs */
@@ -1851,9 +1860,14 @@ const VILLAINS=[
  {id:"gutter",n:"GutterFly",r:"Kamala",q:"Runs a brothel with a bank front called Vaishya Bank.",b:"Tamil Nadu",job:"Hostile guest; answers questions by spitting paan"},
  {id:"arnold",n:"Arnold Shivajinagar",r:"Inspector",q:"Really strong & evil cop, who is in bed with the evil Fa Corporation.",b:"Goa",job:"Issues on-air challans to the Celebs"}
 ];
-const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}${SHOWOF[c.id]?`<button class="goshow" type="button" data-goshow="${SHOWOF[c.id]}" aria-label="Go to ${c.n}'s show">Go to show &#8599;</button>`:""}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div></div></article>`;
+const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}<button class="vote" type="button" data-vote="${c.id}" aria-label="Vote for ${c.n}"><i>&#9829;</i><b>0</b></button>${SHOWOF[c.id]?`<button class="goshow" type="button" data-goshow="${SHOWOF[c.id]}" aria-label="Go to ${c.n}'s show">Go to show &#8599;</button>`:""}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div></div></article>`;
+function updVotes(){document.querySelectorAll("[data-vote]").forEach(b=>{b.querySelector("b").textContent=cnt("boosts",b.dataset.vote)})}
+const VOTEAT={};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-vote]");if(!b)return;const id=b.dataset.vote,n=Date.now();if(VOTEAT[id]&&n-VOTEAT[id]<1200)return;VOTEAT[id]=n;
+  bump("boost",id,1);renderFame();b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")});
+{const fb=$("famebox"),side=$("castside");if(fb&&side)side.appendChild(fb)}
 $("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
-$("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");
+$("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");updVotes();
 
 /* ============ PRODUCTS ============ */
 const PRODUCTS=[
