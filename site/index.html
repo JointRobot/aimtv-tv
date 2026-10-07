@@ -432,7 +432,7 @@ form.q input::placeholder{color:#7d705c}
 /* subtitle + controls share the picture's width */
 @media (min-width:981px){body:not(.bc) .set .subs,body:not(.bc) .set .dock{width:var(--sw,100%);max-width:100%;margin-inline:auto;box-sizing:border-box}}
 /* ad strip */
-.adrow .adslot{display:grid;grid-template-columns:72px minmax(0,1fr) auto;grid-template-areas:"art sp cta" "art ti cta" "art ln cta";column-gap:18px;align-items:center;max-width:920px;margin:0 auto;padding:14px 20px;min-height:0;border-left:4px solid var(--padmini)}
+.adrow .adslot{display:grid;grid-template-columns:72px minmax(0,1fr) auto;grid-template-areas:"art sp cta" "art ti cta" "art ln cta";column-gap:18px;align-items:center;max-width:none;width:100%;box-sizing:border-box;margin:0;padding:14px 20px;min-height:0;border-left:4px solid var(--padmini)}
 .adrow .adslot .art{position:static;transform:none;grid-area:art;width:72px;height:72px}
 .adrow .adslot .sp{grid-area:sp;justify-self:start;border:1px solid #6b5840;border-radius:3px;padding:1px 6px;font-size:9px}
 .adrow .adslot .ti{grid-area:ti;margin:3px 0 2px}.adrow .adslot .ln{grid-area:ln}
@@ -440,8 +440,10 @@ form.q input::placeholder{color:#7d705c}
 .adrow .adslot:hover .cta{filter:brightness(1.1)}
 @media(max-width:600px){.adrow .adslot{grid-template-columns:56px minmax(0,1fr);grid-template-areas:"art sp" "art ti" "art ln" "cta cta"}.adrow .adslot .art{width:56px;height:56px}.adrow .adslot .cta{justify-self:start;margin-top:10px}}
 /* YouTube card */
-a.ytcard{max-width:920px;margin:30px auto 4px;position:relative;overflow:hidden;background:linear-gradient(120deg,#1d1511,#261712 70%);padding:14px;gap:22px}
-.ytcard .yt-th{position:relative;flex:none;width:min(340px,42%);display:block}
+a.ytcard{max-width:none;width:100%;box-sizing:border-box;margin:30px 0 4px;position:relative;overflow:hidden;background:linear-gradient(120deg,#1d1511,#261712 70%);padding:14px;gap:22px}
+.ytcard .yt-th{position:relative;flex:none;width:min(300px,34%);display:block}
+.ytcard .yt-b{margin-left:auto;flex:none;white-space:nowrap;margin-right:10px}
+.ytcard>div{flex:1;min-width:0}
 .ytcard .yt-th img{width:100%}
 .ytcard .yt-live{position:absolute;left:8px;top:8px;font:600 10px/1 var(--f-mono);letter-spacing:.12em;font-style:normal;color:#fff;background:#d4262c;border-radius:3px;padding:4px 7px;display:flex;align-items:center;gap:5px}
 .ytcard .yt-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
@@ -451,7 +453,7 @@ a.ytcard{max-width:920px;margin:30px auto 4px;position:relative;overflow:hidden;
 .ytcard:hover .yt-play::before{transform:scale(1.1)}
 .ytcard .yt-b{background:#d4262c;color:#fff;border-radius:999px;padding:9px 20px}
 .ytcard .yt-b::after{content:" \2197"}
-@media(max-width:560px){.ytcard .yt-th{width:100%}}
+@media(max-width:560px){.ytcard .yt-th{width:100%}.ytcard .yt-b{margin:4px 0 0;align-self:flex-start}}
 /* show rails, thumbnails, logos, charts */
 .shw .grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 10px;scrollbar-width:thin}
 .shw .card.eplink{flex:0 0 236px;scroll-snap-align:start;padding:0;gap:0;overflow:hidden}
@@ -691,7 +693,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
   <a class="ytcard" href="https://youtu.be/sxLxHHFjo_c" target="_blank" rel="noopener" aria-label="Watch AIMTV live on YouTube">
     <span class="yt-th"><img src="yt/thumbnail.jpg" alt="AIMTV Live 24/7 on YouTube" loading="lazy" decoding="async"><i class="yt-live">LIVE 24/7</i><i class="yt-play" aria-hidden="true"></i></span>
-    <div><div class="yt-k">Also on YouTube</div><div class="yt-t">The big-screen channel</div><p class="yt-d">Same cast, same shows, always on. Subscribe, join the live chat, leave it playing.</p><span class="yt-b">Watch on YouTube</span></div>
+    <div><div class="yt-k">Also on YouTube</div><div class="yt-t">The big-screen channel</div><p class="yt-d">Same cast, same shows, always on. Subscribe, join the live chat, leave it playing.</p></div><span class="yt-b">Watch on YouTube</span>
   </a>
 
   <section class="guide world" id="worldguide">
