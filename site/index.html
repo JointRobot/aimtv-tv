@@ -470,6 +470,7 @@ a.ytcard{max-width:920px;margin:30px auto 4px;position:relative;overflow:hidden;
 .goshow{margin-top:8px;align-self:flex-start}
 .slogo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:.9;font-family:var(--f-display);font-weight:900;text-transform:uppercase;letter-spacing:.02em;position:relative;padding:3px 10px 4px;transform:rotate(-2deg);font-size:30px;white-space:nowrap;border-radius:4px;vertical-align:middle}
 .slogo b,.slogo i{font-style:normal;font-weight:900}.slogo i{font-size:.72em;letter-spacing:.16em}
+.slogo .hrt{font-style:normal;color:#ff3d7f;text-shadow:0 0 6px rgba(255,61,127,.6)}
 .slogo.mini{font-size:13px;padding:2px 6px 3px}.slogo.mini i{letter-spacing:.1em}
 .lg-news{background:#17325c;color:#f6efdc;box-shadow:inset 0 -3px 0 #d6403a;border-left:4px solid #d6403a}
 .lg-shop{background:linear-gradient(100deg,#e8622c,#f2c230);color:#1a0f08;transform:rotate(-3deg) skewX(-6deg)}
@@ -624,7 +625,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       <button role="tab" aria-selected="true" data-tab="shows" id="t-shows">All Shows</button>
       <button role="tab" aria-selected="false" data-tab="tdty" id="t-tdty">This Day, That Year</button>
       <button role="tab" aria-selected="false" data-tab="shop" id="t-shop">Tomorrow Shop</button>
-      <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">Stomach Challo Travels</button>
+      <button role="tab" aria-selected="false" data-tab="travel" id="t-travel">I ♥ Foreign</button>
       <button role="tab" aria-selected="false" data-tab="music" id="t-music">AIMTV Music</button>
     </div><button class="tabarr r" id="tabR" aria-label="Scroll tabs right" tabindex="-1">›</button></div></div>
 
@@ -660,7 +661,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
     <div class="pane" id="p-travel" role="tabpanel" aria-labelledby="t-travel" hidden>
       <div class="ep">
         <div>
-          <h2>Stomach Challo Travels</h2>
+          <h2>I ♥ Foreign</h2>
           <p class="lede">Sarla Seth films herself reviewing "so foreign" destinations in her American call-centre accent. Every destination turns out to be a taxi ride from Shivajinagar. Her mother, Bhenji Jumping, skateboards into every reel with a plate of dosas.</p>
           <div style="margin:16px 0"><button class="watch" data-watch="travel">Watch episode 1</button></div>
         </div>
@@ -1093,8 +1094,8 @@ const PROGS=[
   ["mrst", "Road cross karte waqt, left dekho, right dekho, aur upar bhi dekho. Taxis ab udti hain.", "", "रोड क्रॉस करते वक़्त, लेफ़्ट देखो, राइट देखो, और ऊपर भी देखो। टैक्सियाँ अब उड़ती हैं।"],
   ["mrst", "Don't take tension. Hum cross karwate hain.", "", "डोंट टेक टेंशन। हम क्रॉस करवाते हैं।"]
  ]},
- {id:"travel",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 1 · Lonavala",role:"Stomach Challo Travels",lines:[
-  ["sarla", "Hi guys! Stomach Challo Travels mein wapas swagat hai. Aaj hum ja rahe hain ekdum foreign.", "", "हाय गाइज़! स्टमक चलो ट्रैवल्स में वापस स्वागत है। आज हम जा रहे हैं एकदम फ़ॉरिन।"],
+ {id:"travel",ch:"I ♥ Foreign",scene:"travel",cast:["sarla","lata"],stamp:"Ep 1 · Lonavala",role:"I ♥ Foreign",lines:[
+  ["sarla", "Hi guys! I Love Foreign mein wapas swagat hai. Aaj hum ja rahe hain ekdum foreign.", "", "हाय गाइज़! आई लव फ़ॉरेन में वापस स्वागत है। आज हम जा रहे हैं एकदम फ़ॉरिन।"],
   ["sarla", "Location: Lonavala. Yahan ki chikki aisi hai, jaise Switzerland ki chocolate. Basically same.", "", "लोकेशन: लोनावला। यहाँ की चिक्की ऐसी है, जैसे स्विट्ज़रलैंड की चॉकलेट। बेसिकली सेम।"],
   ["lata", "Kem cho! Sarla baby, dosa khayegi? Diet time hai!", "", "केम छो! सरला बेबी, डोसा खाएगी? डाइट टाइम है!"],
   ["sarla", "Mummy, main live hoon! Sorry guys, meri mummy har reel mein aa jaati hai.", "", "मम्मी, मैं लाइव हूँ! सॉरी गाइज़, मेरी मम्मी हर रील में आ जाती है।"],
@@ -1128,15 +1129,15 @@ const PROGS=[
   ["animation", "Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Tyala kalala nahi. Mhanun mi punha bhunkalo.", "", "एक माणूस म्हणाला, कुत्रा काय करतो? मी म्हणालो, भू भू. त्याला कळलं नाही. म्हणून मी पुन्हा भुंकलो."],
   ["animation", "Goshta sampli. Bhu bhu mhanje namaskar. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे नमस्कार. पुन्हा भेटू."]
  ]},
- {id:"travel2",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 2 · Matheran",role:"Stomach Challo Travels",lines:[
-  ["sarla", "Hi guys! Stomach Challo Travels, episode two. Aaj Matheran. Yahan koi gaadi allowed nahi hai. So European.", "", "हाय गाइज़! स्टमक चलो ट्रैवल्स, एपिसोड टू। आज माथेरान। यहाँ कोई गाड़ी अलाउड नहीं है। सो यूरोपियन।"],
+ {id:"travel2",ch:"I ♥ Foreign",scene:"travel",cast:["sarla","lata"],stamp:"Ep 2 · Matheran",role:"I ♥ Foreign",lines:[
+  ["sarla", "Hi guys! I Love Foreign, episode two. Aaj Matheran. Yahan koi gaadi allowed nahi hai. So European.", "", "हाय गाइज़! आई लव फ़ॉरेन, एपिसोड टू। आज माथेरान। यहाँ कोई गाड़ी अलाउड नहीं है। सो यूरोपियन।"],
   ["sarla", "Toy train se upar gaye. Itni slow chalti hai, ki reel ke liye time hi time.", "", "टॉय ट्रेन से ऊपर गए। इतनी स्लो चलती है, कि रील के लिए टाइम ही टाइम।"],
   ["lata", "Kem cho! Sarla baby, ghode pe baithegi? Mandi se sasta hai. Forty rupees!", "", "केम छो! सरला बेबी, घोड़े पे बैठेगी? मंडी से सस्ता है। फ़ोर्टी रुपीज़!"],
   ["sarla", "Mummy, ghoda mera content hai. Aap please peeche chaliye. Sorry guys.", "", "मम्मी, घोड़ा मेरा कंटेंट है। आप प्लीज़ पीछे चलिए। सॉरी गाइज़।"],
   ["sarla", "Tchu Tchu uncle ne taxi neeche hi roki. Unka meter chalta raha. Neeche.", "", "टचू टचू अंकल ने टैक्सी नीचे ही रोकी। उनका मीटर चलता रहा। नीचे।"],
   ["sarla", "Like karo, share karo, follow karo. Stomach Challo. Mujhe foreign bahut pasand hai.", "", "लाइक करो, शेयर करो, फ़ॉलो करो। स्टमक चलो। मुझे फ़ॉरिन बहुत पसंद है।"]
  ]},
- {id:"travel3",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 3 · Daman",role:"Stomach Challo Travels",lines:[
+ {id:"travel3",ch:"I ♥ Foreign",scene:"travel",cast:["sarla","lata"],stamp:"Ep 3 · Daman",role:"I ♥ Foreign",lines:[
   ["sarla", "Hi guys! Aaj Daman. It's literally a different territory. Passport nahi chahiye, par feel poora passport wala.", "", "हाय गाइज़! आज दमन। इट्स लिटरली अ डिफ़रेंट टेरिटरी। पासपोर्ट नहीं चाहिए, पर फ़ील पूरा पासपोर्ट वाला।"],
   ["sarla", "Yahan ka beach, like, bilkul Goa jaisa. Bas Goa nahi hai. Mummy ne yeh bola. Phir maine bola, mummy, shh.", "", "यहाँ का बीच, लाइक, बिल्कुल गोवा जैसा। बस गोवा नहीं है। मम्मी ने यह बोला। फिर मैंने बोला, मम्मी, श्श।"],
   ["lata", "Kem cho! Sarla, tiffin mein dosa laayi hoon. Teen hi hain, tu diet pe hai.", "", "केम छो! सरला, टिफ़िन में डोसा लायी हूँ। तीन ही हैं, तू डाइट पे है।"],
@@ -1144,7 +1145,7 @@ const PROGS=[
   ["sarla", "Mummy ne shirt ka bargain kiya. Do sau ka shirt, chaalees mein. Ab hum shirt ke saath foreign hain.", "", "मम्मी ने शर्ट का बार्गेन किया। दो सौ का शर्ट, चालीस में। अब हम शर्ट के साथ फ़ॉरिन हैं।"],
   ["sarla", "Like karo, share karo, follow karo. Stomach Challo. Mujhe foreign bahut pasand hai.", "", "लाइक करो, शेयर करो, फ़ॉलो करो। स्टमक चलो। मुझे फ़ॉरिन बहुत पसंद है।"]
  ]},
- {id:"travel4",ch:"Stomach Challo Travels",scene:"travel",cast:["sarla","lata"],stamp:"Ep 4 · Alibaug",role:"Stomach Challo Travels",lines:[
+ {id:"travel4",ch:"I ♥ Foreign",scene:"travel",cast:["sarla","lata"],stamp:"Ep 4 · Alibaug",role:"I ♥ Foreign",lines:[
   ["sarla", "Hi guys! Aaj Alibaug. The Maldives, but the ferry has samosas.", "", "हाय गाइज़! आज अलीबाग। द मालदीव्स, बट द फ़ेरी हैज़ समोसाज़।"],
   ["sarla", "Gateway se ferry li. Ferry mein samosa, chai, aur ek uncle jo bol raha tha, meri video mat banao. Maine banai.", "", "गेटवे से फ़ेरी ली। फ़ेरी में समोसा, चाय, और एक अंकल जो बोल रहा था, मेरी वीडियो मत बनाओ। मैंने बनाई।"],
   ["lata", "Kem cho! Sarla baby, samosa khayegi? Do le. Teen hi hain, aaj diet.", "", "केम छो! सरला बेबी, समोसा खायेगी? दो ले। तीन ही हैं, आज डाइट।"],
@@ -1231,7 +1232,7 @@ function vjPop(t,tok){if(tok!==songTok||songPaused||!AUD.duck)return;const l=vjP
     if(tok!==songTok||!AUD.duck)return;const n2=ctx().currentTime;AUD.duck.gain.cancelScheduledValues(n2);AUD.duck.gain.setValueAtTime(AUD.duck.gain.value,n2);AUD.duck.gain.linearRampToValueAtTime(1,n2+.8);
     setOnAir("aimtv");setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"")})},700)}
 const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1","dosa","makeover","stunt","mhanje","baba"];
-const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"Stomach Challo Travels",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping",dosa:"Tasty Bargain Che",makeover:"Your Beauty My Duty",stunt:"Stunt Double",mhanje:"Mhanje",baba:"Baba Ka Aashirwad"};
+const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"I ♥ Foreign",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping",dosa:"Tasty Bargain Che",makeover:"Your Beauty My Duty",stunt:"Stunt Double",mhanje:"Mhanje",baba:"Baba Ka Aashirwad"};
 /* AIMTV Live: the programmes play in a fresh random order for every viewer (and every lap), each followed by a song */
 const LIVE_PROGS=["ident","tdty","ad1","shop","meter","psa","travel","baba","dosa","makeover","stunt","mhanje"];
 let LIVE_ORDER=[];const FOUNDER_ADS=["ad_horn","ad_sign","ad_bio"];
@@ -1366,7 +1367,7 @@ function lyrStart(t){lyrStop();const L=LYRICS[t.id.slice(0,8)];const title="♪ 
   lyrSet("",title,"",true);lyrRaf=requestAnimationFrame(tick)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-sc]");if(!b)return;e.stopPropagation();const k=b.dataset.sc;if(k==="next")songSkip(1);else if(k==="prev")songSkip(-1);else songPlayPause()},true);
 /* ============ SCHEDULE (IST) ============ */
-const GRID=[[0,"Overnight Repeats","The day's shows, on loop"],[6,"Baba Ka Aashirwad","Daily blessing, then Road Cross"],[7,"Meter Down","Tchu Tchu, live from the taxi"],[8,"This Day, That Year","Hema opens the archive"],[9,"Tomorrow Shop","Juhu Chaiwala reviews"],[11,"Stomach Challo Travels","So foreign. Not really."],[13,"This Day, That Year","Repeat"],[14,"AIMTV Music","New releases, back to back"],[16,"Meter Down","Evening traffic"],[18,"Fame Meter Live","Who got the most airtime"],[19,"This Day, That Year","Prime time"],[20,"Tomorrow Shop","Repeat"],[21,"AIMTV Music","New releases"],[22,"Tabla Nari Live","Magic or chaos"]];
+const GRID=[[0,"Overnight Repeats","The day's shows, on loop"],[6,"Baba Ka Aashirwad","Daily blessing, then Road Cross"],[7,"Meter Down","Tchu Tchu, live from the taxi"],[8,"This Day, That Year","Hema opens the archive"],[9,"Tomorrow Shop","Juhu Chaiwala reviews"],[11,"I ♥ Foreign","So foreign. Not really."],[13,"This Day, That Year","Repeat"],[14,"AIMTV Music","New releases, back to back"],[16,"Meter Down","Evening traffic"],[18,"Fame Meter Live","Who got the most airtime"],[19,"This Day, That Year","Prime time"],[20,"Tomorrow Shop","Repeat"],[21,"AIMTV Music","New releases"],[22,"Tabla Nari Live","Magic or chaos"]];
 function istNow(){const d=new Date();const u=d.getTime()+d.getTimezoneOffset()*60000;return new Date(u+330*60000)}
 /* "On AIMTV" box follows the channel: Live = programme lineup, Music = song queue, others = the day's grid */
 function upSongs(k){ensureQ(songI+k);return QUEUE.slice(songI,songI+k)}
@@ -1744,7 +1745,7 @@ $("trips").innerHTML=TRIPS.map((t,i)=>`<article class="card eplink" tabindex="0"
 const SHOWARCH=[
  {ch:"tdty",who:"Hema",n:"This Day, That Year",d:"Hema opens the archive, fifteen years back.",eps:["tdty"]},
  {ch:"shop",who:"Juhu Chaiwala",n:"Tomorrow Shop",d:"Juhu Chaiwala reviews products that already launched.",eps:["shop","shop2"]},
- {ch:"travel",who:"Sarla",n:"Stomach Challo Travels",d:"So foreign. Not really.",eps:["travel","travel2","travel3","travel4"]},
+ {ch:"travel",who:"Sarla",n:"I ♥ Foreign",d:"So foreign. Not really.",eps:["travel","travel2","travel3","travel4"]},
  {ch:"meter",who:"Tchu Tchu",n:"Meter Down",d:"Tchu Tchu, live from the taxi.",eps:["meter","meter2"]},
  {ch:"dosa",who:"Bhenji Jumping",n:"Tasty Bargain Che",d:"Bhenji Jumping on food and bargains.",eps:["dosa","dosa2"]},
  {ch:"makeover",who:"Dimpy",n:"Your Beauty My Duty",d:"Talwaar Kameez, from Dimpy Beauty Salon.",eps:["makeover","makeover2"]},
@@ -1758,8 +1759,8 @@ const EPS={};SHOWARCH.forEach(s=>{if(s.eps.length>1)EPS[s.ch]=s.eps});
 const SEASON="Season 1 · 2026";$("seasonTag").textContent=SEASON;
 let whoSel="";
 const TH={tdty:{fig:"hema",bg:["city_dusk"]},shop:{fig:"jc",bg:["chai_stall","chawl_night"],prod:{shop2:["chaibot","50% 30%"]}},travel:{fig:"sarla",bg:["skyline","rainbow","market","city_dusk"]},meter:{fig:"tchu",bg:["street_crossing","street_faking"]},dosa:{fig:"lata",bg:["market","chai_stall"]},makeover:{fig:"dimpy",bg:["studio_window","rainbow"]},stunt:{fig:"devi",bg:["street_faking","street_crossing"]},mhanje:{fig:"animation",bg:["chawl_night","rainbow"]},baba:{fig:"baba",bg:["rainbow"]},ad1:{fig:"fadarr",bg:["studio_window"],prod:{ad_horn:["horn","50% 35%"],ad_bio:["biodata","50% 20%"]}}};
-const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["Stomach Challo","Travels","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Tasty Bargain","Che","lg-dosa"],makeover:["Your Beauty","My Duty","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Mhanje","","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
-const logo=(ch,mini)=>{const l=LOGO[ch];return l?`<span class="slogo ${l[2]}${mini?" mini":""}" role="img" aria-label="${l[0]} ${l[1]}">${l[1]?`<b>${l[0]}</b><i>${l[1]}</i>`:`<b>${l[0]}</b>`}</span>`:""};
+const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["I ♥","Foreign","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Tasty Bargain","Che","lg-dosa"],makeover:["Your Beauty","My Duty","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Mhanje","","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
+const logo=(ch,mini)=>{const l=LOGO[ch];return l?`<span class="slogo ${l[2]}${mini?" mini":""}" role="img" aria-label="${l[0]} ${l[1]}">${(l[1]?`<b>${l[0]}</b><i>${l[1]}</i>`:`<b>${l[0]}</b>`).replace("♥",'<em class="hrt">♥</em>')}</span>`:""};
 /* seasonal look: Diwali window and New Year; ?theme=diwali previews one */
 (function(){const q=(location.search.match(/[?&]theme=(\w+)/)||[])[1],d=new Date(),m=d.getMonth()+1,dd=d.getDate();
  let t=q||((m===10&&dd>=25)||(m===11&&dd<=12)?"diwali":(m===12&&dd>=18)||(m===1&&dd<=3)?"newyear":"");
@@ -1800,7 +1801,7 @@ const HEROES=[
  {id:"tchu",n:"Tchu Tchu",r:"Orphan by birth",q:"An orphan, so no one gave him a name. In India, when people don't know your name, they call you Tchu Tchu.",b:"Bangalore",job:"Field reporter, Meter Down"},
  {id:"animation",n:"Animation",r:"Tchu Tchu's dog",q:"A Marathi speaking dog that can move in & out of any media form. Digital, TV, Print, you name it.",b:"Mumbai",job:"Network mascot and continuity host"},
  {id:"lata",n:"Bhenji Jumping",r:"Lata Seth",q:"Skates like Tony Hawk & Bargains like your mother.",b:"Gujarat",job:"Recurring guest, crashes Travels"},
- {id:"sarla",n:"Stomach Challo",r:"Sarla Seth",q:"Her elastic stomach & her sensuousness, that can seduce even a robot.",b:"Gujarat",job:"Host, Stomach Challo Travels"},
+ {id:"sarla",n:"Stomach Challo",r:"Sarla Seth",q:"Her elastic stomach & her sensuousness, that can seduce even a robot.",b:"Gujarat",job:"Host, I ♥ Foreign"},
  {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (coming soon)"},
  {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (coming soon)"},
  {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
