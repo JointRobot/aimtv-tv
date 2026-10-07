@@ -299,7 +299,7 @@ body.bc .pip{display:none}
 
 .season{font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);vertical-align:middle;margin-left:10px}
 .shw .shwh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.shw .shwh .watch{margin-left:auto}
-.shw .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+.shw .shwh .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
 /* Rail */
 .rail{display:flex;flex-direction:column;gap:16px;min-width:0}
 .box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
@@ -396,6 +396,13 @@ dialog.marks::backdrop{background:rgba(5,3,2,.7)}
 .castside{position:sticky;top:12px}.castside .famebox{margin:0}.castside .famebox .fame{grid-template-columns:1fr}
 @media (max-width:1100px){.castlay{grid-template-columns:minmax(0,1fr)}.castside{position:static}.castside .famebox .fame{grid-template-columns:1fr 1fr}}
 .lastrow:not(.charts){grid-template-columns:minmax(0,1fr)}
+.castgrid.one{grid-template-columns:minmax(0,1fr)}.castgrid.one .who{flex-direction:row}.castgrid.one .who .pic{width:34%;height:auto;min-height:170px;flex:none}.castgrid.one .who .body{justify-content:center}
+.castlay .castgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.castlay .castgrid.one{grid-template-columns:minmax(0,1fr)}
+@media (max-width:1100px){.castlay .castgrid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}.castgrid.one .who{flex-direction:column}.castgrid.one .who .pic{width:auto}}
+.shhost .goshow{display:none}
+.goshow,.vote{white-space:nowrap}
+.lastrow:not(.charts) .sched{column-count:2;column-gap:44px;display:block}.lastrow:not(.charts) .sched li{break-inside:avoid}
+@media (max-width:820px){.lastrow:not(.charts) .sched{column-count:1}}
 .vote{position:absolute;top:8px;left:8px;z-index:2;display:flex;align-items:center;gap:5px;font:600 11px/1 var(--f-mono);color:#fff;background:rgba(20,10,20,.72);border:1px solid rgba(255,61,127,.55);border-radius:999px;padding:5px 9px;cursor:pointer;backdrop-filter:blur(3px)}
 .vote i{font-style:normal;color:#ff3d7f;font-size:13px;line-height:1}.vote:hover,.vote:focus-visible{background:#ff3d7f;outline:0}.vote:hover i,.vote:focus-visible i{color:#fff}
 .vote.pop{animation:vpop .5s}@keyframes vpop{40%{transform:scale(1.25)}}
@@ -465,8 +472,11 @@ a.ytcard{max-width:none;width:100%;box-sizing:border-box;margin:30px 0 4px;posit
 .ytcard .yt-b::after{content:" \2197"}
 @media(max-width:560px){.ytcard .yt-th{width:100%}.ytcard .yt-b{margin:4px 0 0;align-self:flex-start}}
 /* show rails, thumbnails, logos, charts */
+.shwbody{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}.shhost .who{height:auto}
+@media (max-width:1100px){.shwbody{grid-template-columns:minmax(0,1fr)}.shhost{display:none}}
 .shw .grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 10px;scrollbar-width:thin}
-.shw .card.eplink{flex:0 0 236px;scroll-snap-align:start;padding:0;gap:0;overflow:hidden}
+.shw .card.eplink{flex:1 1 236px;max-width:500px;scroll-snap-align:start;padding:0;gap:0;overflow:hidden}
+.shw .grid.single .card.eplink{max-width:none;flex-direction:row}.shw .grid.single .th{width:55%;flex:none}.shw .grid.single .tb{justify-content:center;padding:18px 22px}.shw .grid.single .tb h4{font-size:22px}
 .eplink .tb{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px}
 .eplink .tb h4{margin:0;font-size:16px}.eplink .tb .wt{margin-top:2px}
 .th{position:relative;aspect-ratio:16/9;background-color:#1a130d;background-repeat:no-repeat;overflow:hidden}
@@ -508,6 +518,7 @@ body[data-theme=newyear] .slogo::before{content:"\2733 \2736";opacity:1;color:#8
 .chart{list-style:none;margin:0;padding:0}
 .chart li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
 .chart li:last-child{border:0}
+.charts .box{display:flex;flex-direction:column}.charts .chart{flex:1;display:flex;flex-direction:column}.charts .chart li{flex:1}
 .chart .rk{font:900 24px/1 var(--f-display);color:var(--brass);text-align:center}.chart li:nth-child(-n+3) .rk{color:#f2c230}
 .chart .nm{min-width:0;display:flex;flex-direction:column;gap:3px}.chart .nm b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chart .nm small{font:11px var(--f-mono);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chart .nm .bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden}.chart .nm .bar i{display:block;height:100%;background:var(--saffron)}
@@ -714,9 +725,14 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       <div class="castlay"><div class="castmain">
       <h2>The Cast of Celeb Shauchalay</h2>
       <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV. Tap the heart on a character to vote: every vote adds points on the Fame Meter.</p>
+      <div class="subhead">The Celebs</div>
       <div class="castgrid" id="heroes"></div>
+      <div class="subhead">Sidekicks</div>
+      <div class="castgrid" id="sidekicks"></div>
       <div class="subhead">Fa Corp and friends</div>
       <div class="castgrid" id="villains"></div>
+      <div class="subhead">The Almighty</div>
+      <div class="castgrid one" id="almighty"></div>
       </div><aside class="castside" id="castside"></aside></div>
     </div>
 
@@ -1805,7 +1821,9 @@ const SHOWOF={dalmatian:"mhanje",hema:"tdty",jc:"shop",chaibot:"shop",sarla:"tra
 function thumb(s,id,i,lbl){const t=TH[s.ch]||{bg:["studio_window"]},pr=t.prod&&t.prod[id];
  const bg=pr?`url(products/${pr[0]}-t.webp)`:`url(plates/${t.bg[i%t.bg.length]}.jpg)`,pos=pr?pr[1]:["50% 50%","15% 60%","85% 40%","50% 85%"][i%4];
  return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div>${t.fig2?`<div class="thf thf2" aria-hidden="true">${P[t.fig2]()}</div>`:""}<span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
-function drawShows(){$("showarch").innerHTML=""+SHOWARCH.filter(s=>s.ch===selShow).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("");showExtras()}
+const HOSTOF={tdty:"hema",shop:"jc",travel:"sarla",meter:"tchu",dosa:"lata",makeover:"dimpy",stunt:"devi",mhanje:"animation",baba:"baba",ad1:"fadarr"};
+function hostCard(ch){try{const c=[...HEROES,...VILLAINS].find(x=>x.id===HOSTOF[ch]);return c?`<aside class="shhost">${card(c,VILLAINS.includes(c))}</aside>`:""}catch(e){return ""}}
+function drawShows(){$("showarch").innerHTML=""+SHOWARCH.filter(s=>s.ch===selShow).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="shwbody"><div class="grid${s.eps.length===1?" single":""}">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div>${hostCard(s.ch)}</div></section>`).join("");updVotes();showExtras()}
 function goShow(ch){selShow=ch;drawWho();drawShows();try{$("whofilter").querySelector("[aria-pressed=true]").scrollIntoView({inline:"center",block:"nearest"})}catch(e){}const el=$("shw-"+ch);if(!el)return;
   el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});el.classList.remove("hl");void el.offsetWidth;el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),3200)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-goshow]");if(b)goShow(b.dataset.goshow)});
@@ -1832,7 +1850,7 @@ function showExtras(){const host=$("p-shows");Object.entries(EXTRA).forEach(([ch
 function drawWho(){$("whofilter").innerHTML=SHOWARCH.map(s=>`<button type="button" data-sel="${s.ch}" aria-pressed="${s.ch===selShow}" aria-label="${s.n}">${logo(s.ch)}<span>with ${s.who}</span></button>`).join("")}
 $("whofilter").addEventListener("click",e=>{const b=e.target.closest("[data-sel]");if(!b)return;selShow=b.dataset.sel;drawWho();drawShows()});
 $("showarch").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
-drawWho();drawShows();
+drawWho();
 function watchEp(ch,id){const i=CHANNELS.indexOf(ch);if(i<0||!byId(id))return;chIdx=i;archMode=true;
   document.querySelectorAll("#chans button").forEach((b,k)=>b.setAttribute("aria-current",k===i?"true":"false"));
   switchTo(byId(id));$("set").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}
@@ -1866,8 +1884,11 @@ const VOTEAT={};
 document.addEventListener("click",e=>{const b=e.target.closest("[data-vote]");if(!b)return;const id=b.dataset.vote,n=Date.now();if(VOTEAT[id]&&n-VOTEAT[id]<1200)return;VOTEAT[id]=n;
   bump("boost",id,1);renderFame();b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")});
 {const fb=$("famebox"),side=$("castside");if(fb&&side)side.appendChild(fb)}
-$("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
-$("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");updVotes();
+const SIDE=["animation","dalmatian","chaibot"],ALM=["baba"];
+$("heroes").innerHTML=HEROES.filter(c=>!SIDE.includes(c.id)&&!ALM.includes(c.id)).map(c=>card(c)).join("");
+$("sidekicks").innerHTML=SIDE.map(id=>HEROES.find(c=>c.id===id)).map(c=>card(c)).join("");
+$("almighty").innerHTML=HEROES.filter(c=>ALM.includes(c.id)).map(c=>card(c)).join("");
+$("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");drawShows();updVotes();
 
 /* ============ PRODUCTS ============ */
 const PRODUCTS=[
