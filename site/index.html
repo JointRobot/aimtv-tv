@@ -505,6 +505,9 @@ body[data-theme=newyear] .slogo::before{content:"\2733 \2736";opacity:1;color:#8
 .chart .nm{min-width:0;display:flex;flex-direction:column;gap:3px}.chart .nm b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chart .nm small{font:11px var(--f-mono);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chart .nm .bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden}.chart .nm .bar i{display:block;height:100%;background:var(--saffron)}
 .chart .pt{font:600 12px var(--f-mono);color:var(--dim)}
+#topSongs li{grid-template-columns:30px 30px minmax(0,1fr) auto}
+.chart .rowplay{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--saffron);cursor:pointer;font-size:10px;padding:0 0 0 2px}.chart .rowplay:hover{background:var(--saffron);color:#1a120b}
+.playchart{font-size:10px;padding:5px 10px;letter-spacing:.06em}
 .chart li.go{cursor:pointer}.chart li.go:hover .nm b{color:#e0b04a}
 .shw{margin:0 0 28px}.shw h3{margin:0 0 4px}.shw>p{color:var(--dim);margin:0 0 12px;max-width:68ch}
 
@@ -747,7 +750,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
   <section class="lastrow charts" id="charts">
       <div class="box"><h3>Top 10 Shows <small>MOST WATCHED</small></h3><ol class="chart" id="topShows"></ol></div>
-      <div class="box"><h3>Top 10 Music <small>MOST PLAYED</small></h3><ol class="chart" id="topSongs"></ol></div>
+      <div class="box"><h3>Top 10 Music <small><button class="knob playchart" type="button" data-pc="0">&#9654; Play chart on CH 2</button></small></h3><ol class="chart" id="topSongs"></ol></div>
   </section>
 
   <section class="lastrow">
@@ -1336,7 +1339,7 @@ function restoreQ(){try{const d=JSON.parse(localStorage.getItem(QKEY)||"null");i
   {let k=0;for(const t of SONGS.slice().reverse())if(!seen.has(t.id)){q.splice(i+k,0,t);k++}markSeen()} /* new releases air next, newest first */
   QUEUE=q;songI=i}catch(e){}}
 const SONG_MAX=600;          /* songs air in full (cap only guards against runaway files) */
-let songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;restoreQ();
+let CHARTQ=[],songI=0,curSong=null,songTimer=null,songPaused=false,songDone=null;restoreQ();
 const SONG_IN=3.5,SONG_OUT=15,SONG_FADE=3;
 function songAudioPath(t){return "music/"+t.id.slice(0,8)+".mp3"}
 function loadSong(t){const k="song_"+t.id;if(!AUD.cache[k])AUD.cache[k]=fetch(songAudioPath(t)).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer()}).then(b=>new Promise((res,rej)=>ctx().decodeAudioData(b,res,rej)));return AUD.cache[k]}
@@ -1546,7 +1549,7 @@ function showProg(p){
   setTimeout(renderSched,0);$("chname").innerHTML=`<small>CH ${String(chIdx+1).padStart(2,"0")}</small>${LOGO[chId]?logo(chId,1):CHLABEL[chId]}${chId==="live"?` · ${p.ch}`:""}`;
   stopSong();
   clearTimeout(vjPopT);showPip(!!p.song&&CHANNELS[chIdx]==="tablanari");
-  if(p.song){if(VJNEXT){curSong=VJNEXT;VJNEXT=null}else pickSong();stopTabla();stopAlbum()}
+  if(p.song){if(CHARTQ.length){curSong=CHARTQ.shift()}else if(VJNEXT){curSong=VJNEXT;VJNEXT=null}else pickSong();stopTabla();stopAlbum()}
   else{if(p.music)startTabla(1);else if(p.vj)startTabla(.3);else stopTabla();if(p.album)startAlbum();else stopAlbum()}
   playLine();setTimeout(warmAhead,0);
 }
@@ -1809,11 +1812,17 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-goshow]");
 const sid=t=>"song:"+String(t.id||"").slice(0,8);
 const seedN=str=>{let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))>>>0;return 30+h%40};
 function countPlay(p){if(!unlocked||document.body.classList.contains("bc")||p.song||p.music)return;const ch=CHANNELS[chIdx];if(SHOWARCH.some(x=>x.ch===ch))bump("play","show:"+ch,1)}
+let CHARTLIST=[];
+function playChart(k){const q=CHARTLIST.slice(k);if(!q.length)return;CHARTQ=q;archMode=false;
+  if(CHANNELS[chIdx]!=="music"){tune(CHANNELS.indexOf("music"))}else{stopSong();hush();curSong=null;showProg(byId("song"))}
+  if(!unlocked)powerOn();$("set").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-pc]");if(b)playChart(+b.dataset.pc)});
 function renderCharts(){try{
   const sh=SHOWARCH.map((s,i)=>[s,60-i*3+cnt("plays","show:"+s.ch)*10]).sort((a,b)=>b[1]-a[1]).slice(0,10),mx=sh[0][1]||1;
   $("topShows").innerHTML=sh.map(([s,v],k)=>`<li class="go" data-wch="${s.ch}" data-wep="${s.eps[0]}"><span class="rk">${k+1}</span><span class="nm"><span>${logo(s.ch,1)}</span><span class="bar"><i style="width:${Math.round(v/mx*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("");
   const so=SONGS.map(t=>[t,seedN(t.id||t.t)+cnt("plays",sid(t))*10]).sort((a,b)=>b[1]-a[1]).slice(0,10),m2=so[0][1]||1;
-  $("topSongs").innerHTML=so.map(([t,v],k)=>`<li><span class="rk">${k+1}</span><span class="nm"><b>${t.t}</b><small>${t.ar||MUSIC.album.artist}</small><span class="bar"><i style="width:${Math.round(v/m2*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("")}catch(e){}}
+  CHARTLIST=so.map(x=>x[0]);
+  $("topSongs").innerHTML=so.map(([t,v],k)=>`<li><span class="rk">${k+1}</span><button class="rowplay" type="button" data-pc="${k}" aria-label="Play ${t.t} and the chart below it on CH 2">&#9654;</button><span class="nm"><b>${t.t}</b><small>${t.ar||MUSIC.album.artist}</small><span class="bar"><i style="width:${Math.round(v/m2*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("")}catch(e){}}
 $("topShows").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
 renderCharts();
 function drawWho(){$("whofilter").innerHTML=SHOWARCH.map(s=>`<button type="button" data-sel="${s.ch}" aria-pressed="${s.ch===selShow}" aria-label="${s.n}">${logo(s.ch)}<span>with ${s.who}</span></button>`).join("")}
