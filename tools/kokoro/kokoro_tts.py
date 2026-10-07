@@ -16,7 +16,7 @@ KCAST = {
     "jc": ("hm_omega", 1.0, 1.0, ""), "tchu": ("hm_omega", 0.96, 0.9, ""),
     "sarla": ("hf_alpha", 1.05, 1.1, ""), "dimpy": ("hf_beta", 1.08, 1.12, ""),
     "chaibot": ("hm_psi", 1.2, 1.18, "aecho=0.8:0.6:12:0.4"),
-    "animation": ("hm_psi", 1.08, 1.08, ""),  # Marathi dog: Marathi (Devanagari) text read by the Hindi voice engine
+    "animation": ("hm_omega", 0.93, 1.0, ""),  # Marathi dog: Marathi (Devanagari) text read by the Hindi voice engine
 }
 _S = {}
 
@@ -57,12 +57,19 @@ def _wave(text, voice, speed, lang="hi"):
     return S["s"].run(None, {"tokens": np.array([[0] + ids + [0]], dtype=np.int64), "style": style, "speed": np.array([speed], dtype=np.float32)})[0].squeeze()
 
 # English-speaking cast (English text, not Devanagari): who: (kokoro voice, speed, pitch factor, extra ffmpeg filter)
+PHRASED = {"animation"}
 KEN = {"tabla": ("af_heart", 0.97, 0.98, "")}
 
 def speak(text, who, out, bitrate="40k"):
     lang = "hi"  # the bundled espeak only has Hindi; it reads Roman English words through its own English dictionary
     voice, speed, k, fx = (KEN if who in KEN else KCAST)[who]
-    a = _wave(text, voice, speed, lang)
+    if who in PHRASED:  # short phrases with small pauses sound far less robotic than one long breath
+        import re
+        parts = [x.strip() for x in re.split(r"(?<=[.?!।])\s+", text) if x.strip()]
+        gap = np.zeros(int(24000 * .22), dtype=np.float32)
+        a = np.concatenate([np.concatenate([_wave(x, voice, speed, lang), gap]) for x in parts])
+    else:
+        a = _wave(text, voice, speed, lang)
     wav = tempfile.mktemp(suffix=".wav")
     with wave.open(wav, "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes((np.clip(a, -1, 1) * 32767).astype(np.int16).tobytes())
