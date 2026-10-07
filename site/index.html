@@ -116,6 +116,12 @@ body.bc .sctl{display:none!important}
 /* Television */
 .set{background:linear-gradient(180deg,#2b2017,#1b140e);border:1px solid #4a3828;border-radius:18px;padding:14px;
   box-shadow:inset 0 1px 0 #5a4430, 0 18px 40px rgba(0,0,0,.45)}
+/* picture always fits the window together with its subtitles and controls */
+@media (min-width:981px){.set .screen{margin-inline:auto}}
+.set:fullscreen{display:flex;flex-direction:column;justify-content:center;gap:8px;background:#0b0705;border:0;border-radius:0;padding:10px 16px;overflow:auto;box-shadow:none}
+.set:fullscreen .subs{margin-top:0}.set:fullscreen .chans,.set:fullscreen .hint,.set:fullscreen .dockh{display:none}
+.set:fullscreen .screen{align-self:center;border-radius:6px}
+.set:-webkit-full-screen{display:flex;flex-direction:column;justify-content:center;gap:8px;background:#0b0705;padding:10px 16px}
 .screen{position:relative;aspect-ratio:16/9;container-type:inline-size;max-width:100%;border-radius:12px;overflow:hidden;overflow:clip;background:#000;
   box-shadow:inset 0 0 60px rgba(0,0,0,.8)}
 .screen .scene,.screen .host,.screen canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -496,7 +502,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
   <div class="main">
     <section aria-label="AIMTV live screen">
-      <div class="set">
+      <div class="set" id="set">
         <div class="screen" id="screen">
           <div class="scene" id="scene"></div>
           <div class="host" id="host"></div>
@@ -523,6 +529,7 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
         <button class="knob" id="sound" aria-pressed="true">Sound on</button>
         <button class="knob" id="cc" aria-pressed="true">Language notes</button>
         <button class="knob" id="pause" aria-pressed="false">Pause</button>
+        <button class="knob" id="fs" type="button">Full screen</button>
       </div>
       <div class="chans" id="chans" role="group" aria-label="Channels"></div>
       <p class="hint">Every character has their own recorded voice. Use Sound to mute. Every other show is in the lineup below.</p>
@@ -1196,7 +1203,7 @@ function startAlbum(){stopAlbum();const A=MUSIC.album.tracks.slice().reverse();c
 function stopAlbum(){clearInterval(musicT);musicT=null;const b=$("albumbox");if(b)b.remove()}
 function renderMusic(){const row=(t,i)=>`<li><span class="n">${i+1}</span><span class="c">${cover(t.t)}</span><span class="ti"><b>${t.t}</b><small>${t.s} · ${t.d}</small></span><button class="pl" data-song="${t.id}">Play</button></li>`;
  $("albumlist").innerHTML=MUSIC.album.tracks.slice().reverse().map(row).join("");$("filllist").innerHTML=MUSIC.fill.map(row).join("");
- document.querySelectorAll("#albumlist [data-song]").forEach(b=>b.addEventListener("click",()=>{const t=SONGS.find(t=>t.id===b.dataset.song);if(!t)return;ensureQ(songI);QUEUE.splice(songI,0,t);curSong=null;tune(CHANNELS.indexOf("music"));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}))}
+ document.querySelectorAll("#albumlist [data-song]").forEach(b=>b.addEventListener("click",()=>{const t=SONGS.find(t=>t.id===b.dataset.song);if(!t)return;ensureQ(songI);QUEUE.splice(songI,0,t);curSong=null;tune(CHANNELS.indexOf("music"));$("set").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}))}
 
 /* ============ SONG SLOTS (live channel: one programme, one song) ============ */
 const SONGS=[...MUSIC.album.tracks,...MUSIC.fill].filter(t=>t.a); /* only songs whose audio is in the channel */
@@ -1590,7 +1597,7 @@ $("pause").onclick=togglePause;
 $("screen").addEventListener("click",e=>{if(document.body.classList.contains("bc"))return;if(Date.now()-powerAt<900)return; /* the tap that switched the TV on must not also pause it */if(e.target.closest("button,a,input,[data-sc]"))return;togglePause()});
 $("screen").style.cursor="pointer";$("screen").title="Click to pause or play";
 document.addEventListener("keydown",e=>{if(e.code!=="Space"||e.repeat)return;const t=e.target;if(t&&t.closest&&t.closest("input,textarea,button,a,select,[contenteditable]"))return;e.preventDefault();togglePause()});
-document.querySelectorAll("[data-watch]").forEach(b=>b.addEventListener("click",()=>{tune(CHANNELS.indexOf(b.dataset.watch));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}));
+document.querySelectorAll("[data-watch]").forEach(b=>b.addEventListener("click",()=>{tune(CHANNELS.indexOf(b.dataset.watch));$("set").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}));
 window.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowUp")tune(1);if(e.key==="ArrowDown")tune(0)});
 
 
@@ -1682,7 +1689,7 @@ $("showarch").addEventListener("click",e=>{const b=e.target.closest("[data-wch]"
 drawWho();drawShows();
 function watchEp(ch,id){const i=CHANNELS.indexOf(ch);if(i<0||!byId(id))return;chIdx=i;
   document.querySelectorAll("#chans button").forEach((b,k)=>b.setAttribute("aria-current",k===i?"true":"false"));
-  switchTo(byId(id));$("screen").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}
+  switchTo(byId(id));$("set").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})}
 document.addEventListener("click",e=>{const c=e.target.closest("[data-ep]");if(c)watchEp(c.dataset.ch,c.dataset.ep)});
 document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const c=e.target.closest&&e.target.closest("[data-ep]");if(c)watchEp(c.dataset.ch,c.dataset.ep)});
 
@@ -1807,6 +1814,19 @@ document.querySelectorAll(".guide").forEach(G=>G.addEventListener("click",e=>{co
   G.querySelectorAll("[role=tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});
   try{localStorage.setItem("aimtv-tab-"+(G.id||"shows"),b.dataset.tab)}catch(err){}}));
 try{const t=localStorage.getItem("aimtv-tab-shows");if(t&&$("t-"+t))$("t-"+t).click()}catch(e){}
+
+
+/* fit the 16:9 picture so picture + subtitles + controls are all on screen; Full screen button uses the same rule */
+function fitSet(){const s=$("set"),sc=$("screen");if(!s||!sc)return;
+  const fsOn=document.fullscreenElement===s||document.webkitFullscreenElement===s;
+  sc.style.width="";if(innerWidth<=980&&!fsOn)return;
+  const over=fsOn?[...s.children].filter(c=>c!==sc&&c.offsetParent!==null).reduce((t,c)=>t+c.offsetHeight+8,0)+22:s.offsetHeight-sc.offsetHeight,avail=innerHeight-over-(fsOn?8:30);
+  const inner=s.clientWidth-(fsOn?32:28);
+  const w=Math.max(Math.min(480,inner),Math.min(avail*16/9,inner));sc.style.width=Math.floor(w)+"px"}
+addEventListener("resize",fitSet);document.addEventListener("fullscreenchange",()=>{fitSet();setTimeout(fitSet,150)});document.addEventListener("webkitfullscreenchange",()=>setTimeout(fitSet,150));
+if(window.ResizeObserver)new ResizeObserver(()=>fitSet()).observe($("subs"));
+$("fs").onclick=()=>{const s=$("set");if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else{(s.requestFullscreen||s.webkitRequestFullscreen||(()=>{})).call(s)}};
+setTimeout(fitSet,0);setTimeout(fitSet,600);
 
 /* ============ BOOT ============ */
 const BROADCAST=/[?&]broadcast=1/.test(location.search);
