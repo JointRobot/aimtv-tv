@@ -428,6 +428,30 @@ form.q input::placeholder{color:#7d705c}
 .eplink{cursor:pointer;position:relative}.eplink:hover,.eplink:focus-visible{border-color:#e0b04a;outline:0}
 .eplink .wt{display:inline-block;margin-top:8px;font:600 12px/1 var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;color:#e0b04a}
 
+
+/* subtitle + controls share the picture's width */
+@media (min-width:981px){body:not(.bc) .set .subs,body:not(.bc) .set .dock{width:var(--sw,100%);max-width:100%;margin-inline:auto;box-sizing:border-box}}
+/* ad strip */
+.adrow .adslot{display:grid;grid-template-columns:72px minmax(0,1fr) auto;grid-template-areas:"art sp cta" "art ti cta" "art ln cta";column-gap:18px;align-items:center;max-width:920px;margin:0 auto;padding:14px 20px;min-height:0;border-left:4px solid var(--padmini)}
+.adrow .adslot .art{position:static;transform:none;grid-area:art;width:72px;height:72px}
+.adrow .adslot .sp{grid-area:sp;justify-self:start;border:1px solid #6b5840;border-radius:3px;padding:1px 6px;font-size:9px}
+.adrow .adslot .ti{grid-area:ti;margin:3px 0 2px}.adrow .adslot .ln{grid-area:ln}
+.adrow .adslot .cta{grid-area:cta;margin:0;font-size:12px;padding:9px 18px;white-space:nowrap}
+.adrow .adslot:hover .cta{filter:brightness(1.1)}
+@media(max-width:600px){.adrow .adslot{grid-template-columns:56px minmax(0,1fr);grid-template-areas:"art sp" "art ti" "art ln" "cta cta"}.adrow .adslot .art{width:56px;height:56px}.adrow .adslot .cta{justify-self:start;margin-top:10px}}
+/* YouTube card */
+a.ytcard{max-width:920px;margin:30px auto 4px;position:relative;overflow:hidden;background:linear-gradient(120deg,#1d1511,#261712 70%);padding:14px;gap:22px}
+.ytcard .yt-th{position:relative;flex:none;width:min(340px,42%);display:block}
+.ytcard .yt-th img{width:100%}
+.ytcard .yt-live{position:absolute;left:8px;top:8px;font:600 10px/1 var(--f-mono);letter-spacing:.12em;font-style:normal;color:#fff;background:#d4262c;border-radius:3px;padding:4px 7px;display:flex;align-items:center;gap:5px}
+.ytcard .yt-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+.ytcard .yt-play{position:absolute;inset:0;display:grid;place-items:center;font-style:normal}
+.ytcard .yt-play::before{content:"";width:54px;height:38px;border-radius:10px;background:rgba(212,38,44,.92);box-shadow:0 4px 16px rgba(0,0,0,.5);transition:transform .2s}
+.ytcard .yt-play::after{content:"";position:absolute;border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.ytcard:hover .yt-play::before{transform:scale(1.1)}
+.ytcard .yt-b{background:#d4262c;color:#fff;border-radius:999px;padding:9px 20px}
+.ytcard .yt-b::after{content:" \2197"}
+@media(max-width:560px){.ytcard .yt-th{width:100%}}
 /* show rails, thumbnails, logos, charts */
 .shw .grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 10px;scrollbar-width:thin}
 .shw .card.eplink{flex:0 0 236px;scroll-snap-align:start;padding:0;gap:0;overflow:hidden}
@@ -664,8 +688,8 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
   </section>
 
   <a class="ytcard" href="https://youtu.be/sxLxHHFjo_c" target="_blank" rel="noopener" aria-label="Watch AIMTV live on YouTube">
-    <img src="yt/thumbnail.jpg" alt="AIMTV Live 24/7 on YouTube" loading="lazy">
-    <div><div class="yt-k">Also streaming 24/7</div><div class="yt-t">Watch AIMTV live on YouTube</div><p class="yt-d">Same channel, same cast, on the big screen. Subscribe and join the live chat.</p><span class="yt-b">Open on YouTube</span></div>
+    <span class="yt-th"><img src="yt/thumbnail.jpg" alt="AIMTV Live 24/7 on YouTube" loading="lazy" decoding="async"><i class="yt-live">LIVE 24/7</i><i class="yt-play" aria-hidden="true"></i></span>
+    <div><div class="yt-k">Also on YouTube</div><div class="yt-t">The big-screen channel</div><p class="yt-d">Same cast, same shows, always on. Subscribe, join the live chat, leave it playing.</p><span class="yt-b">Watch on YouTube</span></div>
   </a>
 
   <section class="guide world" id="worldguide">
@@ -1895,10 +1919,10 @@ try{const t=localStorage.getItem("aimtv-tab-shows");if(t&&$("t-"+t))$("t-"+t).cl
 /* fit the 16:9 picture so picture + subtitles + controls are all on screen; Full screen button uses the same rule */
 function fitSet(){const s=$("set"),sc=$("screen");if(!s||!sc)return;
   const fsOn=document.fullscreenElement===s||document.webkitFullscreenElement===s;
-  sc.style.width="";if(innerWidth<=980&&!fsOn)return;
+  sc.style.width="";s.style.removeProperty("--sw");if(innerWidth<=980&&!fsOn)return;
   const over=fsOn?[...s.children].filter(c=>c!==sc&&c.offsetParent!==null).reduce((t,c)=>t+c.offsetHeight+8,0)+22:s.offsetHeight-sc.offsetHeight,avail=innerHeight-over-(fsOn?8:30);
   const inner=s.clientWidth-(fsOn?32:28);
-  const w=Math.max(Math.min(480,inner),Math.min(avail*16/9,inner));sc.style.width=Math.floor(w)+"px"}
+  const w=Math.max(Math.min(480,inner),Math.min(avail*16/9,inner));sc.style.width=Math.floor(w)+"px";s.style.setProperty("--sw",Math.floor(w)+"px")}
 addEventListener("resize",fitSet);document.addEventListener("fullscreenchange",()=>{fitSet();setTimeout(fitSet,150)});document.addEventListener("webkitfullscreenchange",()=>setTimeout(fitSet,150));
 if(window.ResizeObserver)new ResizeObserver(()=>fitSet()).observe($("subs"));
 $("fs").onclick=()=>{const s=$("set");if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else{(s.requestFullscreen||s.webkitRequestFullscreen||(()=>{})).call(s)}};
