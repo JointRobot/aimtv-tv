@@ -470,7 +470,9 @@ a.ytcard{max-width:none;width:100%;box-sizing:border-box;margin:30px 0 4px;posit
 .shw .shwh{margin-bottom:12px}.shw .shwh h3{margin:0}
 .shw.hl{animation:shl 2.8s ease-out;border-radius:10px}
 @keyframes shl{0%,60%{box-shadow:0 0 0 3px #e0b04a,0 0 36px rgba(224,176,74,.55);background:rgba(224,176,74,.08)}100%{box-shadow:0 0 0 0 transparent}}
-.goshow{margin-top:8px;align-self:flex-start}
+.who .pic{position:relative}
+.goshow{position:absolute;top:8px;right:8px;z-index:2;font:600 10px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#1a120b;background:rgba(242,194,48,.94);border:0;border-radius:999px;padding:5px 9px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.goshow:hover,.goshow:focus-visible{background:#fff3c0;outline:0}
 .slogo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:.9;font-family:var(--f-display);font-weight:900;text-transform:uppercase;letter-spacing:.02em;position:relative;padding:3px 10px 4px;transform:rotate(-2deg);font-size:30px;white-space:nowrap;border-radius:4px;vertical-align:middle}
 .slogo b,.slogo i{font-style:normal;font-weight:900}.slogo i{font-size:.72em;letter-spacing:.16em}
 .slogo .hrt{font-style:normal;color:#ff3d7f;text-shadow:0 0 6px rgba(255,61,127,.6)}
@@ -1827,10 +1829,10 @@ const HEROES=[
  {id:"jc",n:"Juhu Chaiwala",r:"JC · real name unknown",q:"The Spy with Chai. A very famous detective. Also a Tech Guru.",b:"Juhu, Mumbai",job:"Host, Tomorrow Shop"},
  {id:"tchu",n:"Tchu Tchu",r:"Orphan by birth",q:"An orphan, so no one gave him a name. In India, when people don't know your name, they call you Tchu Tchu.",b:"Bangalore",job:"Field reporter, Meter Down"},
  {id:"animation",n:"Animation",r:"Tchu Tchu's dog",q:"A Marathi speaking dog that can move in & out of any media form. Digital, TV, Print, you name it.",b:"Mumbai",job:"Network mascot and continuity host"},
- {id:"lata",n:"Bhenji Jumping",r:"Lata Seth",q:"Skates like Tony Hawk & Bargains like your mother.",b:"Gujarat",job:"Recurring guest, crashes Travels"},
+ {id:"lata",n:"Bhenji Jumping",r:"Lata Seth",q:"Skates like Tony Hawk & Bargains like your mother.",b:"Gujarat",job:"Host, Tasty Bargain Che. Crashes I ♥ Foreign"},
  {id:"sarla",n:"Stomach Challo",r:"Sarla Seth",q:"Her elastic stomach & her sensuousness, that can seduce even a robot.",b:"Gujarat",job:"Host, I ♥ Foreign"},
- {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Makeover segment (coming soon)"},
- {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Stunt segment (coming soon)"},
+ {id:"dimpy",n:"Talwaar Kameez",r:"Dimpy aunty",q:"Swordplay & can make anyone look good in any situation.",b:"Punjab",job:"Host, Your Beauty My Duty"},
+ {id:"devi",n:"Fullon Devi",r:"Devi",q:"Can perform stunts that are out of this world.",b:"Punjab",job:"Host, Stunt Double"},
  {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
  {id:"tabla",n:"Tabla Nari",r:"Fatima (probably)",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast, so we don't know much about her",job:"Music channel, Tabla Nari Live"},
  {id:"baba",n:"Baba Black Sheep",r:"Almighty",q:"Omni-present. Divine guiding light.",b:"Everywhere",job:"Daily blessing bumper"},
@@ -1842,7 +1844,7 @@ const VILLAINS=[
  {id:"gutter",n:"GutterFly",r:"Kamala",q:"Runs a brothel with a bank front called Vaishya Bank.",b:"Tamil Nadu",job:"Hostile guest; answers questions by spitting paan"},
  {id:"arnold",n:"Arnold Shivajinagar",r:"Inspector",q:"Really strong & evil cop, who is in bed with the evil Fa Corporation.",b:"Goa",job:"Issues on-air challans to the Celebs"}
 ];
-const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div>${SHOWOF[c.id]?`<button class="watch goshow" type="button" data-goshow="${SHOWOF[c.id]}">Go to show</button>`:""}</div></article>`;
+const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}${SHOWOF[c.id]?`<button class="goshow" type="button" data-goshow="${SHOWOF[c.id]}" aria-label="Go to ${c.n}'s show">Go to show &#8599;</button>`:""}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div></div></article>`;
 $("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
 $("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");
 
