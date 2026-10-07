@@ -2,7 +2,8 @@
 // GET  /api/score -> {likes:{id:n}, watch:{id:seconds}, boosts:{id:n}}
 // POST /api/score  body {likes:{id:n}, watch:{id:seconds}, boosts:{id:n}}  (small batches; capped per request)
 const IDS = new Set(["hema","jc","chaibot","tchu","animation","sarla","lata","mrst","fadarr","baba","tabla","dimpy","devi","aimtv"]);
-const CAP = { likes: 5, watch: 120, boosts: 5 };
+const CAP = { likes: 5, watch: 120, boosts: 5, plays: 3 };
+const PLAYID = /^(show|song):[a-z0-9_]{1,24}$/;
 const KINDS = Object.keys(CAP);
 const H = { "content-type": "application/json", "cache-control": "no-store", "access-control-allow-origin": "*" };
 
@@ -10,7 +11,7 @@ async function ensure(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS score (id TEXT NOT NULL, kind TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (id, kind))").run();
 }
 async function totals(db) {
-  const out = { likes: {}, watch: {}, boosts: {} };
+  const out = { likes: {}, watch: {}, boosts: {}, plays: {} };
   const { results } = await db.prepare("SELECT id, kind, n FROM score").all();
   for (const r of results || []) if (out[r.kind]) out[r.kind][r.id] = r.n;
   return out;
@@ -33,7 +34,7 @@ export async function onRequestPost({ request, env }) {
     if (!m || typeof m !== "object") continue;
     for (const [id, v] of Object.entries(m)) {
       const n = Math.floor(Number(v));
-      if (!IDS.has(id) || !(n > 0)) continue;
+      if (!(kind === "plays" ? PLAYID.test(id) : IDS.has(id)) || !(n > 0)) continue;
       stmts.push(up.bind(id, kind, Math.min(n, CAP[kind])));
     }
   }

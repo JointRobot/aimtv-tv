@@ -427,8 +427,54 @@ form.q input::placeholder{color:#7d705c}
 /* Products table */
 .eplink{cursor:pointer;position:relative}.eplink:hover,.eplink:focus-visible{border-color:#e0b04a;outline:0}
 .eplink .wt{display:inline-block;margin-top:8px;font:600 12px/1 var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;color:#e0b04a}
+
+/* show rails, thumbnails, logos, charts */
+.shw .grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 10px;scrollbar-width:thin}
+.shw .card.eplink{flex:0 0 236px;scroll-snap-align:start;padding:0;gap:0;overflow:hidden}
+.eplink .tb{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px}
+.eplink .tb h4{margin:0;font-size:16px}.eplink .tb .wt{margin-top:2px}
+.th{position:relative;aspect-ratio:16/9;background-color:#1a130d;background-repeat:no-repeat;overflow:hidden}
+.th::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,7,5,.82),rgba(11,7,5,.05) 65%),linear-gradient(0deg,rgba(11,7,5,.55),transparent 45%)}
+.th .thf{position:absolute;right:2%;bottom:-4%;height:96%;z-index:1;aspect-ratio:200/240}.th .thf svg{width:100%;height:100%;display:block}
+.th .thl{position:absolute;left:8px;bottom:7px;z-index:2;font-size:15px}
+.th .the{position:absolute;left:8px;top:7px;z-index:2;font:600 10px/1 var(--f-mono);letter-spacing:.12em;color:#f4e9d2;background:rgba(11,7,5,.7);padding:3px 6px;border-radius:3px}
+.th .thp{position:absolute;inset:0;z-index:3;display:grid;place-items:center;opacity:0;transition:opacity .2s;font-size:34px;color:#fff;text-shadow:0 2px 12px #000}
+.eplink:hover .thp,.eplink:focus-visible .thp{opacity:.95}
+.shw .shwh{margin-bottom:12px}.shw .shwh h3{margin:0}
+.shw.hl{animation:shl 2.8s ease-out;border-radius:10px}
+@keyframes shl{0%,60%{box-shadow:0 0 0 3px #e0b04a,0 0 36px rgba(224,176,74,.55);background:rgba(224,176,74,.08)}100%{box-shadow:0 0 0 0 transparent}}
+.goshow{margin-top:8px;align-self:flex-start}
+.slogo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:.9;font-family:var(--f-display);font-weight:900;text-transform:uppercase;letter-spacing:.02em;position:relative;padding:3px 10px 4px;transform:rotate(-2deg);font-size:30px;white-space:nowrap;border-radius:4px;vertical-align:middle}
+.slogo b,.slogo i{font-style:normal;font-weight:900}.slogo i{font-size:.72em;letter-spacing:.16em}
+.slogo.mini{font-size:13px;padding:2px 6px 3px}.slogo.mini i{letter-spacing:.1em}
+.lg-news{background:#17325c;color:#f6efdc;box-shadow:inset 0 -3px 0 #d6403a;border-left:4px solid #d6403a}
+.lg-shop{background:linear-gradient(100deg,#e8622c,#f2c230);color:#1a0f08;transform:rotate(-3deg) skewX(-6deg)}
+.lg-travel{background:linear-gradient(100deg,#0f8f7c,#9bd13a);color:#06231d;border-radius:18px 4px 18px 4px}
+.lg-meter{background:#f2c230;color:#111;background-image:repeating-linear-gradient(90deg,#111 0 8px,transparent 8px 16px);background-size:100% 4px;background-repeat:no-repeat;background-position:0 100%;font-family:var(--f-mono);letter-spacing:.06em}
+.lg-dosa{background:#f0a23a;color:#3b1706;border-radius:40px 40px 6px 40px}
+.lg-make{background:linear-gradient(100deg,#b0236f,#e9b64a);color:#fff7e8;text-shadow:0 1px 0 #5c0f3a;border-radius:4px 20px 4px 20px}
+.lg-stunt{background:repeating-linear-gradient(135deg,#f2c230 0 10px,#17110d 10px 20px);color:#fff;text-shadow:0 0 3px #000,0 0 3px #000,0 0 6px #000}
+.lg-mh{background:#2f7a43;color:#f4ffe9;border-radius:16px 16px 16px 2px}
+.lg-baba{background:radial-gradient(circle at 50% 120%,#7a4b10,#2a1706);color:#ffd96a;text-shadow:0 0 10px rgba(255,200,80,.8);border:1px solid #c9a24a}
+.lg-fa{background:#fff;color:#c1272d;border:2px solid #c1272d;transform:none;letter-spacing:.06em}
+.slogo::before,.slogo::after{position:absolute;color:#ffcf4a;font-size:.5em;pointer-events:none;opacity:0;text-shadow:0 0 6px #ffb02e;animation:twk 1.8s ease-in-out infinite}
+.slogo::before{top:-.55em;right:-.2em}.slogo::after{bottom:-.5em;left:-.1em;animation-delay:.9s}
+body[data-theme=diwali] .slogo::before{content:"\2726 \2727 \2726";opacity:1}body[data-theme=diwali] .slogo::after{content:"\2727 \2726";opacity:1}
+body[data-theme=newyear] .slogo::before{content:"\2733 \2736";opacity:1;color:#8fd3ff}body[data-theme=newyear] .slogo::after{content:"\2736 \2733";opacity:1;color:#ff9bd0}
+@keyframes twk{50%{opacity:.25;transform:scale(.8)}}
+@media (prefers-reduced-motion:reduce){.slogo::before,.slogo::after{animation:none}}
+.chname .slogo{margin-left:8px;font-size:15px}
+.charts .box h3{display:flex;justify-content:space-between;align-items:baseline}
+.chart{list-style:none;margin:0;padding:0}
+.chart li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.chart li:last-child{border:0}
+.chart .rk{font:900 24px/1 var(--f-display);color:var(--brass);text-align:center}.chart li:nth-child(-n+3) .rk{color:#f2c230}
+.chart .nm{min-width:0;display:flex;flex-direction:column;gap:3px}.chart .nm b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chart .nm small{font:11px var(--f-mono);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart .nm .bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden}.chart .nm .bar i{display:block;height:100%;background:var(--saffron)}
+.chart .pt{font:600 12px var(--f-mono);color:var(--dim)}
+.chart li.go{cursor:pointer}.chart li.go:hover .nm b{color:#e0b04a}
 .shw{margin:0 0 28px}.shw h3{margin:0 0 4px}.shw>p{color:var(--dim);margin:0 0 12px;max-width:68ch}
-.shw .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+
 .pgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:0 0 26px}
 .pcard{display:flex;flex-direction:column;text-align:left;background:var(--panel,#14161c);border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:0;color:inherit;font:inherit}
 .pcard.has{cursor:pointer}.pcard.has:hover{border-color:#8bd04f}
@@ -664,6 +710,11 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
         <tbody id="products"></tbody>
       </table></div>
     </div>
+  </section>
+
+  <section class="lastrow charts" id="charts">
+      <div class="box"><h3>Top 10 Shows <small>MOST WATCHED</small></h3><ol class="chart" id="topShows"></ol></div>
+      <div class="box"><h3>Top 10 Music <small>MOST PLAYED</small></h3><ol class="chart" id="topSongs"></ol></div>
   </section>
 
   <section class="lastrow">
@@ -1243,7 +1294,7 @@ function stopSong(){clearTimeout(songTimer);clearTimeout(vjPopT);stageStop();son
 function pickSong(){if(songI>SONGS.length*2){QUEUE.splice(0,songI-SONGS.length);songI=SONGS.length}ensureQ(songI+3);curSong=QUEUE[songI];songI++;saveQ();const nx=QUEUE[songI];if(nx&&soundOn)loadSong(nx).catch(()=>{});pruneSongs();return curSong}
 function playSong(){
   stopSong();hush();setOnAir("aimtv");
-  const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);
+  const t=curSong||pickSong(),n=SONGS.indexOf(t),isAlbum=MUSIC.album.tracks.includes(t);if(unlocked&&!document.body.classList.contains("bc")&&!paused)bump("play",sid(t),1);
   showCard(t,"AIMTV Music · Now playing",isAlbum,n%12,Math.min(SONGS.length,12),true);lyrKey="";lyrSet("","♪ "+t.t+" ♪","",true);
   $("lowerName").textContent="AIMTV Music";
   setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"");
@@ -1437,11 +1488,11 @@ function showProg(p){
   if(svgs.length===1)svgs[0].classList.add("solo");
   /* camera: a character who comes back gets a different magnification each time (medium, close-up, wide). Pairs stay medium/wide so nobody overlaps. */
   svgs.forEach((sv,i)=>{if(shots[i])sv.classList.add(shots[i])});
-  $("stamp").textContent=p.stamp;
+  $("stamp").textContent=p.stamp;countPlay(p);
   $("lowerRole").textContent=p.role;
   const chId=CHANNELS[chIdx];
   $("bugch").textContent=`CH ${String(chIdx+1).padStart(2,"0")}`;
-  setTimeout(renderSched,0);$("chname").innerHTML=`<small>CH ${String(chIdx+1).padStart(2,"0")}</small>${CHLABEL[chId]}${chId==="live"?` · ${p.ch}`:""}`;
+  setTimeout(renderSched,0);$("chname").innerHTML=`<small>CH ${String(chIdx+1).padStart(2,"0")}</small>${LOGO[chId]?logo(chId,1):CHLABEL[chId]}${chId==="live"?` · ${p.ch}`:""}`;
   stopSong();
   clearTimeout(vjPopT);showPip(!!p.song&&CHANNELS[chIdx]==="tablanari");
   if(p.song){if(VJNEXT){curSong=VJNEXT;VJNEXT=null}else pickSong();stopTabla();stopAlbum()}
@@ -1614,28 +1665,28 @@ renderMusic();
 const RULES={like:10,minute:1,boost:5};
 const FAME=[["hema",72],["dimpy",70],["tchu",70],["lata",68],["jc",68],["mrst",66],["sarla",66],["baba",64],["aimtv",62],["tabla",62],["animation",60],["devi",58],["fadarr",54],["chaibot",50]];
 const FNAME=id=>id==="aimtv"?"AIMTV (songs)":(W[id]||id);
-let SC={likes:{},watch:{},boosts:{}};
+let SC={likes:{},watch:{},boosts:{},plays:{}};
 try{const o=JSON.parse(localStorage.getItem("aimtv-score")||"null");if(o)SC=Object.assign(SC,o);else{const b=JSON.parse(localStorage.getItem("aimtv-boosts")||"{}");SC.boosts=b}}catch(e){}
 let scSave=0;const saveSC=()=>{clearTimeout(scSave);scSave=setTimeout(()=>{try{localStorage.setItem("aimtv-score",JSON.stringify(SC))}catch(e){}},400)};
 /* shared counts: when the page is served with the score API (Cloudflare), every viewer's likes, watch time and boosts add up */
-let SHARED=null,PEND={likes:{},watch:{},boosts:{}},flushT=0;
-const KEYMAP={like:"likes",watch:"watch",boost:"boosts"};
-const cnt=(k,id)=>SHARED?(SHARED[k][id]||0)+(PEND[k][id]||0):(SC[k][id]||0);
-function bump(kind,id,n){const k=KEYMAP[kind];SC[k][id]=(SC[k][id]||0)+n;saveSC();if(SHARED){PEND[k][id]=(PEND[k][id]||0)+n;if(!flushT||kind!=="watch"){clearTimeout(flushT);flushT=setTimeout(()=>{flushT=0;flushScore()},kind==="watch"?30000:1500)}}}
-function takePend(){const b=PEND;PEND={likes:{},watch:{},boosts:{}};return b}
+let SHARED=null,PEND={likes:{},watch:{},boosts:{},plays:{}},flushT=0;
+const KEYMAP={like:"likes",watch:"watch",boost:"boosts",play:"plays"};
+const cnt=(k,id)=>SHARED?((SHARED[k]||{})[id]||0)+((PEND[k]||{})[id]||0):((SC[k]||{})[id]||0);
+function bump(kind,id,n){const k=KEYMAP[kind];SC[k]=SC[k]||{};PEND[k]=PEND[k]||{};SC[k][id]=(SC[k][id]||0)+n;saveSC();if(SHARED){PEND[k][id]=(PEND[k][id]||0)+n;if(!flushT||kind!=="watch"){clearTimeout(flushT);flushT=setTimeout(()=>{flushT=0;flushScore()},kind==="watch"?30000:1500)}}}
+function takePend(){const b=PEND;PEND={likes:{},watch:{},boosts:{},plays:{}};return b}
 async function flushScore(){if(!SHARED)return;const body=takePend();if(!Object.values(body).some(m=>Object.keys(m).length))return;
-  try{const r=await fetch("/api/score",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw 0;SHARED=await r.json();renderFame()}
-  catch(e){for(const k in body)for(const id in body[k])PEND[k][id]=(PEND[k][id]||0)+body[k][id]}}
+  try{const r=await fetch("/api/score",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw 0;SHARED=Object.assign({plays:{}},await r.json());renderFame()}
+  catch(e){for(const k in body)for(const id in body[k]){PEND[k]=PEND[k]||{};PEND[k][id]=(PEND[k][id]||0)+body[k][id]}}}
 async function loadShared(){if(!/^https?:$/.test(location.protocol)||document.body.classList.contains("bc"))return;
   try{const r=await fetch("/api/score",{cache:"no-store"});const ct=r.headers.get("content-type")||"";if(!r.ok||!ct.includes("json"))return;const j=await r.json();if(!j.likes)return;
-    SHARED=j;const n=$("fameNote");if(n)n.textContent="Counted from every viewer.";renderFame()}catch(e){}}
+    SHARED=Object.assign({plays:{}},j);const n=$("fameNote");if(n)n.textContent="Counted from every viewer.";renderFame()}catch(e){}}
 addEventListener("pagehide",()=>{if(!SHARED)return;const b=takePend();if(Object.values(b).some(m=>Object.keys(m).length)&&navigator.sendBeacon)navigator.sendBeacon("/api/score",new Blob([JSON.stringify(b)],{type:"application/json"}))});
 setTimeout(loadShared,800);setInterval(()=>{if(SHARED)loadShared()},90000);
 const pts=id=>{const o=(FAME.find(f=>f[0]===id)||[0,0])[1],l=cnt("likes",id),m=Math.floor(cnt("watch",id)/60),b=cnt("boosts",id);return{o,l,m,b,t:o+l*RULES.like+m*RULES.minute+b*RULES.boost}};
 const mini2=id=>id==="aimtv"?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#e8622c"/><text x="20" y="25" text-anchor="middle" font-family="Big Shoulders Display,sans-serif" font-weight="900" font-size="14" fill="#16110c">AI</text></svg>`:P[id]();
 function renderFame(){
   const rows=FAME.map(([id])=>[id,pts(id)]).sort((a,b)=>b[1].t-a[1].t).slice(0,8),top=rows[0][1].t||1;
-  $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");
+  $("fame").innerHTML=rows.map(([id,p],k)=>`<div class="row"><div class="nm"><span class="mi">${mini2(id)}<span>${FNAME(id)}</span><i>#${k+1}</i></span>${id==="aimtv"?"":`<button data-boost="${id}" aria-label="Boost ${FNAME(id)}">+ Boost</button>`}</div><span class="v">${p.t}</span><div class="bar"><i style="width:${Math.round(p.t/top*100)}%"></i></div></div>`).join("");if(typeof renderCharts==="function")try{renderCharts()}catch(e){}
 }
 $("fame").addEventListener("click",e=>{const b=e.target.closest("[data-boost]");if(!b)return;bump("boost",b.dataset.boost,1);renderFame()});
 /* who gets credit right now: the speaking character, or AIMTV during songs */
@@ -1682,7 +1733,32 @@ const ETITLE={meter2:"Signal pe sawaal",shop2:"Chaibot 3000",dosa2:"Sasti sabzi"
 const EPS={};SHOWARCH.forEach(s=>{if(s.eps.length>1)EPS[s.ch]=s.eps});
 const SEASON="Season 1 · 2026";$("seasonTag").textContent=SEASON;
 let whoSel="";
-function drawShows(){$("showarch").innerHTML=`<div class="subhead">${SEASON}</div>`+SHOWARCH.filter(s=>!whoSel||s.who===whoSel).map(s=>`<section class="shw"><div class="shwh"><h3>${s.n}</h3><span class="who">${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}"><div class="cat"><span>${s.eps.length>1?"Ep "+(i+1):"Episode"}</span></div><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></article>`:""}).join("")}</div></section>`).join("")}
+const TH={tdty:{fig:"hema",bg:["city_dusk"]},shop:{fig:"jc",bg:["chai_stall","chawl_night"],prod:{shop2:["chaibot","50% 30%"]}},travel:{fig:"sarla",bg:["skyline","rainbow","market","city_dusk"]},meter:{fig:"tchu",bg:["street_crossing","street_faking"]},dosa:{fig:"lata",bg:["market","chai_stall"]},makeover:{fig:"dimpy",bg:["studio_window","rainbow"]},stunt:{fig:"devi",bg:["street_faking","street_crossing"]},mhanje:{fig:"animation",bg:["chawl_night","rainbow"]},baba:{fig:"baba",bg:["rainbow"]},ad1:{fig:"fadarr",bg:["studio_window"],prod:{ad_horn:["horn","50% 35%"],ad_bio:["biodata","50% 20%"]}}};
+const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["Stomach Challo","Travels","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Dosa","Khayega?","lg-dosa"],makeover:["Chupp","Kudiye","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Mhanje","","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
+const logo=(ch,mini)=>{const l=LOGO[ch];return l?`<span class="slogo ${l[2]}${mini?" mini":""}" role="img" aria-label="${l[0]} ${l[1]}">${l[1]?`<b>${l[0]}</b><i>${l[1]}</i>`:`<b>${l[0]}</b>`}</span>`:""};
+/* seasonal look: Diwali window and New Year; ?theme=diwali previews one */
+(function(){const q=(location.search.match(/[?&]theme=(\w+)/)||[])[1],d=new Date(),m=d.getMonth()+1,dd=d.getDate();
+ let t=q||((m===10&&dd>=25)||(m===11&&dd<=12)?"diwali":(m===12&&dd>=18)||(m===1&&dd<=3)?"newyear":"");
+ if(t&&t!=="none")document.body.dataset.theme=t})();
+const SHOWOF={hema:"tdty",jc:"shop",chaibot:"shop",sarla:"travel",tchu:"meter",lata:"dosa",dimpy:"makeover",devi:"stunt",animation:"mhanje",baba:"baba",fadarr:"ad1"};
+function thumb(s,id,i,lbl){const t=TH[s.ch]||{bg:["studio_window"]},pr=t.prod&&t.prod[id];
+ const bg=pr?`url(products/${pr[0]}-t.webp)`:`url(plates/${t.bg[i%t.bg.length]}.jpg)`,pos=pr?pr[1]:["50% 50%","15% 60%","85% 40%","50% 85%"][i%4];
+ return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div><span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
+function drawShows(){$("showarch").innerHTML=`<div class="subhead">${SEASON}</div>`+SHOWARCH.filter(s=>!whoSel||s.who===whoSel).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("")}
+function goShow(ch){whoSel="";drawWho();drawShows();$("t-shows").click();const el=$("shw-"+ch);if(!el)return;
+  el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});el.classList.remove("hl");void el.offsetWidth;el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),3200)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-goshow]");if(b)goShow(b.dataset.goshow)});
+/* top-10 charts: opening points + 10 per show started / song played, counted from every viewer when the score API is on */
+const sid=t=>"song:"+String(t.id||"").slice(0,8);
+const seedN=str=>{let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))>>>0;return 30+h%40};
+function countPlay(p){if(!unlocked||document.body.classList.contains("bc")||p.song||p.music)return;const ch=CHANNELS[chIdx];if(SHOWARCH.some(x=>x.ch===ch))bump("play","show:"+ch,1)}
+function renderCharts(){try{
+  const sh=SHOWARCH.map((s,i)=>[s,60-i*3+cnt("plays","show:"+s.ch)*10]).sort((a,b)=>b[1]-a[1]).slice(0,10),mx=sh[0][1]||1;
+  $("topShows").innerHTML=sh.map(([s,v],k)=>`<li class="go" data-wch="${s.ch}" data-wep="${s.eps[0]}"><span class="rk">${k+1}</span><span class="nm"><span>${logo(s.ch,1)}</span><span class="bar"><i style="width:${Math.round(v/mx*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("");
+  const so=SONGS.map(t=>[t,seedN(t.id||t.t)+cnt("plays",sid(t))*10]).sort((a,b)=>b[1]-a[1]).slice(0,10),m2=so[0][1]||1;
+  $("topSongs").innerHTML=so.map(([t,v],k)=>`<li><span class="rk">${k+1}</span><span class="nm"><b>${t.t}</b><small>${t.ar||MUSIC.album.artist}</small><span class="bar"><i style="width:${Math.round(v/m2*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("")}catch(e){}}
+$("topShows").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
+renderCharts();
 function drawWho(){const names=[...new Set(SHOWARCH.map(s=>s.who))];$("whofilter").innerHTML=[["","Everyone"]].concat(names.map(n=>[n,n])).map(([v,l])=>`<button type="button" data-who="${v}" aria-pressed="${v===whoSel}">${l}</button>`).join("")}
 $("whofilter").addEventListener("click",e=>{const b=e.target.closest("[data-who]");if(!b)return;whoSel=b.dataset.who;drawWho();drawShows()});
 $("showarch").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
@@ -1713,7 +1789,7 @@ const VILLAINS=[
  {id:"gutter",n:"GutterFly",r:"Kamala",q:"Runs a brothel with a bank front called Vaishya Bank.",b:"Tamil Nadu",job:"Hostile guest; answers questions by spitting paan"},
  {id:"arnold",n:"Arnold Shivajinagar",r:"Inspector",q:"Really strong & evil cop, who is in bed with the evil Fa Corporation.",b:"Goa",job:"Issues on-air challans to the Celebs"}
 ];
-const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div></div></article>`;
+const card=(c,v)=>`<article class="who ${v?"villain":""}"><div class="pic">${P[c.id]()}</div><div class="body"><h4>${c.n}</h4><div class="real">${c.r} · From: ${c.b}</div><q>${c.q}</q><div class="role"><b>On AIMTV:</b> ${c.job}</div>${SHOWOF[c.id]?`<button class="watch goshow" type="button" data-goshow="${SHOWOF[c.id]}">Go to show</button>`:""}</div></article>`;
 $("heroes").innerHTML=HEROES.map(c=>card(c)).join("");
 $("villains").innerHTML=VILLAINS.map(c=>card(c,1)).join("");
 
