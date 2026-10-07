@@ -291,9 +291,12 @@ body.bc .pip{display:none}
 .lastrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:30px}
 @media (max-width:820px){.lastrow{grid-template-columns:minmax(0,1fr)}}
 .guide.world{margin-top:30px}.ytcard{margin-top:30px}
-.whofilter{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px}
-.whofilter button{background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--dim);cursor:pointer}
-.whofilter button:hover{color:var(--paper)}.whofilter button[aria-pressed="true"]{border-color:var(--padmini);color:var(--padmini)}
+.whofilter{display:flex;gap:10px;margin:0 0 18px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 2px 10px;scrollbar-width:thin}
+.whofilter button{flex:none;scroll-snap-align:start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:8px;color:var(--dim);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.whofilter button .slogo{font-size:21px}
+.whofilter button:hover{border-color:#e0b04a;color:var(--paper)}.whofilter button[aria-pressed="true"]{border-color:var(--padmini);box-shadow:0 0 0 1px var(--padmini),0 6px 20px rgba(242,194,48,.12);color:var(--padmini)}
+
+
 .season{font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);vertical-align:middle;margin-left:10px}
 .shw .shwh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.shw .shwh .watch{margin-left:auto}
 .shw .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
@@ -686,8 +689,8 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
     </div>
     <div class="pane" id="p-shows" role="tabpanel" aria-labelledby="t-shows">
       <h2>All Shows <span class="season" id="seasonTag"></span></h2>
-      <p class="lede">The full lineup. Every episode AIMTV makes is kept here, season by season, and every character has a shelf of everything they have done. Pick a character, or just press Watch on any episode.</p>
-      <div class="whofilter" id="whofilter" role="group" aria-label="Filter by character"></div>
+      <p class="lede">The full lineup. Every episode AIMTV makes is kept here, season by season, and every character has a shelf of everything they have done. Pick a show below, then press Watch on any episode.</p>
+      <div class="whofilter" id="whofilter" role="group" aria-label="Pick a show"></div>
       <div id="showarch"></div>
     </div>
 
@@ -1786,7 +1789,7 @@ const SHOWARCH=[
 const ETITLE={meter2:"Signal pe sawaal",shop2:"Chaibot 3000",dosa2:"Sasti sabzi",makeover2:"Bridal special",stunt2:"Train ki chhat",mhanje2:"The umbrella",tdty:"Tonight's bulletin",shop:"Rama Tuta 2.0",meter:"Live from Shivajinagar",dosa:"Aloo for forty",makeover:"A new husband, 20% off",stunt:"Taxi to rickshaw, one take",mhanje:"Bhu bhu means namaskar",baba:"The daily blessing",ad1:"A message from Fa Corp",ad_horn:"The Polite Horn",ad_sign:"Sign Language Act",ad_bio:"Bio Data"};
 const EPS={};SHOWARCH.forEach(s=>{if(s.eps.length>1)EPS[s.ch]=s.eps});
 const SEASON="Season 1 · 2026";$("seasonTag").textContent=SEASON;
-let whoSel="";
+let selShow=SHOWARCH[0].ch;
 const TH={tdty:{fig:"hema",bg:["city_dusk"]},shop:{fig:"jc",bg:["chai_stall","chawl_night"],prod:{shop2:["chaibot","50% 30%"]}},travel:{fig:"sarla",bg:["skyline","rainbow","market","city_dusk"]},meter:{fig:"tchu",bg:["street_crossing","street_faking"]},dosa:{fig:"lata",bg:["market","chai_stall"]},makeover:{fig:"dimpy",bg:["studio_window","rainbow"]},stunt:{fig:"devi",bg:["street_faking","street_crossing"]},mhanje:{fig:"animation",fig2:"dalmatian",bg:["chawl_night","rainbow"]},baba:{fig:"baba",bg:["rainbow"]},ad1:{fig:"fadarr",bg:["studio_window"],prod:{ad_horn:["horn","50% 35%"],ad_bio:["biodata","50% 20%"]}}};
 const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["I ♥","Foreign","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Tasty Bargain","Che","lg-dosa"],makeover:["Your Beauty","My Duty","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Dalmatian","& Animation","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
 const logo=(ch,mini)=>{const l=LOGO[ch];return l?`<span class="slogo ${l[2]}${mini?" mini":""}" role="img" aria-label="${l[0]} ${l[1]}">${(l[1]?`<b>${l[0]}</b><i>${l[1]}</i>`:`<b>${l[0]}</b>`).replace("♥",'<em class="hrt">♥</em>')}</span>`:""};
@@ -1798,8 +1801,8 @@ const SHOWOF={dalmatian:"mhanje",hema:"tdty",jc:"shop",chaibot:"shop",sarla:"tra
 function thumb(s,id,i,lbl){const t=TH[s.ch]||{bg:["studio_window"]},pr=t.prod&&t.prod[id];
  const bg=pr?`url(products/${pr[0]}-t.webp)`:`url(plates/${t.bg[i%t.bg.length]}.jpg)`,pos=pr?pr[1]:["50% 50%","15% 60%","85% 40%","50% 85%"][i%4];
  return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div>${t.fig2?`<div class="thf thf2" aria-hidden="true">${P[t.fig2]()}</div>`:""}<span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
-function drawShows(){$("showarch").innerHTML=`<div class="subhead">${SEASON}</div>`+SHOWARCH.filter(s=>!whoSel||s.who===whoSel).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("")}
-function goShow(ch){whoSel="";drawWho();drawShows();$("t-shows").click();const el=$("shw-"+ch);if(!el)return;
+function drawShows(){$("showarch").innerHTML=""+SHOWARCH.filter(s=>s.ch===selShow).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("")}
+function goShow(ch){selShow=ch;drawWho();drawShows();$("t-shows").click();try{$("whofilter").querySelector("[aria-pressed=true]").scrollIntoView({inline:"center",block:"nearest"})}catch(e){}const el=$("shw-"+ch);if(!el)return;
   el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});el.classList.remove("hl");void el.offsetWidth;el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),3200)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-goshow]");if(b)goShow(b.dataset.goshow)});
 /* top-10 charts: opening points + 10 per show started / song played, counted from every viewer when the score API is on */
@@ -1813,8 +1816,8 @@ function renderCharts(){try{
   $("topSongs").innerHTML=so.map(([t,v],k)=>`<li><span class="rk">${k+1}</span><span class="nm"><b>${t.t}</b><small>${t.ar||MUSIC.album.artist}</small><span class="bar"><i style="width:${Math.round(v/m2*100)}%"></i></span></span><span class="pt">${v}</span></li>`).join("")}catch(e){}}
 $("topShows").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
 renderCharts();
-function drawWho(){const names=[...new Set(SHOWARCH.map(s=>s.who))];$("whofilter").innerHTML=[["","Everyone"]].concat(names.map(n=>[n,n])).map(([v,l])=>`<button type="button" data-who="${v}" aria-pressed="${v===whoSel}">${l}</button>`).join("")}
-$("whofilter").addEventListener("click",e=>{const b=e.target.closest("[data-who]");if(!b)return;whoSel=b.dataset.who;drawWho();drawShows()});
+function drawWho(){$("whofilter").innerHTML=SHOWARCH.map(s=>`<button type="button" data-sel="${s.ch}" aria-pressed="${s.ch===selShow}" aria-label="${s.n}">${logo(s.ch)}<span>with ${s.who}</span></button>`).join("")}
+$("whofilter").addEventListener("click",e=>{const b=e.target.closest("[data-sel]");if(!b)return;selShow=b.dataset.sel;drawWho();drawShows()});
 $("showarch").addEventListener("click",e=>{const b=e.target.closest("[data-wch]");if(b)watchEp(b.dataset.wch,b.dataset.wep)});
 drawWho();drawShows();
 function watchEp(ch,id){const i=CHANNELS.indexOf(ch);if(i<0||!byId(id))return;chIdx=i;archMode=true;
