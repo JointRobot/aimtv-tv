@@ -460,6 +460,7 @@ a.ytcard{max-width:920px;margin:30px auto 4px;position:relative;overflow:hidden;
 .th{position:relative;aspect-ratio:16/9;background-color:#1a130d;background-repeat:no-repeat;overflow:hidden}
 .th::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,7,5,.82),rgba(11,7,5,.05) 65%),linear-gradient(0deg,rgba(11,7,5,.55),transparent 45%)}
 .th .thf{position:absolute;right:2%;bottom:-4%;height:96%;z-index:1;aspect-ratio:200/240}.th .thf svg{width:100%;height:100%;display:block}
+.th .thf2{right:36%;height:84%;transform:scaleX(-1)}
 .th .thl{position:absolute;left:8px;bottom:7px;z-index:2;font-size:15px}
 .th .the{position:absolute;left:8px;top:7px;z-index:2;font:600 10px/1 var(--f-mono);letter-spacing:.12em;color:#f4e9d2;background:rgba(11,7,5,.7);padding:3px 6px;border-radius:3px}
 .th .thp{position:absolute;inset:0;z-index:3;display:grid;place-items:center;opacity:0;transition:opacity .2s;font-size:34px;color:#fff;text-shadow:0 2px 12px #000}
@@ -889,6 +890,20 @@ function dog(){const id="dg"+(++_fid);return `<svg viewBox="0 0 200 240" xmlns="
 <path d="M92 96Q100 92 108 96" stroke="#fff" stroke-opacity=".3" stroke-width="2" fill="none"/>
 <ellipse cx="100" cy="134" rx="11" ry="8" fill="#141416" stroke="${INK}" stroke-width="1.6"/><ellipse cx="97" cy="131" rx="3.4" ry="1.8" fill="#fff" opacity=".35"/>
 <path class="mouth" d="M88 148Q100 160 112 148Q100 154 88 148Z" fill="#7a2c2c" stroke="${INK}" stroke-width="1.4"/><path d="M100 140V148" stroke="${INK}" stroke-width="1.6"/></svg>`}
+function dalmatian(){const id="dl"+(++_fid);return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dalmatian, who does not speak">
+<defs><radialGradient id="${id}f" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f1ece1"/><stop offset="1" stop-color="#d6cfc0"/></radialGradient></defs>
+<path d="M36 240C42 196 68 178 100 178C132 178 158 196 164 240Z" fill="url(#${id}f)" stroke="${INK}" stroke-width="2.4"/>
+<g fill="#17171a">${[[62,214],[84,200],[118,208],[140,222],[96,230],[52,232]].map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="6.5" ry="5"/>`).join("")}</g>
+<path d="M76 190Q100 204 124 190L120 206Q100 214 80 206Z" fill="#c8302a" stroke="${INK}" stroke-width="2"/><circle cx="100" cy="210" r="5.5" fill="#f2c230" stroke="${INK}" stroke-width="1.6"/>
+<path d="M56 62C34 64 26 100 34 128C52 126 64 104 66 84Z" fill="#17171a" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M144 62C166 64 174 100 166 128C148 126 136 104 134 84Z" fill="#17171a" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+<ellipse cx="100" cy="104" rx="50" ry="54" fill="url(#${id}f)" stroke="${INK}" stroke-width="2.4"/>
+<g fill="#17171a"><ellipse cx="124" cy="72" rx="9" ry="7"/><ellipse cx="80" cy="64" rx="5" ry="4"/><ellipse cx="108" cy="58" rx="3.6" ry="3"/><ellipse cx="72" cy="120" rx="4" ry="3.4"/><ellipse cx="136" cy="116" rx="4.6" ry="3.6"/></g>
+<ellipse cx="100" cy="132" rx="26" ry="20" fill="#fbf8f0" stroke="${INK}" stroke-width="1.6"/>
+<g class="eyes"><circle cx="80" cy="100" r="7" fill="#f5efe0" stroke="${INK}" stroke-width="1.6"/><circle cx="120" cy="100" r="7" fill="#f5efe0" stroke="${INK}" stroke-width="1.6"/><circle cx="82" cy="101" r="3.8" fill="#2a1a10"/><circle cx="122" cy="101" r="3.8" fill="#2a1a10"/><circle cx="83.2" cy="99.6" r="1.2" fill="#fff"/><circle cx="123.2" cy="99.6" r="1.2" fill="#fff"/></g>
+<path d="M71 93Q80 90 89 94M111 94Q120 90 129 93" stroke="${INK}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<ellipse cx="100" cy="123" rx="10" ry="7" fill="#141416" stroke="${INK}" stroke-width="1.6"/><ellipse cx="97.5" cy="120.5" rx="3" ry="1.6" fill="#fff" opacity=".4"/>
+<path d="M100 130V138M88 142Q100 147 112 142" stroke="${INK}" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`}
 function sheep(){const id="sh"+(++_fid);return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baba Black Sheep">
 <defs><radialGradient id="${id}g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e8b84a" stop-opacity=".35"/><stop offset="1" stop-color="#e8b84a" stop-opacity="0"/></radialGradient><radialGradient id="${id}w" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#4a4646"/><stop offset=".6" stop-color="#1f1c1c"/><stop offset="1" stop-color="#0c0b0b"/></radialGradient></defs>
 <circle cx="100" cy="108" r="96" fill="url(#${id}g)"/><circle cx="100" cy="108" r="80" fill="none" stroke="#e0a830" stroke-width="5"/><circle cx="100" cy="108" r="72" fill="none" stroke="#fff3c0" stroke-opacity=".5" stroke-width="1.4" stroke-dasharray="2 5"/>
@@ -941,7 +956,7 @@ const P={
     collar:`<path d="M14 240C50 196 130 190 186 218L186 240Z" fill="#74348a" stroke="${INK}" stroke-width="2"/><path d="M18 218C60 192 130 190 184 214" stroke="#e0b030" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M18 218C60 192 130 190 184 214" stroke="#7a5612" stroke-width="2" fill="none" stroke-dasharray="3 5"/><path d="M64 178H136" stroke="#1f8a86" stroke-width="10" stroke-linecap="round"/><path d="M70 188Q100 204 130 188" stroke="#e0b030" stroke-width="3" fill="none" stroke-dasharray="1 5" stroke-linecap="round"/>`,label:"GutterFly"}),
   arnold:()=>face({skin:SK.arnold,style:"crew",hair:"#17110f",hl:30,fw:42,outfit:"#4f5a2a",acc:["visor","cigar","stubble","scar"],lash:false,bt:3.8,blush:.08,
     collar:`<path d="M58 180L92 210L80 218L50 194Z M142 180L108 210L120 218L150 194Z" fill="#5f6c32" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M100 176V240" stroke="#2c331a" stroke-width="3"/><rect x="32" y="196" width="30" height="14" rx="2" fill="#c8962e" stroke="${INK}" stroke-width="1.8"/><path d="M38 203H56" stroke="#7a5612" stroke-width="2"/><path d="M138 196L172 200" stroke="#c8962e" stroke-width="3"/><circle cx="124" cy="214" r="6" fill="#d8c070" stroke="${INK}" stroke-width="1.6"/><path d="M124 210L126 214L124 218L122 214Z" fill="#7a5612"/>`,label:"Arnold Shivajinagar"}),
-  chaibot, animation:dog, baba:sheep, fadarr:helmet
+  chaibot, animation:dog, dalmatian, baba:sheep, fadarr:helmet
 };
 
 
@@ -1047,7 +1062,7 @@ const SCENES={
 };
 
 /* ============ PROGRAMMES ============ */
-const W={hema:"Hema",jc:"Juhu Chaiwala",chaibot:"Chaibot",tchu:"Tchu Tchu",animation:"Animation",sarla:"Stomach Challo",lata:"Bhenji Jumping",mrst:"Sindhi Crawford",fadarr:"Fa Darr",baba:"Baba Black Sheep",tabla:"Tabla Nari",dimpy:"Talwaar Kameez",devi:"Fullon Devi"};
+const W={hema:"Hema",jc:"Juhu Chaiwala",chaibot:"Chaibot",tchu:"Tchu Tchu",animation:"Animation",dalmatian:"Dalmatian",sarla:"Stomach Challo",lata:"Bhenji Jumping",mrst:"Sindhi Crawford",fadarr:"Fa Darr",baba:"Baba Black Sheep",tabla:"Tabla Nari",dimpy:"Talwaar Kameez",devi:"Fullon Devi"};
 const VOICE={hema:{p:1.05,r:1},jc:{p:.9,r:1.02},chaibot:{p:1.6,r:1.25},tchu:{p:.75,r:.95},animation:{p:1.35,r:1.1},sarla:{p:1.3,r:1.08,us:1},lata:{p:1.15,r:1.08},mrst:{p:1.1,r:.95},fadarr:{p:.6,r:.85},baba:{p:.5,r:.7},dimpy:{p:1.05,r:1.1},devi:{p:1,r:1},tabla:{p:1,r:1}};
 const PROGS=[
  {id:"ident",ch:"AIMTV Ident",scene:"ident",cast:["animation"],stamp:"Station ident",role:"Continuity · Station ident",lines:[
@@ -1123,11 +1138,12 @@ const PROGS=[
   ["devi", "Hero ko award mila. Mujhe chai mili. Thandi wali.", "", "हीरो को अवॉर्ड मिला। मुझे चाय मिली। ठंडी वाली।"],
   ["devi", "Stunt Double. Gir jao, par style se. Fullon Devi, signing off.", "", "स्टंट डबल। गिर जाओ, पर स्टाइल से। फुल-ऑन देवी, साइनिंग ऑफ़।"]
  ]},
- {id:"mhanje",ch:"Mhanje",scene:"psa",cast:["animation"],stamp:"Marathi interlude",role:"Mhanje · Animation",lines:[
-  ["animation", "Namaskar. Mi Animation. Aajchya mhanje madhe, ek goshta.", "", "नमस्कार. मी ॲनिमेशन. आजच्या म्हणजे मध्ये, एक गोष्ट."],
-  ["animation", "Mhanje mhanje kay? Mala pan nahi mahit. Pan chhan vatat.", "", "म्हणजे म्हणजे काय? मला पण नाही माहीत. पण छान वाटतं."],
-  ["animation", "Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Tyala kalala nahi. Mhanun mi punha bhunkalo.", "", "एक माणूस म्हणाला, कुत्रा काय करतो? मी म्हणालो, भू भू. त्याला कळलं नाही. म्हणून मी पुन्हा भुंकलो."],
-  ["animation", "Goshta sampli. Bhu bhu mhanje namaskar. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे नमस्कार. पुन्हा भेटू."]
+ {id:"mhanje",ch:"Dalmatian & Animation",scene:"psa",cast:["animation","dalmatian"],stamp:"Marathi interlude",role:"Dalmatian & Animation",lines:[
+  ["animation", "Namaskar. Mi Animation. Ani he majhe mitra, Dalmatian. Te kahi bolat nahit.", "", "नमस्कार. मी ॲनिमेशन. आणि हे माझे मित्र, डालमेशियन. ते काही बोलत नाहीत."],
+  ["animation", "Aajchya mhanje madhe, ek goshta. Pan adhi... Dalmatian mein kuch kaala hai.", "", "आजच्या म्हणजे मध्ये, एक गोष्ट. पण आधी... डालमेशियन में कुछ काला है।"],
+  ["animation", "Mhanje mhanje kay? Mala pan nahi mahit. Dalmatian la vichara. Te bolat nahit. Dalmatian mein kuch kaala hai.", "", "म्हणजे म्हणजे काय? मला पण नाही माहीत. डालमेशियनला विचारा. ते बोलत नाहीत. डालमेशियन में कुछ काला है।"],
+  ["animation", "Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Dalmatian ne dolyanni baghitla. Dalmatian mein kuch kaala hai.", "", "एक माणूस म्हणाला, कुत्रा काय करतो? मी म्हणालो, भू भू. डालमेशियनने डोळ्यांनी बघितलं. डालमेशियन में कुछ काला है।"],
+  ["animation", "Goshta sampli. Bhu bhu mhanje namaskar. Dalmatian mein kuch kaala hai. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे नमस्कार. डालमेशियन में कुछ काला है। पुन्हा भेटू."]
  ]},
  {id:"travel2",ch:"I ♥ Foreign",scene:"travel",cast:["sarla","lata"],stamp:"Ep 2 · Matheran",role:"I ♥ Foreign",lines:[
   ["sarla", "Hi guys! I Love Foreign, episode two. Aaj Matheran. Yahan koi gaadi allowed nahi hai. So European.", "", "हाय गाइज़! आई लव फ़ॉरेन, एपिसोड टू। आज माथेरान। यहाँ कोई गाड़ी अलाउड नहीं है। सो यूरोपियन।"],
@@ -1188,11 +1204,12 @@ const PROGS=[
   ["devi", "Hero ne interview diya. Mujhe tickets mile. Local ke. Second class.", "", "हीरो ने इंटरव्यू दिया। मुझे टिकट मिले। लोकल के। सेकंड क्लास।"],
   ["devi", "Stunt Double. Gir jao, par style se. Fullon Devi, signing off.", "", "स्टंट डबल। गिर जाओ, पर स्टाइल से। फुल-ऑन देवी, साइनिंग ऑफ़।"]
  ]},
- {id:"mhanje2",ch:"Mhanje",scene:"psa",cast:["animation"],stamp:"Ep 2 · Chhatri",role:"Mhanje · Animation",lines:[
-  ["animation", "Namaskar. Mi Animation. Aajchya mhanje madhe, pausachi goshta.", "", "नमस्कार. मी ॲनिमेशन. आजच्या म्हणजे मध्ये, पावसाची गोष्ट."],
-  ["animation", "Pausat bhijaycha mhanje kay? Mala pan nahi mahit. Pan chhan vatat.", "", "पावसात भिजायचं म्हणजे काय? मला पण नाही माहीत. पण छान वाटतं."],
-  ["animation", "Ek maanus chhatri gheun aala. Mi mhanalo, bhu bhu. Tyala vatla mi ghabarlo. Mhanun tyani chhatri majhyavar dharli.", "", "एक माणूस छत्री घेऊन आला. मी म्हणालो, भू भू. त्याला वाटलं मी घाबरलो. म्हणून त्याने छत्री माझ्यावर धरली."],
-  ["animation", "Goshta sampli. Bhu bhu mhanje dhanyavad. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे धन्यवाद. पुन्हा भेटू."]
+ {id:"mhanje2",ch:"Dalmatian & Animation",scene:"psa",cast:["animation","dalmatian"],stamp:"Ep 2 · Chhatri",role:"Dalmatian & Animation",lines:[
+  ["animation", "Namaskar. Mi Animation, ani majhe mitra Dalmatian. Te ajoon bolat nahit.", "", "नमस्कार. मी ॲनिमेशन, आणि माझे मित्र डालमेशियन. ते अजून बोलत नाहीत."],
+  ["animation", "Aajchya mhanje madhe, pausachi goshta. Pan adhi, ek nazar Dalmatian var. Dalmatian mein kuch kaala hai.", "", "आजच्या म्हणजे मध्ये, पावसाची गोष्ट. पण आधी, एक नजर डालमेशियनवर. डालमेशियन में कुछ काला है।"],
+  ["animation", "Pausat bhijaycha mhanje kay? Mala pan nahi mahit. Dalmatian ne chhatri baghitli. Kahi bolle nahit. Dalmatian mein kuch kaala hai.", "", "पावसात भिजायचं म्हणजे काय? मला पण नाही माहीत. डालमेशियनने छत्री बघितली. काही बोलले नाहीत. डालमेशियन में कुछ काला है।"],
+  ["animation", "Ek maanus chhatri gheun aala. Mi mhanalo, bhu bhu. Dalmatian ne dolyanni baghitla. Chhatri majhyavar dharli. Dalmatian mein kuch kaala hai.", "", "एक माणूस छत्री घेऊन आला. मी म्हणालो, भू भू. डालमेशियनने डोळ्यांनी बघितलं. छत्री माझ्यावर धरली. डालमेशियन में कुछ काला है।"],
+  ["animation", "Goshta sampli. Bhu bhu mhanje dhanyavad. Dalmatian mein kuch kaala hai. Punha bhetu.", "", "गोष्ट संपली. भू भू म्हणजे धन्यवाद. डालमेशियन में कुछ काला है। पुन्हा भेटू."]
  ]},
  {id:"baba",ch:"Baba Ka Aashirwad",scene:"baba",cast:["baba"],stamp:"Daily blessing",role:"Almighty · omni-present",lines:[
   ["baba", "You are either photogenic or sarvajanic.", "", "या तो आप फ़ोटोजेनिक हैं, या सार्वजनिक।"],
@@ -1232,7 +1249,7 @@ function vjPop(t,tok){if(tok!==songTok||songPaused||!AUD.duck)return;const l=vjP
     if(tok!==songTok||!AUD.duck)return;const n2=ctx().currentTime;AUD.duck.gain.cancelScheduledValues(n2);AUD.duck.gain.setValueAtTime(AUD.duck.gain.value,n2);AUD.duck.gain.linearRampToValueAtTime(1,n2+.8);
     setOnAir("aimtv");setSubs("Now playing: "+t.t,(GENRE_RG[t.s]||t.s)+" · "+(t.ar||MUSIC.album.artist),"")})},700)}
 const CHANNELS=["live","music","tdty","shop","travel","meter","tablanari","ad1","dosa","makeover","stunt","mhanje","baba"];
-const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"I ♥ Foreign",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping",dosa:"Tasty Bargain Che",makeover:"Your Beauty My Duty",stunt:"Stunt Double",mhanje:"Mhanje",baba:"Baba Ka Aashirwad"};
+const CHLABEL={live:"AIMTV Live",tdty:"This Day, That Year",shop:"Tomorrow Shop",travel:"I ♥ Foreign",meter:"Meter Down",tablanari:"Tabla Nari Live",music:"AIMTV Music",ad1:"Fa Corp Teleshopping",dosa:"Tasty Bargain Che",makeover:"Your Beauty My Duty",stunt:"Stunt Double",mhanje:"Dalmatian & Animation",baba:"Baba Ka Aashirwad"};
 /* AIMTV Live: the programmes play in a fresh random order for every viewer (and every lap), each followed by a song */
 const LIVE_PROGS=["ident","tdty","ad1","shop","meter","psa","travel","baba","dosa","makeover","stunt","mhanje"];
 let LIVE_ORDER=[];const FOUNDER_ADS=["ad_horn","ad_sign","ad_bio"];
@@ -1750,7 +1767,7 @@ const SHOWARCH=[
  {ch:"dosa",who:"Bhenji Jumping",n:"Tasty Bargain Che",d:"Bhenji Jumping on food and bargains.",eps:["dosa","dosa2"]},
  {ch:"makeover",who:"Dimpy",n:"Your Beauty My Duty",d:"Talwaar Kameez, from Dimpy Beauty Salon.",eps:["makeover","makeover2"]},
  {ch:"stunt",who:"Fullon Devi",n:"Stunt Double",d:"Fullon Devi takes the fall so the hero doesn't.",eps:["stunt","stunt2"]},
- {ch:"mhanje",who:"Animation",n:"Mhanje",d:"A Marathi interlude from Animation, the dog.",eps:["mhanje","mhanje2"]},
+ {ch:"mhanje",who:"Animation & Dalmatian",n:"Dalmatian & Animation",d:"Animation, the Marathi dog, hosts with a Dalmatian who never speaks. Something is off about him.",eps:["mhanje","mhanje2"]},
  {ch:"baba",who:"Baba",n:"Baba Ka Aashirwad",d:"The daily blessing.",eps:["baba"]},
  {ch:"ad1",who:"Fa Darr",n:"Fa Corp Teleshopping",d:"Paid programming, in the public interest.",eps:["ad1","ad_horn","ad_sign","ad_bio"]}
 ];
@@ -1758,17 +1775,17 @@ const ETITLE={meter2:"Signal pe sawaal",shop2:"Chaibot 3000",dosa2:"Sasti sabzi"
 const EPS={};SHOWARCH.forEach(s=>{if(s.eps.length>1)EPS[s.ch]=s.eps});
 const SEASON="Season 1 · 2026";$("seasonTag").textContent=SEASON;
 let whoSel="";
-const TH={tdty:{fig:"hema",bg:["city_dusk"]},shop:{fig:"jc",bg:["chai_stall","chawl_night"],prod:{shop2:["chaibot","50% 30%"]}},travel:{fig:"sarla",bg:["skyline","rainbow","market","city_dusk"]},meter:{fig:"tchu",bg:["street_crossing","street_faking"]},dosa:{fig:"lata",bg:["market","chai_stall"]},makeover:{fig:"dimpy",bg:["studio_window","rainbow"]},stunt:{fig:"devi",bg:["street_faking","street_crossing"]},mhanje:{fig:"animation",bg:["chawl_night","rainbow"]},baba:{fig:"baba",bg:["rainbow"]},ad1:{fig:"fadarr",bg:["studio_window"],prod:{ad_horn:["horn","50% 35%"],ad_bio:["biodata","50% 20%"]}}};
-const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["I ♥","Foreign","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Tasty Bargain","Che","lg-dosa"],makeover:["Your Beauty","My Duty","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Mhanje","","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
+const TH={tdty:{fig:"hema",bg:["city_dusk"]},shop:{fig:"jc",bg:["chai_stall","chawl_night"],prod:{shop2:["chaibot","50% 30%"]}},travel:{fig:"sarla",bg:["skyline","rainbow","market","city_dusk"]},meter:{fig:"tchu",bg:["street_crossing","street_faking"]},dosa:{fig:"lata",bg:["market","chai_stall"]},makeover:{fig:"dimpy",bg:["studio_window","rainbow"]},stunt:{fig:"devi",bg:["street_faking","street_crossing"]},mhanje:{fig:"animation",fig2:"dalmatian",bg:["chawl_night","rainbow"]},baba:{fig:"baba",bg:["rainbow"]},ad1:{fig:"fadarr",bg:["studio_window"],prod:{ad_horn:["horn","50% 35%"],ad_bio:["biodata","50% 20%"]}}};
+const LOGO={tdty:["This Day,","That Year","lg-news"],shop:["Tomorrow","Shop","lg-shop"],travel:["I ♥","Foreign","lg-travel"],meter:["Meter Down","","lg-meter"],dosa:["Tasty Bargain","Che","lg-dosa"],makeover:["Your Beauty","My Duty","lg-make"],stunt:["Stunt","Double","lg-stunt"],mhanje:["Dalmatian","& Animation","lg-mh"],baba:["Baba Ka","Aashirwad","lg-baba"],ad1:["Fa Corp","Teleshopping","lg-fa"]};
 const logo=(ch,mini)=>{const l=LOGO[ch];return l?`<span class="slogo ${l[2]}${mini?" mini":""}" role="img" aria-label="${l[0]} ${l[1]}">${(l[1]?`<b>${l[0]}</b><i>${l[1]}</i>`:`<b>${l[0]}</b>`).replace("♥",'<em class="hrt">♥</em>')}</span>`:""};
 /* seasonal look: Diwali window and New Year; ?theme=diwali previews one */
 (function(){const q=(location.search.match(/[?&]theme=(\w+)/)||[])[1],d=new Date(),m=d.getMonth()+1,dd=d.getDate();
  let t=q||((m===10&&dd>=25)||(m===11&&dd<=12)?"diwali":(m===12&&dd>=18)||(m===1&&dd<=3)?"newyear":"");
  if(t&&t!=="none")document.body.dataset.theme=t})();
-const SHOWOF={hema:"tdty",jc:"shop",chaibot:"shop",sarla:"travel",tchu:"meter",lata:"dosa",dimpy:"makeover",devi:"stunt",animation:"mhanje",baba:"baba",fadarr:"ad1"};
+const SHOWOF={dalmatian:"mhanje",hema:"tdty",jc:"shop",chaibot:"shop",sarla:"travel",tchu:"meter",lata:"dosa",dimpy:"makeover",devi:"stunt",animation:"mhanje",baba:"baba",fadarr:"ad1"};
 function thumb(s,id,i,lbl){const t=TH[s.ch]||{bg:["studio_window"]},pr=t.prod&&t.prod[id];
  const bg=pr?`url(products/${pr[0]}-t.webp)`:`url(plates/${t.bg[i%t.bg.length]}.jpg)`,pos=pr?pr[1]:["50% 50%","15% 60%","85% 40%","50% 85%"][i%4];
- return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div><span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
+ return `<div class="th" style="background-image:${bg};background-position:${pos};background-size:${pr?"cover":"155%"}"><div class="thf" aria-hidden="true">${t.fig&&P[t.fig]?P[t.fig]():""}</div>${t.fig2?`<div class="thf thf2" aria-hidden="true">${P[t.fig2]()}</div>`:""}<span class="the">${lbl}</span><span class="thl">${logo(s.ch,1)}</span><span class="thp" aria-hidden="true">&#9654;</span></div>`}
 function drawShows(){$("showarch").innerHTML=`<div class="subhead">${SEASON}</div>`+SHOWARCH.filter(s=>!whoSel||s.who===whoSel).map(s=>`<section class="shw" id="shw-${s.ch}"><div class="shwh"><h3>${logo(s.ch)||s.n}</h3><span class="who">with ${s.who}</span><button class="watch" type="button" data-wch="${s.ch}" data-wep="${s.eps[0]}">Watch</button></div><p>${s.d}</p><div class="grid">${s.eps.map((id,i)=>{const p=byId(id);return p?`<article class="card eplink" tabindex="0" data-ch="${s.ch}" data-ep="${id}">${thumb(s,id,i,s.eps.length>1?"EP "+(i+1):"EPISODE")}<div class="tb"><h4>${ETITLE[id]||p.stamp.replace(/^Ep \d+ · /,"")}</h4><p class="src">${p.role}</p><span class="wt">&#9654; Watch</span></div></article>`:""}).join("")}</div></section>`).join("")}
 function goShow(ch){whoSel="";drawWho();drawShows();$("t-shows").click();const el=$("shw-"+ch);if(!el)return;
   el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});el.classList.remove("hl");void el.offsetWidth;el.classList.add("hl");setTimeout(()=>el.classList.remove("hl"),3200)}
@@ -1807,6 +1824,7 @@ const HEROES=[
  {id:"mrst",n:"Sindhi Crawford",r:"Mrs Takechandani",q:"Her mole that deflects bullets.",b:"USA (Ulhasnagar Sindhi Association)",job:"Road Cross public service spots"},
  {id:"tabla",n:"Tabla Nari",r:"Fatima (probably)",q:"Music that comes out of her playing tabla can create Magic or chaos depending on the situation.",b:"The northeast, so we don't know much about her",job:"Music channel, Tabla Nari Live"},
  {id:"baba",n:"Baba Black Sheep",r:"Almighty",q:"Omni-present. Divine guiding light.",b:"Everywhere",job:"Daily blessing bumper"},
+ {id:"dalmatian",n:"Dalmatian",r:"Never speaks",q:"Says nothing. Sees everything. Animation is sure there is something dark in him.",b:"Unknown",job:"Co-host, Dalmatian & Animation (silent)"},
  {id:"chaibot",n:"Chaibot",r:"Juhu Chaiwala's robot",q:"Ye chaibot accha chai banata hai. Aur fast bhi.",b:"The shadow entrance",job:"Co-host, Tomorrow Shop"}
 ];
 const VILLAINS=[

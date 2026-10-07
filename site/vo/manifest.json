@@ -721,19 +721,23 @@
 ],
 "p_mhanje_0": [
 "animation",
-"Namaskar. Mi Animation. Aajchya mhanje madhe, ek goshta."
+"Namaskar. Mi Animation. Ani he majhe mitra, Dalmatian. Te kahi bolat nahit."
 ],
 "p_mhanje_1": [
 "animation",
-"Mhanje mhanje kay? Mala pan nahi mahit. Pan chhan vatat."
+"Aajchya mhanje madhe, ek goshta. Pan adhi... Dalmatian mein kuch kaala hai."
 ],
 "p_mhanje_2": [
 "animation",
-"Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Tyala kalala nahi. Mhanun mi punha bhunkalo."
+"Mhanje mhanje kay? Mala pan nahi mahit. Dalmatian la vichara. Te bolat nahit. Dalmatian mein kuch kaala hai."
 ],
 "p_mhanje_3": [
 "animation",
-"Goshta sampli. Bhu bhu mhanje namaskar. Punha bhetu."
+"Ek maanus mhanala, kutra kay karto? Mi mhanalo, bhu bhu. Dalmatian ne dolyanni baghitla. Dalmatian mein kuch kaala hai."
+],
+"p_mhanje_4": [
+"animation",
+"Goshta sampli. Bhu bhu mhanje namaskar. Dalmatian mein kuch kaala hai. Punha bhetu."
 ],
 "p_travel2_0": [
 "sarla",
@@ -909,18 +913,22 @@
 ],
 "p_mhanje2_0": [
 "animation",
-"Namaskar. Mi Animation. Aajchya mhanje madhe, pausachi goshta."
+"Namaskar. Mi Animation, ani majhe mitra Dalmatian. Te ajoon bolat nahit."
 ],
 "p_mhanje2_1": [
 "animation",
-"Pausat bhijaycha mhanje kay? Mala pan nahi mahit. Pan chhan vatat."
+"Aajchya mhanje madhe, pausachi goshta. Pan adhi, ek nazar Dalmatian var. Dalmatian mein kuch kaala hai."
 ],
 "p_mhanje2_2": [
 "animation",
-"Ek maanus chhatri gheun aala. Mi mhanalo, bhu bhu. Tyala vatla mi ghabarlo. Mhanun tyani chhatri majhyavar dharli."
+"Pausat bhijaycha mhanje kay? Mala pan nahi mahit. Dalmatian ne chhatri baghitli. Kahi bolle nahit. Dalmatian mein kuch kaala hai."
 ],
 "p_mhanje2_3": [
 "animation",
-"Goshta sampli. Bhu bhu mhanje dhanyavad. Punha bhetu."
+"Ek maanus chhatri gheun aala. Mi mhanalo, bhu bhu. Dalmatian ne dolyanni baghitla. Chhatri majhyavar dharli. Dalmatian mein kuch kaala hai."
+],
+"p_mhanje2_4": [
+"animation",
+"Goshta sampli. Bhu bhu mhanje dhanyavad. Dalmatian mein kuch kaala hai. Punha bhetu."
 ]
 }
