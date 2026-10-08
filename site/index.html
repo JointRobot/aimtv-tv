@@ -1908,8 +1908,8 @@ const PRODUCTS=[
  ["Gaurakshak","canon","Fa Corporation","The robot that polices your plate. Detects, intercepts, interrogates and re-educates. 8 ft, 1.2 ton, 12 abuse languages, pan-spit module, permanent stamp ink. Fictional satire.","Everyone's dinner, and everyone's business.","Founder's product sheet, Oct 2026"],
  ["Rama Tuta 2.0","proposed","Tomorrow Shop","Household robot: cleaning, cooking, organising, and now gossip.","Domestic work, and what an Indian home does when it is automated.","Founder brief"],
 ];
-const SHEETS={"Bio Data":["biodata","biodata-xray"],"Chaibot 3000":["chaibot"],"RAMU 2.0":["ramu"],"The Polite Horn":["horn"],"Self-parking cycle":["cycle"],"Gaurakshak":["gaurakshak","gaurakshak-360"]};
-const SHEETALT={"biodata":"Product board","biodata-xray":"X-ray and specs","gaurakshak":"Ad poster","gaurakshak-360":"360 degree sheet"};
+const SHEETS={"Bio Data":["biodata-new","biodata","biodata-xray"],"CHAI CAM":["chaicam"],"Sign Language Act":["signlang"],"Chaibot 3000":["chaibot"],"RAMU 2.0":["ramu"],"The Polite Horn":["horn"],"Self-parking cycle":["cycle"],"Gaurakshak":["gaurakshak","gaurakshak-360"]};
+const SHEETALT={"biodata-new":"Product sheet","biodata":"Original board","biodata-xray":"X-ray and specs","gaurakshak":"Ad poster","gaurakshak-360":"360 degree sheet"};
 $("pgal").innerHTML=PRODUCTS.map((p,i)=>{const s=SHEETS[p[0]];return `<button type="button" class="pcard ${s?"has":"soon"}" data-i="${i}">${s?`<img loading="lazy" src="products/${s[0]}-t.webp" alt="${p[0]} product sheet">`:`<div class="ph"><b>${p[0].replace(/</g,"&lt;")}</b><small>Sheet in design</small></div>`}<span><b>${p[0]}</b><small>${p[2]}</small></span></button>`}).join("");
 let pv=null;
 function openSheet(i,k){const p=PRODUCTS[i],s=SHEETS[p[0]];if(!s)return;pv={i,k:k||0};
