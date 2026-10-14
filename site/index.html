@@ -529,7 +529,7 @@ body[data-theme=newyear] .slogo::before{content:"\2733 \2736";opacity:1;color:#8
 .chart li.go{cursor:pointer}.chart li.go:hover .nm b{color:#e0b04a}
 .shw{margin:0 0 28px}.shw h3{margin:0 0 4px}.shw>p{color:var(--dim);margin:0 0 12px;max-width:68ch}
 
-.pgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:0 0 26px}
+.pgal{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 26px}
 .pcard{display:flex;flex-direction:column;text-align:left;background:var(--panel,#14161c);border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:0;color:inherit;font:inherit}
 .pcard.has{cursor:pointer}.pcard.has:hover{border-color:#8bd04f}
 .pcard img,.pcard .ph{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
@@ -716,12 +716,12 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 
   <section class="guide world" id="worldguide">
     <div class="tabrow world"><span class="tabk">The world</span><div class="tabs" role="tablist" id="tabs2">
-      <button role="tab" aria-selected="true" data-tab="cast" id="t-cast">The Cast</button>
+      <button role="tab" aria-selected="false" data-tab="cast" id="t-cast">The Cast</button>
       <button role="tab" aria-selected="false" data-tab="ask" id="t-ask">Ask the Cast</button>
-      <button role="tab" aria-selected="false" data-tab="products" id="t-products">Future Products</button>
+      <button role="tab" aria-selected="true" data-tab="products" id="t-products">Future Products</button>
     </div></div>
 
-    <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast">
+    <div class="pane" id="p-cast" role="tabpanel" aria-labelledby="t-cast" hidden>
       <div class="castlay"><div class="castmain">
       <h2>The Cast of Celeb Shauchalay</h2>
       <p class="lede">Straight from the Celeb Shauchalay comic. Each card also says what they do on AIMTV. Tap the heart on a character to vote: every vote adds points on the Fame Meter.</p>
@@ -752,16 +752,11 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
       </div>
     </div>
 
-    <div class="pane" id="p-products" role="tabpanel" aria-labelledby="t-products" hidden>
+    <div class="pane" id="p-products" role="tabpanel" aria-labelledby="t-products">
       <h2>Future Product Archive</h2>
       <p class="lede">Every invention from the Celeb Shauchalay universe, and the problem each one was built to solve.</p>
       <div class="pgal" id="pgal"></div>
       <div class="pview" id="pview" hidden></div>
-      <h3 class="reg">Full register</h3>
-      <div class="tablewrap"><table>
-        <thead><tr><th>Product</th><th>Belongs to</th><th>What it does</th><th>The Indian problem it solves</th></tr></thead>
-        <tbody id="products"></tbody>
-      </table></div>
     </div>
   </section>
 
@@ -1910,15 +1905,18 @@ const PRODUCTS=[
 ];
 const SHEETS={"Bio Data":["biodata-new","biodata","biodata-xray"],"CHAI CAM":["chaicam"],"Sign Language Act":["signlang"],"Auto-door Padmini taxi":["taxi"],"Road Cross":["roadcross"],"FA Karmachari 2.0":["karmachari"],"Fa Cough Syrup":["cough"],"Holographic building":["holo"],"Chaibot 3000":["chaibot"],"RAMU 2.0":["ramu"],"The Polite Horn":["horn"],"Self-parking cycle":["cycle"],"Gaurakshak":["gaurakshak","gaurakshak-360"]};
 const SHEETALT={"biodata-new":"Product sheet","biodata":"Original board","biodata-xray":"X-ray and specs","gaurakshak":"Ad poster","gaurakshak-360":"360 degree sheet"};
-$("pgal").innerHTML=PRODUCTS.map((p,i)=>{const s=SHEETS[p[0]];if(!s)return "";return `<button type="button" class="pcard ${s?"has":"soon"}" data-i="${i}">${s?`<img loading="lazy" src="products/${s[0]}-t.webp" alt="${p[0]} product sheet">`:`<div class="ph"><b>${p[0].replace(/</g,"&lt;")}</b><small>Sheet in design</small></div>`}<span><b>${p[0]}</b><small>${p[2]}</small></span></button>`}).join("");
+const PORDER=["The Polite Horn","Sign Language Act","RAMU 2.0","Bio Data","Chaibot 3000","CHAI CAM","Self-parking cycle","Auto-door Padmini taxi","Road Cross","FA Karmachari 2.0","Holographic building","Fa Cough Syrup","Gaurakshak"];
+const pRank=n=>{const k=PORDER.indexOf(n);return k<0?999:k};
+$("pgal").innerHTML=PRODUCTS.map((p,i)=>[p,i]).filter(x=>SHEETS[x[0][0]]).sort((a,b)=>pRank(a[0][0])-pRank(b[0][0])).map(([p,i])=>{const s=SHEETS[p[0]];return `<button type="button" class="pcard ${s?"has":"soon"}" data-i="${i}">${s?`<img loading="lazy" src="products/${s[0]}-t.webp" alt="${p[0]} product sheet">`:`<div class="ph"><b>${p[0].replace(/</g,"&lt;")}</b><small>Sheet in design</small></div>`}<span><b>${p[0]}</b><small>${p[2]}</small></span></button>`}).join("");
 let pv=null;
 function openSheet(i,k){const p=PRODUCTS[i],s=SHEETS[p[0]];if(!s)return;pv={i,k:k||0};
   const v=$("pview");v.innerHTML=`<div class="pbox"><button class="px" aria-label="Close">×</button><img src="products/${s[pv.k]}.webp" alt="${p[0]} ${SHEETALT[s[pv.k]]||""}">${s.length>1?`<div class="ptabs">${s.map((n,j)=>`<button data-k="${j}" aria-pressed="${j===pv.k}">${SHEETALT[n]||n}</button>`).join("")}</div>`:""}<div class="ptxt"><h3>${p[0]}</h3><p><b>Belongs to:</b> ${p[2]}</p><p>${p[3]}</p><p><b>The Indian problem it solves:</b> ${p[4]}</p><p class="src">Fictional satire. Not a real product. Source: ${p[5]}</p></div></div>`;v.hidden=false}
+function fitGal(){const g=$("pgal"),cs=[...g.children],n=cs.length;if(!n||!g.clientWidth)return;const gap=12,W=g.clientWidth,mx=Math.max(1,Math.floor((W+gap)/(200+gap)));let best=mx,bs=-1;for(let c=mx;c>=Math.max(mx>1?2:1,mx-2);c--){const r=n%c,sc=r===0?100:r*10/c*10-(mx-c);if(sc>bs){bs=sc;best=c}}const c=best,w=`calc((100% - ${(c-1)*gap}px)/${c})`,full=n-(n%c);cs.forEach((el,i)=>{el.style.flex=i<full?`0 0 ${w}`:`1 1 ${w}`})}
+if(window.ResizeObserver)new ResizeObserver(fitGal).observe($("pgal"));addEventListener("resize",fitGal);
 $("pgal").addEventListener("click",e=>{const b=e.target.closest(".pcard.has");if(b)openSheet(+b.dataset.i)});
 $("pview").addEventListener("click",e=>{if(e.target.id==="pview"||e.target.closest(".px"))$("pview").hidden=true;const t=e.target.closest("[data-k]");if(t)openSheet(pv.i,+t.dataset.k)});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("pview").hidden=true});
 const ST={canon:["canon","Canon"],proposed:["proposed","Proposed"],question:["question","Canon question"]};
-$("products").innerHTML=PRODUCTS.map(p=>`<tr><td><b>${p[0]}</b></td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td></tr>`).join("");
 
 /* ============ ASK THE CAST ============ */
 const ASK={"jc": {"n": "Juhu Chaiwala", "sug": ["What does chai cost?", "Are you a spy?", "What is Fa Corp planning?"], "rules": [["chai|tea|price|cost|rupee", "Shadow entrance pe barah rupaye. Sunny entrance pe nau sau. Same chai, different door.", "शैडो एंट्रेंस पे बारह रुपये। सनी एंट्रेंस पे नौ सौ। सेम चाय, डिफ़रेंट डोर।"], ["spy|detective|secret|cam", "Main sirf chai bechta hoon. Aur thoda sunta hoon. Aur thoda record karta hoon.", "मैं सिर्फ़ चाय बेचता हूँ। और थोड़ा सुनता हूँ। और थोड़ा रिकॉर्ड करता हूँ।"], ["fa|corp|unearth|plan|darr", "Blueprint abhi decode ho raha hai. Time do. Tab tak chai piyo.", "ब्लूप्रिंट अभी डिकोड हो रहा है। टाइम दो। तब तक चाय पियो।"], ["robot|bot|tech|future|product", "Sab kuch already launch ho chuka hai. Main bas bata raha hoon ki uske baad kya hua.", "सब कुछ ऑलरेडी लॉन्च हो चुका है। मैं बस बता रहा हूँ कि उसके बाद क्या हुआ।"]], "def": "Good question. Jawab sunny side pe hai. Nau sau rupaye.", "defmr": "गुड क्वेश्चन। जवाब सनी साइड पे है। नौ सौ रुपये।"}, "sarla": {"n": "Stomach Challo", "sug": ["Where are you travelling next?", "Have you been abroad?", "What does your mom think?"], "rules": [["travel|trip|next|go|destination", "Agle hafte Matheran! Wahan gaadiyan allowed nahi hain. Literally Europe jaisa feel hai, guys.", "अगले हफ़्ते माथेरान! वहाँ गाड़ियाँ अलाउड नहीं हैं। लिटरली यूरोप जैसा फ़ील है, गाइज़।"], ["abroad|foreign|outside|country|passport", "Main Daman gayi hoon. Woh toh, like, poora alag territory hai. Mujhe foreign bahut pasand hai.", "मैं दमन गई हूँ। वो तो, लाइक, पूरा अलग टेरिटरी है। मुझे फ़ॉरिन बहुत पसंद है।"], ["mom|mommy|bhenji|mother|lata", "Woh har reel mein aa jaati hain, aur dosa bhi le aati hain. Main complain nahi kar rahi. Okay, kar rahi hoon.", "वो हर रील में आ जाती हैं, और डोसा भी ले आती हैं। मैं कम्प्लेन नहीं कर रही। ओके, कर रही हूँ।"], ["call|centre|center|job|work", "Main call centre mein kaam karti hoon. Hi, this is Sarla from, um, Ohio. Bataiye, main aapki kya help karoon?", "मैं कॉल सेंटर में काम करती हूँ। हाय, दिस इज़ सरला फ़्रॉम, उम, ओहायो। बताइए, मैं आपकी क्या हेल्प करूँ?"]], "def": "Oh my god, kitna random sawaal! Jawab ke liye like aur follow karo.", "defmr": "ओह माई गॉड, कितना रैंडम सवाल! जवाब के लिए लाइक और फ़ॉलो करो।"}, "tchu": {"n": "Tchu Tchu", "sug": ["Where are you now?", "Tell me about your dogs", "Do you know Hema?"], "rules": [["where|now|location", "Shivajinagar signal pe. Meter chal raha hai, toh chalo.", "शिवाजीनगर सिग्नल पे। मीटर चल रहा है, तो चलो।"], ["dog|dalmatian|animation", "Do kutte hain. Andaman ka Dalmatian, Mumbai ka Animation. Something is fishy with the Dalmatian.", "दो कुत्ते हैं। अंडमान का डालमेशियन, मुंबई का ऐनिमेशन। समथिंग इज़ फ़िशी विद द डालमेशियन।"], ["hema|madam|interview", "Main Hema madam ko interview pe drop karta hoon. Raat ko kahan jaati hain, woh notice nahi karta.", "मैं हेमा मैडम को इंटरव्यू पे ड्रॉप करता हूँ। रात को कहाँ जाती हैं, वो नोटिस नहीं करता।"], ["notice|poster|evict|fa king", "Who notices a notice?", "हू नोटिसेस अ नोटिस?"]], "def": "JC bhai, isko ek chai de. Work is warship.", "defmr": "जे सी भाई, इसको एक चाय दे। वर्क इज़ वॉरशिप।"}, "hema": {"n": "Hema", "sug": ["What's the news today?", "Where are you at night?", "Who is Fa Darr?"], "rules": [["news|today|record|archive", "Aaj ka record bulletin mein hai. This Day, That Year kholiye aur THE RECORD padhiye. Baaki sab ek take hai.", "आज का रिकॉर्ड बुलेटिन में है। दिस डे, दैट ईयर खोलिए और द रिकॉर्ड पढ़िए। बाकी सब एक टेक है।"], ["night|malini|dance", "Raat ko? Main aaraam karti hoon. Next question.", "रात को? मैं आराम करती हूँ। नेक्स्ट क्वेश्चन।"], ["fa|darr|corp|ceo", "Fa Darr. Ex-priest, ab CEO. Mere paas ek source hai. Naam nahi bataungi.", "फ़ा डर। एक्स-प्रीस्ट, अब सी ई ओ। मेरे पास एक सोर्स है। नाम नहीं बताऊँगी।"]], "def": "Iske liye source chahiye. Bina source ke main kuch nahi kehti.", "defmr": "इसके लिए सोर्स चाहिए। बिना सोर्स के मैं कुछ नहीं कहती।"}, "lata": {"n": "Bhenji Jumping", "sug": ["Are you hungry?", "Teach me to bargain", "Where is Sofa Seth?"], "rules": [["hungry|food|dosa|eat", "Kem cho! Dosa khaoge? Lo aa gaya dosa. Khao, khao, khao!", "केम छो! डोसा खाओगे? लो आ गया डोसा। खाओ, खाओ, खाओ!"], ["bargain|price|cheap|aloo|potato", "Usne sixty bola? Forty do. Warna main skateboard pe nikal jaungi.", "उसने सिक्स्टी बोला? फ़ोर्टी दो। वरना मैं स्केटबोर्ड पे निकल जाऊँगी।"], ["sofa|husband|seth", "Sofa Seth? Woh karate kar raha hai.", "सोफ़ा सेठ? वो कराटे कर रहा है।"]], "def": "Pehle khao, phir poocho.", "defmr": "पहले खाओ, फिर पूछो।"}, "mrst": {"n": "Sindhi Crawford", "sug": ["Can you help me cross?", "Tell me about your mole", "What is Road Cross?"], "rules": [["cross|road|help", "Haan babuji. Left dekho, right dekho, aur upar dekho. Don't take tension.", "हाँ बाबूजी। लेफ़्ट देखो, राइट देखो, और ऊपर देखो। डोंट टेक टेंशन।"], ["mole|til|bullet", "Mera til apni jagah rehta hai. Goliyan apni jagah nahi rehti.", "मेरा तिल अपनी जगह रहता है। गोलियाँ अपनी जगह नहीं रहतीं।"], ["ngo|road cross|work|since", "Road Cross. 2008 se logon ko road cross karwa rahe hain.", "रोड क्रॉस। दो हज़ार आठ से लोगों को रोड क्रॉस करवा रहे हैं।"]], "def": "Be safe, babuji.", "defmr": "बी सेफ़, बाबूजी।"}, "animation": {"n": "Animation", "sug": ["What can you do?", "Which media do you like?", "Bark in Marathi"], "rules": [["do|power|can|jump", "I go anywhere. TV, print, phone. Today, your screen.", "मी कुठेही जातो. टीव्ही, प्रिंट, फोन. आज, तुमची स्क्रीन."], ["media|tv|print|digital|like", "Print is cool. TV is warm. Phones are crowded.", "प्रिंट थंड असतं. टीव्ही उबदार असतो. फोनमध्ये गर्दी असते."], ["bark|bhow|marathi", "Woof. That means namaskar.", "भू भू. म्हणजे नमस्कार."]], "def": "Meaning? Ask me again.", "defmr": "म्हणजे? परत विचारा."}};
@@ -1984,7 +1982,7 @@ renderPicker();
   if(pos>=m){dir=-1;hold=n+1500}else if(pos<=0){dir=1;hold=n+1500}t.scrollLeft=pos}
  requestAnimationFrame(step);addEventListener("resize",edges);setTimeout(edges,300)})();
 document.querySelectorAll(".guide").forEach(G=>G.addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;
-  G.querySelectorAll("[role=tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});
+  G.querySelectorAll("[role=tab]").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on});if(typeof fitGal==="function")fitGal();
   try{localStorage.setItem("aimtv-tab-"+(G.id||"shows"),b.dataset.tab)}catch(err){}}));
 try{const t=localStorage.getItem("aimtv-tab-shows");if(t&&$("t-"+t))$("t-"+t).click()}catch(e){}
 
