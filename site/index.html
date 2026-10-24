@@ -177,6 +177,24 @@ body.bc .likebar{display:none!important}
 .brows{transform:translateY(calc(var(--o,0)*-1.3px) );transform-box:fill-box}
 .mouth.rig .m-up{transform:translateY(calc(var(--o,0)*-.9px))}
 .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+/* props around the characters: small looping motions, transform/opacity only, so they cost almost nothing */
+.dd{transform-box:fill-box;transform-origin:center;animation:ddbob 3.2s ease-in-out infinite}
+.dd-star,.dd-spark{animation:ddtwk 2.2s ease-in-out infinite}
+.dd-bolt{animation:ddflick 1.8s steps(1) infinite}
+.dd-gear,.dd-spiral{animation:ddspin 9s linear infinite}
+.dd-heart,.dd-burst{animation:ddbeat 1.4s ease-in-out infinite}
+.dd-coin{animation:ddflip 3.4s ease-in-out infinite}
+.dd-paw,.dd-bone,.dd-chili,.dd-scissors,.dd-cal,.dd-cross,.dd-tri,.dd-stripes,.dd-meter{animation:ddsway 3.6s ease-in-out infinite}
+.dd-diya,.dd-cup{animation:ddflame 1.6s ease-in-out infinite}
+@keyframes ddbob{50%{transform:translateY(-5px)}}
+@keyframes ddtwk{0%,100%{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.45;transform:scale(.7) rotate(25deg)}}
+@keyframes ddflick{0%,100%{opacity:1}12%{opacity:.35}22%{opacity:1}60%{opacity:.6}66%{opacity:1}}
+@keyframes ddspin{to{transform:rotate(360deg)}}
+@keyframes ddbeat{0%,100%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(.97)}}
+@keyframes ddflip{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.15)}}
+@keyframes ddsway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes ddflame{0%,100%{transform:scale(1,1)}50%{transform:scale(1.06,1.14) translateY(-2px)}}
+@media (prefers-reduced-motion:reduce){.dd{animation:none!important}}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 
 
@@ -1026,7 +1044,7 @@ const DOOD={
 /* shine: a hard cel highlight on the hair of the human busts */
 const SHINE=`<path d="M72 74Q86 62 106 62" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="4.4" stroke-linecap="round"/>`;
 Object.keys(DOOD).forEach(k=>{const f=P[k];if(!f)return;const human=!["chaibot","animation","baba","fadarr","sarla"].includes(k);
-  P[k]=()=>f().replace(/<\/svg>\s*$/,(human?SHINE:"")+DOOD[k].map(d=>DD[d[0]](d[1],d[2],d[3],d[4])).join("")+"</svg>")});
+  P[k]=()=>f().replace(/<\/svg>\s*$/,(human?SHINE:"")+DOOD[k].map((d,i)=>`<g class="dd dd-${d[0]}" style="animation-delay:${(-i*.9).toFixed(1)}s">`+DD[d[0]](d[1],d[2],d[3],d[4])+"</g>").join("")+"</svg>")});
 
 /* ---- full-length figures: the bust above, plus arms, torso and legs drawn under the same hand. Used for the full shot. ---- */
 const FCFG={
