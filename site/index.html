@@ -1624,7 +1624,7 @@ function playLine(){
   if(soundOn&&!prog.music&&useClips()){
     let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(safety);advance()};
     const safety=setTimeout(fin,dur+9000);
-    playClip(clipName,err=>{if(err){if(done)return;done=true;clearTimeout(safety);if(synth){AUD.mode="tts";playLine()}else timer=setTimeout(advance,dur)}else fin()});
+    playClip(clipName,err=>{if(err){if(done)return;done=true;clearTimeout(safety);AUD.fails=(AUD.fails||0)+1;/* one missing clip must not flip the whole channel to the robotic device voice; only a run of failures (offline) does */if(AUD.fails>=3&&synth){AUD.mode="tts";playLine()}else timer=setTimeout(advance,dur)}else{AUD.fails=0;fin()}});
   }else if(soundOn&&!prog.music){
     const u=new SpeechSynthesisUtterance(text);const v=VOICE[who]||{};
     const vc=pickVoice(who);if(vc){u.voice=vc;u.lang=vc.lang}
