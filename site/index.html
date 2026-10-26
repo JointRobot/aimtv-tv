@@ -622,6 +622,15 @@ body.bc #bcov{display:flex;position:fixed;right:0;bottom:0;width:372px;height:11
 #bcov .fm{font-size:14px;font-weight:600;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#d9caa8}#bcov .fm b{color:#e8622c;margin-right:3px}#bcov .fm span{margin-right:12px}
 #bcov .vt{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#16110c;background:#e8622c;padding:2px 8px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:flex-start;max-width:100%}
 body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .subs .l3{font-size:15px}
+/* weekly polish 26 Oct: floor shadow under hosts, ON AIR ripple, product shimmer+lift, tab slide, ticker fade */
+.screen .host{background:radial-gradient(ellipse 46% 3.2% at 50% calc(100% - 5.07cqw),rgba(0,0,0,.38),transparent 70%) no-repeat}
+.onair{position:relative}.onair::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:1px solid var(--saffron);opacity:0;animation:rip 3.2s ease-out infinite;pointer-events:none}
+@keyframes rip{0%{opacity:.6;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.18)}}
+.pcard img{background:linear-gradient(100deg,#1b1e26 30%,#262a35 50%,#1b1e26 70%) 0 0/200% 100%}
+.pcard{transition:transform .2s,border-color .2s,box-shadow .2s}.pcard.has:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.45)}
+.tabs button{transition:color .2s,border-color .25s,background .2s}.tabs button:hover{background:rgba(200,150,46,.08)}
+.ticker .run{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 94%,transparent)}
+@media (prefers-reduced-motion:reduce){.onair::after{animation:none}.pcard{transition:none}}
 </style>
 
 <div class="wrap">
