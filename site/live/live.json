@@ -173,30 +173,30 @@
    "lines": [
     [
      "fadarr",
-     "Tired of traffic. Fa Corp presents Fa Cars, the only car that runs on your patience.",
+     "Tired of waiting on hold. Fa Corp presents Fa Call Centre, where every call is answered by a very polite echo.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Fa Cars. Zero petrol. Zero ethanol. Fuelled entirely by sighing. The longer the jam, the faster you go.",
+     "Press one to hear your problem repeated. Press two to hear it repeated slower. Press three to be transferred to press one.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Every Fa Car comes with a free horn that only the Fa Police can hear.",
+     "Our agents are available twenty four hours a day, in the year twenty forty one. Please call back then.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Fa Cars. Park anywhere. We will tow you home. Side effects may include eviction.",
+     "Fa Call Centre. Your call is important to us. Side effects may include eviction.",
      "",
      ""
     ]
    ],
-   "clips": "live/ad1_20261026T1452_"
+   "clips": "live/ad1_20261026T1620_"
   },
   "psa": {
    "stamp": "Road Cross · Don't take tension",
@@ -225,16 +225,16 @@
  },
  "ticker": [
   "ARCHIVED: 26 OCTOBER 2026",
-  "SERBIA'S VUCIC CONCEDES DEFEAT TO STUDENT-LED LIST AFTER RECORD TURNOUT",
-  "SPACEX CLOSES 40 BILLION DOLLAR DEBT DEAL TO BUY AI CHIPS",
   "APPLE 'PRO AND TELL' EVENT SET FOR 28 OCTOBER IN LOS ANGELES",
   "MICROSOFT, ALPHABET AND AMAZON REPORT EARNINGS THIS WEEK",
+  "FA CALL CENTRE: PRESS ONE TO BE TRANSFERRED TO PRESS ONE",
   "FA KING: THE NOTICE ABOUT THE NOTICE ABOUT THE NOTICE IS NOW UNDER REVIEW",
-  "FA CALL CENTRE: YOUR CALL IS IMPORTANT TO US. PLEASE HOLD FOR 2041",
   "JC CHAI: RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE",
+  "TCHU TCHU: WHO NOTICES A NOTICE? THE METER IS STILL RUNNING.",
   "ROAD CROSS: DON'T TAKE TENSION. WE HELP YOU CROSS.",
+  "FA CARS: FUELLED ENTIRELY BY SIGHING. SIDE EFFECTS MAY INCLUDE EVICTION",
   "FAME METER: NO PUBLICITY, NO ACTION."
  ],
- "v": "20261026T1452",
- "updated": "2026-10-26T14:52:36Z"
+ "v": "20261026T1620",
+ "updated": "2026-10-26T16:20:33Z"
 }
