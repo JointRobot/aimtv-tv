@@ -199,28 +199,28 @@
    "clips": "live/ad1_20261027T0420_"
   },
   "psa": {
-   "stamp": "Road Cross · Don't take tension",
+   "stamp": "Road Cross",
    "lines": [
     [
      "mrst",
      "Namaste, Sindhi Crawford, Road Cross NGO. Don't take tension. We help you cross.",
      "",
-     "नमस्ते, सिंधी क्रॉफ़ोर्ड, रोड क्रॉस एन जी ओ. डोंट टेक टेंशन. वी हेल्प यू क्रॉस."
+     "नमस्ते, सिंधी क्रॉफ़र्ड, रोड क्रॉस एन जी ओ. डोंट टेक टेंशन. वी हेल्प यू क्रॉस."
     ],
     [
      "mrst",
-     "Gaadi petrol pe chale ya ethanol pe, red signal par ruknaa padta hai. Ethanol ko bhi signal ki ginti aati hai, aur aapko bhi.",
+     "Helmet sirf sar ka gehna nahin hai, woh aapki sabse sasti insurance hai. Strap bandhiye, warna helmet sirf topi hai.",
      "",
-     "गाड़ी पेट्रोल पे चले या इथेनॉल पे, रेड सिग्नल पर रुकना पड़ता है. इथेनॉल को भी सिग्नल की गिनती आती है, और आपको भी."
+     "हेलमेट सिर्फ़ सर का गहना नहीं है, वो आपकी सबसे सस्ती इंश्योरेंस है. स्ट्रैप बाँधिए, वरना हेलमेट सिर्फ़ टोपी है."
     ],
     [
      "mrst",
-     "Zebra crossing par hi paar kijiye, aur phone jeb mein rakhiye. Road Cross: hum aapko paar karwate hain.",
+     "Signal hara ho tab bhi dono taraf dekhiye. Road Cross: hum aapko paar karwate hain, aap bas time par pahunchiye.",
      "",
-     "ज़ेब्रा क्रॉसिंग पर ही पार कीजिए, और फ़ोन जेब में रखिए. रोड क्रॉस: हम आपको पार करवाते हैं."
+     "सिग्नल हरा हो तब भी दोनों तरफ़ देखिए. रोड क्रॉस: हम आपको पार करवाते हैं, आप बस टाइम पर पहुँचिए."
     ]
    ],
-   "clips": "live/psa_20261027T0020_"
+   "clips": "live/psa_20261027T0619_"
   }
  },
  "ticker": [
@@ -228,15 +228,14 @@
   "RUSSIA AND UKRAINE BEGIN LIMITED LOCAL TRUCE AT OLESHKY SO AID CAN REACH CIVILIANS",
   "ISRO TO LAUNCH NAVIC SATELLITE NVS-03 FROM SRIHARIKOTA ON 30 OCTOBER",
   "US MIDTERMS ON 3 NOVEMBER: TRUMP CAMPAIGNS IN MISSISSIPPI FOR HYDE-SMITH",
-  "REPORTS: META WEIGHS A BIG STOCK SALE TO FUND AI INFRASTRUCTURE",
-  "SPACEX SEEKS ABOUT 40 BILLION DOLLARS IN FINANCING FOR NVIDIA AI CHIPS, REPORTS SAY",
   "APPLE PRO AND TELL EVENT ON 28 OCTOBER: OLED MACBOOK PRO EXPECTED",
-  "FA CALL CENTRE: WE ANSWER BEFORE YOU DIAL. SIDE EFFECTS MAY INCLUDE EVICTION.",
-  "TCHU TCHU: NAVIC SAYS TURN LEFT. THE PADMINI SAYS NO.",
+  "ROAD CROSS: DON'T TAKE TENSION. WE HELP YOU CROSS.",
+  "TCHU TCHU: THE METER IS STILL RUNNING. THE PADMINI IS NOT.",
   "FA KING: NOTICE OF THE NOTICE OF THE REVIEW STILL PINNED TO CELEB SHAUCHALAY",
+  "FA CALL CENTRE: WE ANSWER BEFORE YOU DIAL. SIDE EFFECTS MAY INCLUDE EVICTION.",
   "JC CHAI: RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE",
   "FAME METER: NO PUBLICITY, NO ACTION."
  ],
- "v": "20261027T0420",
- "updated": "2026-10-27T04:20:51Z"
+ "v": "20261027T0619",
+ "updated": "2026-10-27T06:19:44Z"
 }
