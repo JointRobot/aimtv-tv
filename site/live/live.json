@@ -169,34 +169,34 @@
    "clips": "live/shop_20261101T2019_"
   },
   "ad1": {
-   "stamp": "Fa Corp",
+   "stamp": "Sponsor · Fa Corp",
    "lines": [
     [
      "fadarr",
-     "Tired of speed breakers breaking your speed? Fa Corp presents Fa Speed Breakers, now slowing you down for you.",
+     "This is Fa Darr, CEO of Fa Corporation. Tired of waking up late? Meet the Fa Alarm Clock.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Each breaker is hand-placed outside your house at night, with no notice, for your convenience.",
+     "It rings at four in the morning, then again at three forty-five, so you are always early for yesterday.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Every purchase comes with a free toll booth, installed on your own staircase.",
+     "Fa Alarm Clock. Now with free snooze, billed per minute. Side effects may include eviction.",
      "",
      ""
     ],
     [
      "fadarr",
-     "Fa Speed Breakers. We slow you down so you can see us. Side effects may include paying to enter your own home.",
+     "Fa Corp. We wake you up, so you can pay up.",
      "",
      ""
     ]
    ],
-   "clips": "live/ad1_20261101T1622_"
+   "clips": "live/ad1_20261101T2219_"
   },
   "psa": {
    "stamp": "Road Cross",
@@ -226,16 +226,15 @@
  "ticker": [
   "ARCHIVED: 2 NOVEMBER 2026",
   "2 NOVEMBER 1936: BBC STARTS REGULAR HIGH-DEFINITION TELEVISION",
-  "2 NOVEMBER 1947: THE SPRUCE GOOSE FLIES ONCE, AND ONLY ONCE",
-  "2 NOVEMBER 1889: THE DAKOTAS BECOME STATES",
   "DIWALI ON 8 NOVEMBER: THE DISCOUNT IS STILL THE COSTLIEST ITEM",
-  "OPENAI DESCRIBES FOUR LAYERS OF WATCHING ITS OWN AI MODELS",
   "FA KING: LIGHT BILLS NOW ARRIVE BEFORE THE LIGHT",
+  "FA ALARM CLOCK: WAKES YOU BEFORE YOU SLEEP. SIDE EFFECTS MAY INCLUDE EVICTION",
+  "CELEB SHAUCHALAY: STILL STANDING, NOTICE NUMBER 4,112 PENDING",
   "CHAI RS 12 AT THE SHADOW ENTRANCE, RS 900 AT THE SUNNY ENTRANCE",
   "ROAD CROSS: DON'T TAKE TENSION, WE HELP YOU CROSS",
   "FAME METER: NO PUBLICITY, NO ACTION",
   "THE METER IS STILL RUNNING"
  ],
- "v": "20261101T2019",
- "updated": "2026-11-01T20:19:30Z"
+ "v": "20261101T2219",
+ "updated": "2026-11-01T22:19:18Z"
 }
