@@ -220,6 +220,12 @@ body.bc .likebar{display:none!important}
 .screen .host svg:nth-child(even) .eyes{animation-duration:5.4s;animation-delay:-1.9s}.screen .host svg:nth-child(3n) .eyes{animation-duration:6.3s;animation-delay:-3.7s}
 .lower.lin #lowerRole{animation:lyin .6s .18s cubic-bezier(.2,.8,.2,1) both}
 @media (prefers-reduced-motion:reduce){.eyes,.lower.lin #lowerRole{animation:none}}
+/* week 2026-11-02: speaker leans in with a soft talk-bob; gentle lens vignette; brass text selection */
+@keyframes tbob{0%,100%{translate:0 0;rotate:-.3deg;scale:1}50%{translate:0 -3px;rotate:.4deg;scale:1.018}}
+.screen .host svg.talk{animation:tbob .62s ease-in-out infinite}
+.screen:not(:has(#power:not([hidden])))::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 85% 80% at 50% 48%,transparent 62%,rgba(8,4,0,.26) 100%)}
+::selection{background:var(--brass);color:#1a0d05}
+@media (prefers-reduced-motion:reduce){.screen .host svg.talk{animation:none}}
 
 
 /* living sets: slow camera drift + one ambient layer per set */
