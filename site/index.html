@@ -225,6 +225,10 @@ body.bc .likebar{display:none!important}
 .screen .host svg.talk{animation:tbob .62s ease-in-out infinite}
 .screen:not(:has(#power:not([hidden])))::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 85% 80% at 50% 48%,transparent 62%,rgba(8,4,0,.26) 100%)}
 ::selection{background:var(--brass);color:#1a0d05}
+/* week 2026-11-08: channel-flip scanline wipe on programme change (transform/opacity only) */
+@keyframes cflip{0%{transform:translateY(-110%);opacity:.55}100%{transform:translateY(110%);opacity:0}}
+.screen.flip::before{content:"";position:absolute;left:0;right:0;top:0;height:16%;pointer-events:none;z-index:2;background:linear-gradient(180deg,transparent,rgba(255,240,210,.22) 55%,rgba(255,255,255,.34) 92%,transparent);animation:cflip .55s ease-out 1 both}
+@media (prefers-reduced-motion:reduce){.screen.flip::before{animation:none;display:none}}
 @media (prefers-reduced-motion:reduce){.screen .host svg.talk{animation:none}}
 
 
@@ -1615,7 +1619,7 @@ function showProg(p){
   /* camera: a character who comes back gets a different magnification each time (medium, close-up, wide). Pairs stay medium/wide so nobody overlaps. */
   svgs.forEach((sv,i)=>{if(shots[i])sv.classList.add(shots[i])});
   $("stamp").textContent=p.stamp;countPlay(p);
-  $("lowerRole").textContent=p.role;{const lw=$("lower");lw.classList.remove("lin");void lw.offsetWidth;lw.classList.add("lin")}
+  $("lowerRole").textContent=p.role;{const lw=$("lower");lw.classList.remove("lin");void lw.offsetWidth;lw.classList.add("lin");const sc=$("screen");sc.classList.remove("flip");sc.classList.add("flip")}
   const chId=CHANNELS[chIdx];
   $("bugch").textContent=`CH ${String(chIdx+1).padStart(2,"0")}`;
   setTimeout(renderSched,0);$("chname").innerHTML=`<small>CH ${String(chIdx+1).padStart(2,"0")}</small>${LOGO[chId]?logo(chId,1):CHLABEL[chId]}${chId==="live"?` · ${p.ch}`:""}`;
