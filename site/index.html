@@ -230,6 +230,12 @@ body.bc .likebar{display:none!important}
 .screen.flip::before{content:"";position:absolute;left:0;right:0;top:0;height:16%;pointer-events:none;z-index:2;background:linear-gradient(180deg,transparent,rgba(255,240,210,.22) 55%,rgba(255,255,255,.34) 92%,transparent);animation:cflip .55s ease-out 1 both}
 @media (prefers-reduced-motion:reduce){.screen.flip::before{animation:none;display:none}}
 @media (prefers-reduced-motion:reduce){.screen .host svg.talk{animation:none}}
+/* week 2026-11-09: floor glow seats the figures, lower-third accent bar draws in, resting heartbeat on the Like heart (CSS only, behind figures, reduced-motion safe) */
+.screen .host::before{content:"";position:absolute;left:8%;right:8%;bottom:calc(5.07cqw + 2px);height:9%;background:radial-gradient(ellipse at 50% 100%,rgba(255,196,110,.3),transparent 70%);pointer-events:none}
+@keyframes lbar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.lower .nm{position:relative}.lower.lin .nm::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--padmini);transform-origin:left;animation:lbar .5s .25s ease-out both}
+.likebtn:not(.pop) b{animation:ddbeat 2.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.lower.lin .nm::after,.likebtn b{animation:none!important}}
 
 
 /* living sets: slow camera drift + one ambient layer per set */
