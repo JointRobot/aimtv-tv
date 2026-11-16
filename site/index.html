@@ -653,7 +653,12 @@ body.bc .subs .l1{font-size:23px}body.bc .subs .l2 span{font-size:18px}body.bc .
 .ticker .run{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 94%,transparent)}
 /* weekly polish 15 Nov: stamp tag always above scene props (garland crossed it on Baba), sign text locked to its panel */
 .stamp{z-index:6;background:rgba(0,0,0,.62)}
-@media (prefers-reduced-motion:reduce){.onair::after{animation:none}.pcard{transition:none}}
+/* weekly polish 16 Nov: name-plate glint on entry, power button hover/press, press feedback on like + tabs */
+.lower .nm{overflow:hidden}.lower.lin .nm::before{content:"";position:absolute;top:0;bottom:0;left:0;width:36%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-120%) skewX(-18deg);animation:glint .9s .5s ease-out both;pointer-events:none}
+@keyframes glint{to{transform:translateX(380%) skewX(-18deg)}}
+.power .pb{transition:transform .25s,filter .25s}.power:hover .pb{transform:scale(1.07);filter:brightness(1.1)}.power:active .pb{transform:scale(.95)}
+.likebtn,.tabs button{transition:transform .12s,color .2s,border-color .25s,background .2s}.likebtn:active,.tabs button:active{transform:scale(.96)}
+@media (prefers-reduced-motion:reduce){.onair::after{animation:none}.pcard{transition:none}.lower.lin .nm::before{animation:none;display:none}.power .pb{transition:none}}
 </style>
 
 <div class="wrap">
